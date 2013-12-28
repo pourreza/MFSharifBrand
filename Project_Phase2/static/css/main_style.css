@@ -130,10 +130,49 @@
     height:20px;
 }
 
+/*.my_category{*/
+/*height: 28px;*/
+/*padding-top: -5px;*/
+/*}*/
+/*.my_category_group{*/
+/*padding-bottom: 0px;*/
+/*margin-bottom: 0px;*/
+/*margin-top: 0px;*/
+/*}*/
+
+/*.my-search{*/
+/*margin-left: 970px;*/
+/*position:absolute;*/
+/*left: 10px;*/
+/*color: white;*/
+/*font-weight: bold;*/
+/*font-size: 13px;*/
+/*font-family: 'Cinzel Decorative', cursive;*/
+/*}*/
+
+/*.my-search2{*/
+/*margin-left: 1250px;*/
+/*position:absolute;*/
+/*left:80px;*/
+/*color: white;*/
+/*font-weight: bold;*/
+/*font-size: 13px;*/
+/*font-family: 'Cinzel Decorative', cursive;*/
+/*}*/
+
 .carousel-inner>div>p>a{
     font-size: 18px;
     color: white;
     width: 50px;
     background-color:rgb(109, 68, 46);
     text-decoration: none;
+}
+
+#main_search {
+    position: absolute;
+    margin-left: 10px;
+    left: 10px;
+    top: 48px;
+    text-align: center;
+
 }

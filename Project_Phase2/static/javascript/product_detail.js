@@ -87,7 +87,8 @@ $.ajax({
 function add() {
 
     var comment = document.getElementById('newComment');
-    $("#prev-comments").append('<li>ذوالفقار' + comment.value + '</li>');
+    $("#prev-comments").append('<li>ذوالفقار: ' + comment.value + '</li>');
+    document.getElementById('newComment').value="";
     var urlNewComment = "http://webproject.roohy.me/ajax/2/m&f/comment/add";
     var ajaxNewComment = {
         "message": comment.value
