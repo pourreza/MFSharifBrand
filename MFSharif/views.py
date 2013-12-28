@@ -1,4 +1,9 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.db.models import Q
+import json
+from django.http import HttpResponse
+from MFSharif.models import *
 
 # Create your views here.
 def index(request):
@@ -8,3 +13,52 @@ def index(request):
 def loadsearch(request):
     context = {}
     return  render(request, 'search.html', context)
+
+def items_wanted(request):
+    category_= request.GET["category"]
+    search_string = request.GET["search"]
+    whichpage = request.GET["page"]
+    page_size = request.GET["pageSize"]
+
+    desired_cat=[]
+    desired_prod=[]
+
+    desired_cat = Category.objects.filter(name = category_)
+
+    if desired_cat:
+        desired_prod = Products.objects.filter(category = desired_cat)
+
+    if search_string:
+        qset = Q()
+        for term in search_string.split():
+            qset |= Q(name__contains = term)
+        desired_prod = desired_prod.filter(qset)
+
+    if not page_size:
+        page_size = 8
+
+    paginator = Paginator(desired_prod,page_size)
+
+    if not whichpage:
+        whichpage = 1
+
+    items = paginator.page(whichpage)
+    totalResults = len(desired_prod)
+
+    response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults':totalResults, 'productList': desired_prod}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def into_search(request, category, search_str):
+    context = {'p_category_': category, 'p_search_str_': search_str};
+    return render(request, 'search.html', context)
+
+def list_categories(request):
+    list_of_cats = Category.objects.all()
+    categoryList = []
+    i = 10
+    for elem in list_of_cats:
+
+
+
+

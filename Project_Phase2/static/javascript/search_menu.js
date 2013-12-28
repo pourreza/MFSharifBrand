@@ -1,9 +1,9 @@
-var url = "http://webproject.roohy.me/ajax/2/m&f/category/list";
+var url = "categorylisturl";
 
 	console.log("umad in tu");
 	$.ajax({
 		url: url,
-		type: 'post',
+		type: 'get',
 		dataType: 'json',
 		success: function(data, status, xhr){
 		    if (data.result == 0){
