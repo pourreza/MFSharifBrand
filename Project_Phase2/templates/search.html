@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+
+ {% block inline_js_very_start%}
+        <script type="text/javascript">
+        // var category__ = 10;
+        // var search_string__ ="";
+
+        var pro_id;
+        var pro_price;
+        var pro_name;
+
+        var cart_price = [];
+
+     function doSearch(){
+
+	// console.log ("famidam ke ino zadi");
+		search_string__ = document.getElementById("appendedPrependedDropdownButton").value;
+		// console.log("search_string__: "+search_string__);
+		loadProducts(1, category__, search_string__); //the first parameter must always be 1
+		search_string__ = "";
+		 document.getElementById("appendedPrependedDropdownButton").value = "";
+		//serach_string__ o value e un element ro "" konam
+
+    }
+
+    </script>
+
+ {% endblock%}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{{STATIC_URL}}Pagination_/simplePagination.css"/>
+    <link href="{{STATIC_URL}}css/search_page.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{{STATIC_URL}}Pagination_/tests/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}Pagination_/jquery.simplePagination.js"></script>
+	<script type="text/JavaScript" src="{{STATIC_URL}}javascript/cloud-carousel__.1.0.5.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}javascript/search.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}javascript/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}javascript/search_menu.js"></script>
+     <script type="text/javascript" src="{{STATIC_URL}}javascript/search_variables.js"></script>
+{% endblock %}
+
+{% block title %}
+       صفحه‌ی جستجو
+{% endblock %}
+
+
+ {% block main_content %}
+        <div id="page_main" class="main">
+    <img id="background-image" src="{{STATIC_URL}}images/dark-wood-wallpaper.jpg" style="z-index: -1;"/>
+
+
+        <div class="crums" style="width: 300px; background-color: none; height: 30px; position: absolute; right: 20px" dir="rtl">
+
+	       <ul class="breadcrumb my_crums" style="background-color: none !important;">
+
+	           <li>
+
+	               <a href="Main.html">
+	                   ام اف شریف
+	                   <i class="icon-home icon-large"></i>
+	               </a>
+	           </li>
+	           <li class="active">
+	                   <span class="divider">/</span>
+	              جستجوی محصول
+	           </li>
+
+	       </ul>
+   </div>
+
+
+
+
+		<form class="form-search" method="post">
+		<div class="input-prepend">
+		  <div id="dropdown_toggle" class="btn-group">
+		    <button  class="btn dropdown-toggle" data-toggle="dropdown">
+		      دسته‌ها
+		      <span class="caret"></span>
+		    </button>
+		    <ul id="dropdown_ul" class="dropdown-menu">
+
+		  	</ul>
+		  </div>
+		  <input id="appendedPrependedDropdownButton" type="text" class="span2 search-query">
+
+		</div>
+
+		  <button class="btn" type="button" onClick="doSearch()">
+		    <i class="icon-search"> </i>
+		</button>
+
+		</form>
+
+
+
+
+<div id ="what_is_selected"> <p id= "cat_title">دسته‌ی انتخاب شده</p> <p id="selected_category"> جواهرات </p> </div>
+
+<button id ="see_product" class="btn-small" onclick="window.location.href='ProductDetail.html'"> مشاهده‌ی محصول</button>
+<button id="add_to_cart_" class="btn-small" onclick="addRealQuick()">اضافه کردن به سبد</button>
+
+
+<div id="description_container">
+	<div id = "title_part">
+<label for="title-text"> نام کالا </label>
+<p id="title-text"></p>
+
+</div>
+ <div id="price_part">
+
+<label for="price"> قیمت </label>
+<p id="price"></p>
+</div>
+</div>
+
+<div id="items_container"> </div>
+
+<button  class="btn btn-small" id="left-but"  type="button" value="Left"> چپ </button>
+<button class="btn btn-small" id="right-but" type="button" value="Right" > راست </button>
+
+
+
+
+
+<div id="holder" class="pagination-holder clearfix">
+		<div id="light-pagination" class="pagination light-theme simple-pagination">
+			<ul>
+				<li class="active">
+					<span class="current prev">قبلی</span>
+				</li>
+
+				<li class="active">
+					<span class="current">1</span>
+				</li>
+
+				<li class="active">
+					<a href="http//google.com" onclick= class="page-link">2</a>
+				</li>
+
+
+				<li class="disabled">
+					<span class="ellipse">...</span>
+				</li>
+
+				<li class="active">
+					<a href="http//google.com" class="page-link">20</a>
+				</li>
+
+				<li class="active">
+					<a href="#" class="page-link">21</a>
+				</li>
+
+				<li>
+					<a href="#" class="page-link next">بعدی </a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+
+
+
+</div>
+
+ {% endblock %}
+
+ {% block js_very_end%}
+         <script type="text/javascript">
+// console.log(search_string__);
+//         console.log(category__);
+
+
+ // category__ = 10; // 10 -> all the jewelries, 11 -> rings , 12 -> necklaces, 13 ->earings
+ //15-> all clothes, 16-> men, 17-> women, 18-> children
+if (search_string__ === undefined)
+	search_string__ = "";
+if (category__ === undefined)
+	category__ = 10;	//default category
+
+ loadProducts(1, category__, search_string__); //the first parameter must always be 1
+
+
+//var data__;
+
+load_current_cart();
+
+</script>
+ {% endblock %}
+
