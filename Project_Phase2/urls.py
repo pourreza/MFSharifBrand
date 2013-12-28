@@ -7,6 +7,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'Project_Phase2.views.home', name='home'),
     url(r'^$', 'MFSharif.views.index', name = 'index'),
+    url(r'^search$', 'MFSharif.views.loadsearch', name = 'search'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
