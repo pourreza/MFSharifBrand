@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/product_style.css">
+{% endblock %}
+{% block title %}
+    مشخصات محصول
+{% endblock %}
+{% block main_content %}
+<div class="main">
+    <img id="background-image" src="{{ STATIC_URL }}images/dark-wood-wallpaper.jpg" style="z-index: -1;"/>
+
+    <div class="product-image">
+        <ul class="breadcrumb my_crums">
+            <li class="active">
+                مشخصات محصول
+            </li>
+            <li>
+                <span class="divider">/</span>
+                <a href="../">
+                    ام اف شریف
+                    <i class="icon-home icon-large"></i>
+                </a>
+            </li>
+
+        </ul>
+        <a href="#openModal"><img id="pr-image" src="{{ product.0.image.url }}"/></a>
+
+        <div id="openModal" class="modalDialog">
+            <div>
+                <a href="#close" title="Close" class="close">X</a>
+                <img id="pr-image-big" src="{{ product.0.image.url }}"/>
+            </div>
+        </div>
+        <p class="pr-name">
+            {{ product.0.name }}
+        </p>
+        <button id="my-cart-add" class="btn-mini add-cart" onclick="add_cart()"> اضافه کردن به سبد</button>
+    </div>
+    <div class="product-info">
+        <div class="pr-info-header">
+            :مشخصات محصول
+        </div>
+        <div id="pr-info">
+{{ product.0.description }}
+        </div>
+        <div class="pr-info-header2">
+            : قیمت
+        </div>
+        <div id="pr-info-price" dir="RTL">
+{{ product.0.price }}تومان
+        </div>
+    </div>
+    <div class="product-comment">
+        <div class="pr-info-header">
+            : نظرات
+        </div>
+        <div class="new-comment">
+            <span>
+                <button id="submit-comment" onclick="add()">
+                    ثبت نظر
+                </button>
+            </span>
+
+            <input type="text" id="newComment" dir="rtl"/>
+            <span id="nc">
+                : نظر جدید
+            </span>
+
+        </div>
+        <div>
+
+            <span id="nc2">
+            </span>
+            <ul id="prev-comments" dir="RTL">
+
+            </ul>
+        </div>
+
+    </div>
+</div>
+</body>
+
+    {% block js_very_end %}
+        <script type="text/javascript" src= "{{ STATIC_URL }}javascript/product_detail.js"></script>
+    {% endblock %}
+{% endblock %}

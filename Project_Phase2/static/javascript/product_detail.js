@@ -23,11 +23,11 @@ $.ajax({
             pro_id = data.productList[0].id;
             pro_name = data.productList[0].name;
             pro_price = data.productList[0].price;
-            $(".pr-name").html(data.productList[0].name);
-            $("#pr-info").html(data.productList[0].name);
-            $("#pr-info-price").html(data.productList[0].price + "   تومان");
-            $("#pr-image").attr('src', data.productList[0].picUrl);//src(data.productList[0].picUrl);
-            $("#pr-image-big").attr('src', data.productList[0].picUrl);//
+//            $(".pr-name").html(data.productList[0].name);
+//            $("#pr-info").html(data.productList[0].name);
+//            $("#pr-info-price").html(data.productList[0].price + "   تومان");
+//            $("#pr-image").attr('src', data.productList[0].picUrl);//src(data.productList[0].picUrl);
+//            $("#pr-image-big").attr('src', data.productList[0].picUrl);//
 
         }
     }

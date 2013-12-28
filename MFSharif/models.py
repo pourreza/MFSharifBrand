@@ -29,6 +29,7 @@ class Comment(models.Model):
    comment = models.CharField('نظر', max_length = 1000)
    date = models.DateTimeField( 'زمان', auto_now_add = True)
    name = models.CharField('کاربر',max_length=70)
+   product = models.ForeignKey(Product)
 
 class MarketBasket(models.Model):
     # general fields

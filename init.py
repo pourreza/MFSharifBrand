@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*
-from MFSharif.models import Category, SubCats
+from MFSharif.models import *
 
 
 def init():
-    cat1, ok = Category.objects.get_or_create(name='زنانه', img="Capture.JPG")
+    cat1, ok = Category.objects.get_or_create(name='زنانه', img="images/profilepics/Capture.JPG")
 
-    cat2, ok = Category.objects.get_or_create(name='مردانه',  img="Capture.JPG")
+    cat2, ok = Category.objects.get_or_create(name='مردانه',  img="images/profilepics/Capture.JPG")
 
-    sub1, ok = Category.objects.get_or_create(name='کفش', img="Capture.JPG")
-    sub2, ok = Category.objects.get_or_create(name='لباس', img="Capture.JPG")
-    sub3, ok = Category.objects.get_or_create(name='جواهرات', img="Capture.JPG")
-    sub4, ok = Category.objects.get_or_create(name='عطر', img="Capture.JPG")
-    sub5, ok = Category.objects.get_or_create(name='ساعت', img="Capture.JPG")
-    sub6, ok = Category.objects.get_or_create(name='کیف', img="Capture.JPG")
-    sub7, ok = Category.objects.get_or_create(name='کفش', img="Capture.JPG")
-    sub8, ok = Category.objects.get_or_create(name='کت و شلوار', img="Capture.JPG")
-    sub9, ok = Category.objects.get_or_create(name='متعلقات', img="Capture.JPG")
-    sub10, ok = Category.objects.get_or_create(name='عطر', img="Capture.JPG")
-    sub11, ok = Category.objects.get_or_create(name='ساعت', img="Capture.JPG")
-    sub12, ok = Category.objects.get_or_create(name='کیف', img="Capture.JPG")
+    sub1, ok = Category.objects.get_or_create(name='کفش', img="images/profilepics/women-shoes.jpg")
+    sub2, ok = Category.objects.get_or_create(name='لباس', img="images/profilepics/dress.jpg")
+    sub3, ok = Category.objects.get_or_create(name='جواهرات', img="images/profilepics/necklace.jpg")
+    sub4, ok = Category.objects.get_or_create(name='عطر', img="images/profilepics/perfume2.jpg")
+    sub5, ok = Category.objects.get_or_create(name='ساعت', img="images/profilepics/women-watch.jpg")
+    sub6, ok = Category.objects.get_or_create(name='کیف', img="images/profilepics/women-bag.jpg")
+    sub7, ok = Category.objects.get_or_create(name='کفش', img="images/profilepics/shoes me.jpg")
+    sub8, ok = Category.objects.get_or_create(name='کت و شلوار', img="images/profilepics/suit.jpg")
+    sub9, ok = Category.objects.get_or_create(name='متعلقات', img="images/profilepics/tie.jpg")
+    sub10, ok = Category.objects.get_or_create(name='عطر', img="images/profilepics/perfume5.jpg")
+    sub11, ok = Category.objects.get_or_create(name='ساعت', img="images/profilepics/men_wathc.jpg")
+    sub12, ok = Category.objects.get_or_create(name='کیف', img="images/profilepics/bag_man.jpg")
 
     rel1, ok = SubCats.objects.get_or_create(category=cat1, subcategory=sub1)
     rel2, ok = SubCats.objects.get_or_create(category=cat1, subcategory=sub2)
@@ -32,3 +32,8 @@ def init():
     rel10, ok = SubCats.objects.get_or_create(category=cat2, subcategory=sub10)
     rel11, ok = SubCats.objects.get_or_create(category=cat2, subcategory=sub11)
     rel12, ok = SubCats.objects.get_or_create(category=cat2, subcategory=sub12)
+
+    pro1 = Product.objects.get_or_create(name='ساعت همیلتون', category = sub11, price=3250000, popular = True, description='ساعت همیلتون، ساخته شده در کشور سوئیس، وارد کننده: علی خردمند', image="images/products/watch men.jpg")
+    pro2 = Product.objects.get_or_create(name='عطر گوچی', category=sub4, price=325000, popular=True, description='عطر گوچی 100 میلی لیتری مناسب برای خانم ها در تمامی سنین', image="images/products/perfume3.jpg")
+    pro3 = Product.objects.get_or_create(name='کفش ایروبلو', category=sub1, price=265000, popular=True, description='بگذارید راز بلندی قد شما همیشه بین خودتان و کفشتان باقی بماند!! کفش های پاشنه بلند ایروبلو', image="images/products/6.jpg")
+    pro4 = Product.objects.get_or_create(name='ست مروارید', category=sub3, price=5036500, popular=True, description='برای آنان که قصد عروسی دارند!! ست مروارید با تخفیفی باورنکردنی', image="images/products/jewlry.jpg")
