@@ -1,15 +1,256 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+        <link type="text/css" href="{{STATIC_URL}}css/style.css" rel="stylesheet" />
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="all"/>
+        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/font-awesome.css">
+
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}static/css/main_style.css">
+
+
+    {% block css %}
+        {# link your own css files same as the upper links. don't forget {{ STATIC_URL }} for link to static files #}
+        <link type="text/css" href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="all" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/women_menu.css">
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/men_menu.css">
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/main_style.css">
+    {% endblock %}
+
+    {% block js %}
+
+		<script type="text/javascript" src="{{STATIC_URL}}javascript/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}javascript/jquery-1.7.2.min.js"></script>
+
+        <script type="text/javascript" src="{{STATIC_URL}}javascript/home_page_search.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}javascript/search_variables.js"></script>
+    {% endblock %}
+
     <title>
         {% block title %}
         MFSharifBrand
         {% endblock %}
     </title>
+
+
 </head>
 <body>
-    <p>
-        یعنی واقعا درست شده ؟
-    </p>
+
+	<div class="header">
+            ام اف شریف برند
+            <div id="login">
+                <span style="opacity:0.6">
+                ذوالفقار هادوی
+                </span>
+
+                <div class="dropdown">
+                    <img src="{{STATIC_URL}}images/ShoppingCart.png" title="مشاهده سبد خرید" data-toggle="dropdown"
+                         style="width: 50px; height: 50px;  margin-left: -120px; margin-right: 95px;margin-top: -35px; opacity: 0.6">
+                    <ul class="dropdown-menu my-dropdown" role="menu" aria-labelledby="dropdownMenu1" style="z-index: 10px;"
+                        id="cart-detail" dir="rtl">
+                    </ul>
+                </div>
+
+            </div>
+
+            <form id="main_search" class="form-search" method="post">
+                <div class="input-prepend">
+                  <div id="dropdown_toggle" class="btn-group">
+                    <button  class="btn dropdown-toggle" data-toggle="dropdown">
+                      دسته‌ها
+                      <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown_ul" class="dropdown-menu">
+
+                    </ul>
+                  </div>
+                  <input id="appendedPrependedDropdownButton" type="text" class="span2 search-query">
+
+                </div>
+
+                  <button class="btn" type="button" onClick="doGrandSearch()">
+                    <i class="icon-search"> </i>
+                </button>
+
+                </form>
+
+            <div id="recom">
+				محصولات پیشنهادی برای شما
+			</div>
+			<div id="add">
+                <a href="AddProduct.html" style="color: ghostwhite; text-decoration: none;">
+                    مدیریت اجناس
+                </a>
+
+            </div>
+
+		</div>
+
+
+    {% block main_content %}
+
+     <div class="main">
+
+
+        <div class="women">
+            <img id="background-image1" src="{{STATIC_URL}}images/woman.jpg"/>
+            <div class="women_menu">
+                <ul class="women_menu_table">
+                    <li><a class="women_list_item" id="women_item_1" href="search.html">
+                        <p class="womenp">کفش</p>
+                        <img class="women_item_image" src="{{STATIC_URL}}images/women-shoes.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="women_list_item" id="women_item_2" href="search.html">
+                        <p class="womenp">لباس</p>
+                        <img class="women_item_image" src="{{STATIC_URL}}images/dress.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="women_list_item" id="women_item_3" href="search.html">
+                        <p class="womenp">جواهرات</p>
+                        <img class="women_item_image" src="{{STATIC_URL}}images/necklace.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="women_list_item" id="women_item_4" href="search.html">
+                        <p class="womenp">عطر</p>
+                        <img class="women_item_image" src="{{STATIC_URL}}images/perfume2.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="women_list_item" id="women_item_5" href="search.html">
+                        <p class="womenp">ساعت</p>
+                        <img class="women_item_image" src="{{STATIC_URL}}images/women-watch.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="women_list_item" id="women_item_6" href="search.html">
+                        <p class="womenp">کیف</p>
+                        <img class="women_item_image" src="{{STATIC_URL}}images/women-bag.jpg" style="height:70px;" >
+                    </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="men-hidden">
+            <img id="background-image3" src="static/images/man_left.jpg"/>
+        </div>
+        <div class="middle" >
+            <p id="trends">
+                محصولات پرطرفدار
+            </p>
+            <div class = "trend_pic">
+                <div id="myCarousel" class="carousel slide vertical">
+                    <ol class="carousel-indicators" style="top:0%">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                        <li data-target="#myCarousel" data-slide-to="3"></li>
+                    </ol>
+                    <!-- Carousel items -->
+                    <div class="carousel-inner ">
+                        <div class="active item"><img src="{{STATIC_URL}}images/watch%20men.jpg" class="carousel-img" >
+                            <p dir="rtl" class="carsoul-detail">ساعت همیلتون، ساخته شده در کشور سوئیس، وارد کننده: علی خردمند
+
+                                <br/>
+                                <br/>
+                                 3,250,000 تومان
+                                <br/>
+                                <br/>
+                                <a href="ProductDetail.html" class="btn-mini add-cart"> مشخصات محصول</a>
+                            </p>
+                        </div>
+                        <div class="item"><img src="{{STATIC_URL}}images/jewlry.jpg" class="carousel-img">
+                            <p dir="rtl" class="carsoul-detail">
+                                برای آنان که قصد عروسی دارند!!
+                                <br/>
+                                 ست مرواریدبا تخفیفی باورنکردنی
+                                <br/>
+                                <br/>
+                                50365000تومان
+                                <br/>
+                                <br/>
+                                <a href="ProductDetail.html"  class="btn-mini add-cart">  مشخصات محصول</a>
+                            </p>
+                        </div>
+                        <div class="item"><img src="{{STATIC_URL}}images/6.jpg" class="carousel-img">
+                            <p dir="rtl" class="carsoul-detail">
+                                بگذارید راز بلندی قد شما همیشه بین خودتان و کفشتان بماند!!
+                                <br/>
+                                 کفش‌های پاشنه بلند ایرو بلو
+                                <br/>
+                                265000 تومان
+                                <br/>
+                                <br/>
+                                <a href="ProductDetail.html"  class="btn-mini add-cart">  مشخصات محصول</a>
+                            </p>
+                        </div>
+                        <div class="item"><img src="{{STATIC_URL}}images/perfume3.jpg" class="carousel-img">
+                            <p dir="rtl" class="carsoul-detail">عطر گوچی 100 میلی لیتری مناسب برای خانم ها در تمامی سنین
+                                <br/>
+                                <br/>
+                       325000 تومان
+                                <br/>
+                                <br/>
+                                <a  href="ProductDetail.html"  class="btn-mini add-cart">  مشخصات محصول</a>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Carousel nav -->
+                    <a class="carousel-control left my_left" href="#myCarousel" data-slide="prev" style="top:0%; left:43%">&lsaquo;</a>
+                    <a class="carousel-control right my_right" href="#myCarousel" data-slide="next"style="top:100%; left:41%">&rsaquo;</a>
+                </div>
+            </div>
+        </div>
+        <div class="men">
+            <img id="background-image2" src="{{STATIC_URL}}/images/man_right.jpg">
+            <div class="men_menu">
+                <ul class="men_menu_table">
+                    <li><a class="men_list_item aligned" id="men_item_1"href="search.html">
+                        <p class="menp">کفش</p>
+                        <img class="men_item_image" src="{{STATIC_URL}}images/shoes%20me.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="men_list_item aligned" id="men_item_2" href="search.html">
+                        <p class="menp">کت و شلوار</p>
+                        <img class="men_item_image" src="{{STATIC_URL}}images/suit.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="men_list_item aligned" id="men_item_3" href="search.html">
+                        <p class="menp">متعلقات</p>
+                        <img class="men_item_image" src="{{STATIC_URL}}images/tie.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="men_list_item aligned" id="men_item_4" href="search.html">
+                        <p class="menp">عطر</p>
+                        <img class="men_item_image" src="{{STATIC_URL}}images/perfume5.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="men_list_item aligned" id="men_item_5" href="search.html">
+                        <p class="menp">ساعت</p>
+                        <img class="men_item_image" src="{{STATIC_URL}}images/men_wathc.jpg" >
+                    </a>
+                    </li>
+                    <li><a class="men_list_item aligned" id="men_item_6" href="search.html">
+                        <p class="menp">کیف</p>
+                        <img class="men_item_image" src="{{STATIC_URL}}images/bag_man.jpg" >
+                    </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        </div>
+
+    {% endblock %}
+
+
+{% block js_end %}
+        <script type="text/javascript" src="{{STATIC_URL}}javascript/men_menu.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}javascript/women_menu.js"></script>
+        <script type="text/javascript" src="static/javascript/base.js"></script>
+
+{% endblock %}
 </body>
 </html>
