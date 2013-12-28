@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/font-awesome.css">
 
-		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}static/css/main_style.css">
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/main_style.css">
 
 
     {% block css %}
@@ -17,7 +17,6 @@
         <link type="text/css" href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="all" />
 		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/women_menu.css">
 		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/men_menu.css">
-		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/main_style.css">
     {% endblock %}
 
     {% block js %}
@@ -56,7 +55,24 @@
 
             </div>
 
-            <form id="main_search" class="form-search" method="post">
+
+
+            <div id="recom">
+				محصولات پیشنهادی برای شما
+			</div>
+			<div id="add">
+                <a href="AddProduct.html" style="color: ghostwhite; text-decoration: none;">
+                    مدیریت اجناس
+                </a>
+
+            </div>
+
+		</div>
+
+
+    {% block main_content %}
+
+      <form id="main_search" class="form-search" method="post">
                 <div class="input-prepend">
                   <div id="dropdown_toggle" class="btn-group">
                     <button  class="btn dropdown-toggle" data-toggle="dropdown">
@@ -77,20 +93,6 @@
 
                 </form>
 
-            <div id="recom">
-				محصولات پیشنهادی برای شما
-			</div>
-			<div id="add">
-                <a href="AddProduct.html" style="color: ghostwhite; text-decoration: none;">
-                    مدیریت اجناس
-                </a>
-
-            </div>
-
-		</div>
-
-
-    {% block main_content %}
 
      <div class="main">
 
@@ -134,7 +136,7 @@
             </div>
         </div>
         <div class="men-hidden">
-            <img id="background-image3" src="../static/images/man_left.jpg"/>
+            <img id="background-image3" src="{{STATIC_URL}}images/man_left.jpg"/>
         </div>
         <div class="middle" >
             <p id="trends">
@@ -249,7 +251,7 @@
 {% block js_end %}
         <script type="text/javascript" src="{{STATIC_URL}}javascript/men_menu.js"></script>
         <script type="text/javascript" src="{{STATIC_URL}}javascript/women_menu.js"></script>
-        <script type="text/javascript" src="../static/javascript/base.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}javascript/base.js"></script>
 
 {% endblock %}
 </body>
