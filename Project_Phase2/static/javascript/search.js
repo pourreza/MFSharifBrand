@@ -10,10 +10,11 @@ function loadProducts( whichpage, category_, search_string){
 		"pageSize": 8
 	}
 
-	var url = "http://webproject.roohy.me/ajax/2/m&f/product/list";
+	//var url = "http://webproject.roohy.me/ajax/2/m&f/product/list";
+    var url = "loadproductitems";
 	$.ajax({
 		url: url,
-		type : 'post',
+		type : 'get',
 		dataType: 'json',
 		data: ajaxData,
 		success: function (data, status, xhr){
@@ -193,7 +194,7 @@ function add_cart() {
         }
         $.ajax({
             url: urlNewComment,
-            type: 'post',
+            type: 'get',
             dataType: 'json',
             data: ajaxNewComment,
             success: function (data, status, xhr) {
@@ -225,7 +226,7 @@ function load_current_cart(){
 var urlCartList = "http://webproject.roohy.me/ajax/2/m&f/cart/list";
 $.ajax({
     url: urlCartList,
-    type: 'post',
+    type: 'get',
     dataType: 'json',
     success: function (data, status, xhr) {
         if (data.result == 0) {
@@ -264,7 +265,7 @@ function exit(id){
     }
     $.ajax({
         url: urlNewComment,
-        type: 'post',
+        type: 'get',
         dataType: 'json',
         data: ajaxNewComment,
         success: function (data, status, xhr) {
