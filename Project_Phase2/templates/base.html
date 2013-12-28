@@ -14,9 +14,11 @@
 
     {% block css %}
         {# link your own css files same as the upper links. don't forget {{ STATIC_URL }} for link to static files #}
-        <link type="text/css" href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet" media="all" />
+
 		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/women_menu.css">
 		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/men_menu.css">
+    	<link href="{{STATIC_URL}}css/carousel_vert.css" rel="stylesheet" media="screen">
+
     {% endblock %}
 
     {% block js %}
@@ -24,6 +26,7 @@
 		<script type="text/javascript" src="{{STATIC_URL}}javascript/jquery-1.10.2.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}javascript/jquery-1.7.2.min.js"></script>
 
+        <script type="text/javascript" src="{{STATIC_URL}}javascript/bootstrap.js"></script>
         <script type="text/javascript" src="{{STATIC_URL}}javascript/home_page_search.js"></script>
         <script type="text/javascript" src="{{STATIC_URL}}javascript/search_variables.js"></script>
     {% endblock %}
