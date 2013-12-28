@@ -110,36 +110,45 @@
             <img id="background-image1" src="{{STATIC_URL}}images/woman.jpg"/>
             <div class="women_menu">
                 <ul class="women_menu_table">
-                    <li><a class="women_list_item" id="women_item_1" href="search.html">
-                        <p class="womenp">کفش</p>
-                        <img class="women_item_image" src="{{STATIC_URL}}images/women-shoes.jpg" >
-                    </a>
-                    </li>
-                    <li><a class="women_list_item" id="women_item_2" href="search.html">
-                        <p class="womenp">لباس</p>
-                        <img class="women_item_image" src="{{STATIC_URL}}images/dress.jpg" >
-                    </a>
-                    </li>
-                    <li><a class="women_list_item" id="women_item_3" href="search.html">
-                        <p class="womenp">جواهرات</p>
-                        <img class="women_item_image" src="{{STATIC_URL}}images/necklace.jpg" >
-                    </a>
-                    </li>
-                    <li><a class="women_list_item" id="women_item_4" href="search.html">
-                        <p class="womenp">عطر</p>
-                        <img class="women_item_image" src="{{STATIC_URL}}images/perfume2.jpg" >
-                    </a>
-                    </li>
-                    <li><a class="women_list_item" id="women_item_5" href="search.html">
-                        <p class="womenp">ساعت</p>
-                        <img class="women_item_image" src="{{STATIC_URL}}images/women-watch.jpg" >
-                    </a>
-                    </li>
-                    <li><a class="women_list_item" id="women_item_6" href="search.html">
-                        <p class="womenp">کیف</p>
-                        <img class="women_item_image" src="{{STATIC_URL}}images/women-bag.jpg" style="height:70px;" >
-                    </a>
-                    </li>
+                    {% if women_items %}
+                        {% for item in women_items %}
+                            <li><a class="women_list_item" id="women_item_1" href="search.html">
+                                <p class="womenp">{{ item.name }}</p>
+                                <img class="women_item_image" src="{{STATIC_URL}}images/women-shoes.jpg" >
+                            </a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+{#                    <li><a class="women_list_item" id="women_item_1" href="search.html">#}
+{#                        <p class="womenp">کفش</p>#}
+{#                        <img class="women_item_image" src="{{STATIC_URL}}images/women-shoes.jpg" >#}
+{#                    </a>#}
+{#                    </li>#}
+{#                    <li><a class="women_list_item" id="women_item_2" href="search.html">#}
+{#                        <p class="womenp">لباس</p>#}
+{#                        <img class="women_item_image" src="{{STATIC_URL}}images/dress.jpg" >#}
+{#                    </a>#}
+{#                    </li>#}
+{#                    <li><a class="women_list_item" id="women_item_3" href="search.html">#}
+{#                        <p class="womenp">جواهرات</p>#}
+{#                        <img class="women_item_image" src="{{STATIC_URL}}images/necklace.jpg" >#}
+{#                    </a>#}
+{#                    </li>#}
+{#                    <li><a class="women_list_item" id="women_item_4" href="search.html">#}
+{#                        <p class="womenp">عطر</p>#}
+{#                        <img class="women_item_image" src="{{STATIC_URL}}images/perfume2.jpg" >#}
+{#                    </a>#}
+{#                    </li>#}
+{#                    <li><a class="women_list_item" id="women_item_5" href="search.html">#}
+{#                        <p class="womenp">ساعت</p>#}
+{#                        <img class="women_item_image" src="{{STATIC_URL}}images/women-watch.jpg" >#}
+{#                    </a>#}
+{#                    </li>#}
+{#                    <li><a class="women_list_item" id="women_item_6" href="search.html">#}
+{#                        <p class="womenp">کیف</p>#}
+{#                        <img class="women_item_image" src="{{STATIC_URL}}images/women-bag.jpg" style="height:70px;" >#}
+{#                    </a>#}
+{#                    </li>#}
                 </ul>
 
             </div>
@@ -170,6 +179,12 @@
                                 <br/>
                                 <br/>
                                 <a href="ProductDetail.html" class="btn-mini add-cart"> مشخصات محصول</a>
+                            </p>
+                        </div>
+                        <div class="item">
+                            <img src="{{women_items.0.img}}" class="carousel-img">
+                            <p dir="rtl" class="carsoul-detail">
+                                {{ women_items.0.name }}
                             </p>
                         </div>
                         <div class="item"><img src="{{STATIC_URL}}images/jewlry.jpg" class="carousel-img">

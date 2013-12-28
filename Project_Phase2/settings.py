@@ -96,3 +96,10 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(ROOT_DIR, 'static'),
 )
+
+MEDIA_ROOT = os.path.join(ROOT_DIR, '../media/')
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash.
+# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+MEDIA_URL = '/media/'

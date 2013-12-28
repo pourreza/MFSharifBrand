@@ -1,14 +1,17 @@
 ## Create your models here.
 ## -*- coding: utf-8 -*-
 from django.db import models
+# import Image
 #import os
 #
 #def get_image_path(instance, filename):
 #    return os.path.join('img', str(instance.category), filename)
 #
+
 class Category(models.Model):
    name = models.CharField(max_length = 50)
-#
+   img = models.ImageField('image', upload_to='images/profilepics')
+
 class SubCats(models.Model):
     category = models.ForeignKey(Category,related_name='creator')
     subcategory = models.ForeignKey(Category,related_name='subcategory')
@@ -19,16 +22,13 @@ class Product(models.Model):
    unit = models.CharField("واحد شمارش", default = "عدد", max_length = 30)
    price = models.PositiveIntegerField("قیمت")
    description = models.CharField('توضیح', max_length = 255)
-   # image = models.ImageField('عکس', upload_to='path/')
-   # description = models.CharField('salam')
-   # image = models.ImageField('عکس' )
-#    # image ra bayad ye kari konim :-?
-#
-   # description = models.CharField('توضیح')
-#
+   image = models.ImageField('عکس', upload_to='images/products')
+   popular = models.BooleanField('پرطرفدار',default=False)
+
 class Comment(models.Model):
    comment = models.CharField('نظر', max_length = 1000)
    date = models.DateTimeField( 'زمان', auto_now_add = True)
+   name = models.CharField('کاربر',max_length=70)
 
 class MarketBasket(models.Model):
     # general fields
