@@ -1,0 +1,172 @@
+.my_menu{
+    /*background-color: skyblue;*/
+    color: white;
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    text-align: right;
+    padding-top: 7px;
+    /*padding-right:10px;*/
+    /*padding-top: px;*/
+    margin-top: 20px;
+    right:20px;
+    border: 2px dotted ghostwhite;
+    border-radius: 10px;
+}
+
+.my_menu>ul>li{
+    /*margin-bottom: 10px;*/
+    margin-bottom: 2px;
+    /*margin-top:2px;*/
+    padding-top: 5px;
+    padding-right: 10px;
+    /*margin-top: 10px;*/
+    font-weight: bold;
+    font-size: 18px;
+    font-family: bnazanin;
+    width: 190px;
+    border-radius: 5px;
+    height: 30px;
+}
+
+.my_menu>ul>li:first-child:hover{
+    background-color: rgb(105,65,44);
+    cursor: default;
+}
+
+.my_menu>ul>li:hover{
+    background-color: rgb(204, 157, 132);
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.li-header{
+    background-color: rgb(105,65,44);
+    padding-top:5px;
+    margin-top: -10px;
+    /*padding*/
+    opacity: 0.9;
+    border-radius: 5px;
+    height: 30px;
+    text-align: center;
+    width: 190px;
+
+    /*margin-right:10px;*/
+    margin-top: -5px;
+    padding-top: -5px;
+    font-size:30px;
+}
+
+.add-pr{
+    position: absolute;
+    margin-top:10px;
+    right: 240px;
+}
+
+.pr-add-form{
+    position: absolute;
+    /*background-color: #ffffff;*/
+    right: 240px;
+    padding-right: 20px;
+    padding-top: 20px;
+    border: 2px dotted ghostwhite;
+    border-radius: 10px;
+    height: 400px;
+    margin-top: 50px;
+    width: 1080px;
+    font-family: bnazanin;
+    font-size: 18px;
+    font-weight: bold;
+    color:white;
+}
+
+#my-add-form{
+    padding-top: 35px;
+}
+
+#name-pro{
+
+}
+
+form>input{
+    height:20px;
+}
+
+.td-input{
+    padding-right: 10px;
+    max-height: 2px;
+    /*width:100px;*/
+}
+
+.my-submit{
+    margin-right: 120px;
+    margin-top: -10px;
+    width: 100px;
+    background-color: rgb(105,65,44);
+    color: white;
+    border:1px solid #000000;
+    border-radius: 3px;
+}
+
+.modalDialog {
+    position: fixed;
+    font-family:bnazanin, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    /*background: rgb(105,65,44);*/
+    z-index: 99999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+
+.modalDialog > div {
+    width: 350px;
+    position: relative;
+    margin: 10% auto;
+    /*padding: 5px 20px 13px 20px;*/
+    border-radius: 10px;
+    background-color: rgb(105,65,44);
+    padding-right: 40px;
+    padding-top:20px;
+    color: black;
+    height: 40px;
+    background: -moz-linear-gradient(#fff, #999);
+    background: -webkit-linear-gradient(#fff, #999);
+    background: -o-linear-gradient(#fff, #999);
+}
+
+#imageSelect{
+    position: absolute;
+    border-radius: 5px;
+    border: 2px dotted white;
+    text-align: center;
+    color: white;
+    width: 300px;
+    height: 300px;
+    right: 1000px;
+    top: 200px;
+}
+
+#final-image{
+    overflow:hidden;
+    position: absolute;
+    border-radius: 5px;
+    border: 2px dotted white;
+    text-align: center;
+    color: white;
+    width: 100px;
+    height: 100px;
+    right: 880px;
+    top: 200px;
+}

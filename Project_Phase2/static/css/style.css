@@ -1,0 +1,107 @@
+/* font */
+@font-face {
+    font-family: 'entezar';
+    src: local('EntezareZohoor 1 **'),url('../fonts/Entezar1_v2.0.1_p30download.com.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'BNazanin';
+    src: local('B Nazanin'),url('../fonts/BNazanin_0.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Nastaligh';
+    src: local('IranNastaliq'), url('../fonts/Iran.Nastaliq.1.0_SarzaminDownload.com.ttf') format('truetype');
+}
+
+.header{
+	max-width:1325px;
+    height:60px;
+
+    font-family: 'entezar';
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: right;
+
+    padding-top: 33px;
+    padding-left: 50px;
+    padding-right: 40px;
+
+	background-image: -webkit-linear-gradient(top ,rgb(0, 0,0) 0%,  rgb(34,27,19) 70%);
+}
+
+#recom{
+    opacity:0.6;
+
+    position: absolute;
+    margin-left: 790px;
+
+    font-size: 23px;
+    text-align: right;
+    font-family: entezar;
+}
+
+
+#add{
+	opacity:0.6;
+
+	margin-left: 590px;
+	position:absolute;
+
+	font-size: 23px;
+    font-family: entezar;
+}
+
+#login{
+    margin-left: 350px;
+    position:absolute;
+
+    font-size: 23px;
+    font-family: entezar;
+}
+
+#cart-detail{
+    opacity: 0.8;
+    margin-left:-80px;
+    font-size: 18px;
+    font-family: bnazanin;
+    font-weight: bold;
+
+}
+
+#background-image {
+    /*margin-top: -15px;*/
+    /*margin-left: -15px;*/
+    width: 1370px;
+    height: 548px;
+    position: absolute;
+}
+
+.main{
+    max-width:1600px;
+    height: 548px;
+}
+
+.my-dropdown>li>a:hover{
+    background-color: #a47e3c !important;
+}
+
+ul>li>a{
+    padding-top:-2px;
+    font-size: 18px;
+    font-family: bnazanin;
+    font-weight: bold;
+}
+
+
+.my_crums{
+    padding-bottom: -5px;
+    margin-bottom: -5px;
+    color: white;
+}
+.my_crums> li> a{
+    color:ghostwhite !important;
+}
+
+.cross:hover{
+    background-color: burlywood !important;
+}
