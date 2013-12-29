@@ -1,17 +1,13 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.http import HttpResponse
 from MFSharif.models import *
 
 
 # Create your views here.
-def index(request):
-    context = {}
-    return render(request, 'base.html', context)
-
-
 def index(request):
     cat_women = Category.objects.filter(name='زنانه')
     cat_men = Category.objects.filter(name='مردانه')
@@ -28,16 +24,42 @@ def index(request):
 
     pro = Product.objects.filter(popular=True)
 
-    context = {'men_items':men_items, 'women_items': women_items, 'products': pro}
+    context = {'men_items':men_items, 'women_items':women_items, 'products':pro}
     return render(request, 'base.html', context)
-
 
 def product_info(request, pro_id):
     pid = int(pro_id)
     pro = Product.objects.filter(pk=pid)
-    comments = Comment.objects.filter(product=pro)
-    context = {'product':pro, 'comments':comments}
+    comments = Comment.objects.filter(product=pro).order_by('-date')
+    dates = []
+    for comment in comments:
+        dates.append(comment.date.date())
+    context={'product':pro, 'comments':comments, 'dates':dates}
     return render(request,'ProductDetail.html', context)
+
+def addComment(request):
+    msg = request.GET.get('message')
+    pro_id = request.GET.get('pro_id')
+    nm = request.GET.get('name')
+
+    prd = Product.objects.get(pk=pro_id)
+    cm = Comment.objects.get_or_create(comment=msg, name=nm, product=prd)
+
+    comments = Comment.objects.filter(product=prd).order_by('-date')
+    print(comments[0].comment)
+    cm = []
+    nms = []
+    dt = []
+    tm =[]
+    for comment in comments:
+        cm.append(comment.comment)
+        nms.append(comment.name)
+        dt.append(comment.date.date())
+        # tm.append(comment.date.time())
+
+    response_data = {'result':1, 'comments':cm, 'names':nms, 'dates':dt, 'times':tm}
+    # response_data = {'result':1, 'comments':comments}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 
 def loadsearch(request):
