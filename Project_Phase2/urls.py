@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^categorylisturl', 'MFSharif.views.list_categories', name= 'listing_categories' ),
     url(r'^product/(?P<pro_id>\d+)$', 'MFSharif.views.product_info', name = 'product'),
     url(r'^addComment$', 'MFSharif.views.addComment', name='add_comment'),
+    url(r'^addProduct$', 'MFSharif.views.addProduct', name='addProduct'),
+    url(r'^upload$', 'MFSharif.views.upload_image', name='upload_image'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),

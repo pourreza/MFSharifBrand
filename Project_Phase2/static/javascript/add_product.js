@@ -64,64 +64,69 @@ function product_add(){
     var infopr = document.getElementById("info-pr").value;
     var imgpr = document.getElementById("pro-img").value;
 //    alert();
-    if ((namepr=="") || (pricepr==0) || (infopr=="")  || (categry==undefined)|| (imgpr=="")){
+//    if ((namepr=="") || (pricepr==0) || (infopr=="")  || (categry==undefined)|| (imgpr=="")){
+    if (false){
         alert("لطفا تمام فیلدها را پر کنید!");
     }
     else{
         var picId;
         $("#imageForm").ajaxSubmit({
-            url: "http://webproject.roohy.me/ajax/2/m&f/product/uploadimage",
-            type: "POST",
+            url: "upload",
+            type: "GET",
             dataType: 'json',
             data:'',
             success: function(data, status, xhr){
-                console.log(data);
                 if (data.result == 0){
                     // Request error
+                    alert("result0 shode")
                 }else
                 {
-                    picId = data.picId;
-//                    alert("image load");
-                    document.getElementById("img-select").src = data.picUrl;
-                    document.getElementById("img-final").src = data.picUrl;
+                    alert("success");
+//                picId = data.picId;
+////                    alert("image load");
+//                document.getElementById("img-select").src = data.picUrl;
+//                document.getElementById("img-final").src = data.picUrl;
 //                    $("img-select").attr("src", data.picUrl);
                 }
 
+            },
+            error:function(){
+                alert("error");
             }
             // ...
         });
 ////////////////////////////////// inja bayad crop inaa check she ///////////
 
-        $('#img-select').imgAreaSelect({ aspectRatio: '1:1', onSelectChange: preview });
-
-        var ajaxAddPro ={
-            "name": namepr,
-            "description": infopr,
-            "category":categry,
-            "price":pricepr,
-            "picId":picId,
-            "x": 10,
-            "y": 10,
-            "w": 100,
-            "h": 100
-        }
-        var urlAdd ="http://webproject.roohy.me/ajax/2/m&f/product/add";
-        $.ajax({
-            url: url,
-            type: 'post',
-            dataType: 'json',
-            success: function(data, status, xhr){
-                if (data.result == 0){
-                }else
-                {
-                    alert("محصول جدید با موفقیت در سیستم به ثبت رسید :)");
-                    $("input").val('');
-
-                    document.getElementById("select-button").childNodes[2].nodeValue = "انتخاب دسته";
-
-                }
-            }
-        });
+//        $('#img-select').imgAreaSelect({ aspectRatio: '1:1', onSelectChange: preview });
+//
+//        var ajaxAddPro ={
+//            "name": namepr,
+//            "description": infopr,
+//            "category":categry,
+//            "price":pricepr,
+//            "picId":picId,
+//            "x": 10,
+//            "y": 10,
+//            "w": 100,
+//            "h": 100
+//        }
+//        var urlAdd ="http://webproject.roohy.me/ajax/2/m&f/product/add";
+//        $.ajax({
+//            url: url,
+//            type: 'post',
+//            dataType: 'json',
+//            success: function(data, status, xhr){
+//                if (data.result == 0){
+//                }else
+//                {
+//                    alert("محصول جدید با موفقیت در سیستم به ثبت رسید :)");
+//                    $("input").val('');
+//
+//                    document.getElementById("select-button").childNodes[2].nodeValue = "انتخاب دسته";
+//
+//                }
+//            }
+//        });
     }}
 
 function preview(img, selection) {
@@ -135,10 +140,8 @@ function preview(img, selection) {
         marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
     });
 }
-
+image_id = 0;
 function crop(){
-    alert(document.getElementById("pro-img").value);
+    alert("inja");
 
-    document.getElementById("img-select").src = document.getElementById("pro-img");
-    document.getElementById("img-final").src = document.getElementById("pro-img");
 }
