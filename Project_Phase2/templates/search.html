@@ -99,7 +99,7 @@
 
 
 
-<div id ="what_is_selected"> <p id= "cat_title">دسته‌ی انتخاب شده</p> <p id="selected_category"> جواهرات </p> </div>
+<div id ="what_is_selected"> <p id= "cat_title">دسته‌ی انتخاب شده</p> <p id="selected_category">  </p> </div>
 
 <button id ="see_product" class="btn-small" onclick="window.location.href='ProductDetail.html'"> مشاهده‌ی محصول</button>
 <button id="add_to_cart_" class="btn-small" onclick="addRealQuick()">اضافه کردن به سبد</button>
@@ -188,6 +188,7 @@ if (category__ === "")
 	category__ = 1;	//default category
 
  loadProducts(1, category__, search_string__); //the first parameter must always be 1
+search_string__ = "";
 
 
 //var data__;

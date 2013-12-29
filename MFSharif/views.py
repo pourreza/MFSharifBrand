@@ -81,29 +81,52 @@ def items_wanted(request):
     desired_cat = Category.objects.filter( pk = category_)
     print("desired_cat", desired_cat)
 
-    if desired_cat:
-        for x in desired_cat:
-            desired_prod = Product.objects.filter(category = x)
+    desired_subcat = SubCats.objects.filter( category = desired_cat[0])
+    print("desired_subcat", desired_subcat)
 
+    from itertools import chain
+    desired_cats = list(chain(desired_cat, desired_subcat))
+
+    print('desired_cats:', desired_cats)
+
+    if desired_cats:
+        for x in desired_cats:
+            if Product.objects.filter(category = x):
+                desired_prod = list(chain(Product.objects.filter(category = x), desired_prod))
+
+    print('Desired_prod', desired_prod)
+
+    #if search_string:
+    #    qset = Q()
+    #    for term in search_string.split():
+    #        qset |= Q(name__contains = term)
+    #    desired_prod = desired_prod.filter(qset)
+    #
+    final_prod = []
     if search_string:
-        qset = Q()
         for term in search_string.split():
-            qset |= Q(name__contains = term)
-        desired_prod = desired_prod.filter(qset)
+            for elem in desired_prod:
+                if term in elem.name:
+                    final_prod.append(elem)
+    else:
+        final_prod = desired_prod
+
+    print('final_prod',final_prod)
+
 
     if not page_size:
         page_size = 8
 
-    paginator = Paginator(desired_prod, page_size)
+    paginator = Paginator(final_prod, page_size)
 
     if not whichpage:
         whichpage = 1
 
     items = paginator.page(whichpage)
-    totalresults = len(desired_prod)
+    totalresults = len(final_prod)
 
     responselist = []
-    for elem in desired_prod:
+    for elem in final_prod:
         dic_el = {'category': category_, 'price': elem.price, 'id': elem.pk, 'name': elem.name, 'picUrl': elem.image.url }
         responselist.append(dic_el)
 
