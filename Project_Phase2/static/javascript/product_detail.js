@@ -104,10 +104,13 @@ function add(pk) {
                 // Request error
             } else {
                 alert("resid");
-//                $("#prev-comments").innerHTML = "";
-//                for (var cm in data.comments){
-//                    $("#prev-comments").append('<li>'+cm.name+':'+cm.comment+'<p>تاریخ:'+cm.date+'</p></li>');
+                var com = document.getElementById("prev-comments");
+                com.innerHTML = "";
+                for (var cm=0; cm< data.comments.length; cm++){
+                    com.innerHTML +='<li>'+data.names[cm]+':'+data.comments[cm]+'<p>تاریخ:'+data.dates[cm]+'</p></li>';
+//                    com.innerHTML +='<li>'+data.comments[cm].name+':'+data.comments[cm].comment+'<p>تاریخ:'+data.comments[cm].date+'</p></li>';
 //                }
+                }
             }
         }
         // ...

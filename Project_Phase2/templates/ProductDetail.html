@@ -74,12 +74,14 @@
             <ul id="prev-comments" dir="RTL">
                 {% if comments %}
                     {% for comment in comments %}
+                        {% with forloop.counter as num %}
                         <li>
                             {{ comment.name }}:{{ comment.comment }}
                             <p>
-                                تاریخ: {{ comment.date }}
+                                تاریخ: {{ comment.date.date }}
                             </p>
                         </li>
+                        {% endwith %}
                     {% endfor %}
                 {% endif %}
             </ul>
