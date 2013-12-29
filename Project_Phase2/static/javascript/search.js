@@ -12,7 +12,7 @@ function loadProducts( whichpage, category_, search_string){
 	}
 
 	//var url = "http://webproject.roohy.me/ajax/2/m&f/product/list";
-    var url = "loadproductitems";
+    var url = "/loadproductitems";
     console.log ("inam ejra misheee?!");
 	$.ajax({
 		url: url,
@@ -55,7 +55,7 @@ function loadProducts( whichpage, category_, search_string){
 
 				 		// console.log (data.totalResults);
 
-				if (number_of_pages === 0)
+				if (data.totalResults === 0)
 				{
 
 					alert ("محصولی با مشخصات ذکر شده یافت نشد");

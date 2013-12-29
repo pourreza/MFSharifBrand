@@ -1,4 +1,4 @@
-var url = "categorylisturl";
+var url = "/categorylisturl";
 
 	console.log("umad in tu");
 	$.ajax({
