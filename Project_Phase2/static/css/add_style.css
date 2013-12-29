@@ -107,6 +107,16 @@ form>input{
     border:1px solid #000000;
     border-radius: 3px;
 }
+.my-submit2{
+    /*margin-right: 120px;*/
+    margin-top: -10px;
+    width: 100px;
+    background-color: rgb(105,65,44);
+    color: white;
+    border:1px solid #000000;
+    border-radius: 3px;
+}
+
 
 .modalDialog {
     position: fixed;
