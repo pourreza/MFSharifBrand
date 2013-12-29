@@ -30,6 +30,10 @@ class Product(models.Model):
    def __str__(self):
          return str(self.id)
 
+
+class UploadedImage(models.Model):
+    image = models.ImageField('عکس', upload_to='images/products')
+
 class Comment(models.Model):
    comment = models.CharField('نظر', max_length = 1000)
    date = models.DateTimeField( 'زمان', auto_now_add = True)

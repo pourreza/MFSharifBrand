@@ -35,7 +35,20 @@ def product_info(request, pro_id):
     dates = []
     for comment in comments:
         dates.append(comment.date.date())
-    context={'product':pro, 'comments':comments, 'dates':dates}
+
+    proches = Product.objects.filter(category = pro[0].category)
+    proches = proches.exclude(pk = pid)
+
+    recoms = Product.objects.filter(recommended = True)
+
+
+    similars = []
+    for i in range(3):
+        if proches[i]:
+            dic_el = {'category': proches[i].category, 'price': proches[i].price, 'id': proches[i].pk, 'name': proches[i].name, 'picUrl': proches[i].image.url }
+            similars.append(dic_el)
+
+    context={'product':pro, 'comments':comments, 'dates':dates, 'similars': similars, 'recoms': recoms}
     return render(request,'ProductDetail.html', context)
 
 def addComment(request):
@@ -156,6 +169,13 @@ def list_categories(request):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
+def upload_image(request):
+    print("tu upload image am")
+    response_data = {'result':1}
+    # response_data = {'result':1, 'comments':comments}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 
-
+def addProduct(request):
+    context = {}
+    return render(request,'AddProduct.html', context)
