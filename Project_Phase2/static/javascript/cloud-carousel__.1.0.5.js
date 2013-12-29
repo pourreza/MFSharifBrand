@@ -47,7 +47,7 @@
             }
         }
         // Store a copy of the price and title attrs into the reflection
-        $(reflection).attr({ 'price': $(img).attr('data-price'), title: $(img).attr('title') });
+        $(reflection).attr({ 'price': $(img).attr('data-price'), title: $(img).attr('title'),  'theid': $(img).attr('data-theid') });
 
     } //END Reflection object
 
@@ -59,6 +59,7 @@
         this.image = imgIn;
         this.reflection = null;
         this.price = imgIn.price;
+        this.theid =imgIn.theid;
         this.title = imgIn.title;
         this.imageOK = false;
         this.options = options;
@@ -103,7 +104,9 @@
         if (options.priceBox !== null) {
             $(options.priceBox).css('display', 'block');
             $(options.titleBox).css('display', 'block');
+            $(options.theidBox).css('display', 'none');
         }
+
         // Turn on relative position for container to allow absolutely positioned elements
         // within it to work.
         $(container).css({ position: 'relative', overflow: 'hidden' });
@@ -139,6 +142,7 @@
                 clearTimeout(event.data.showFrontTextTimer);
                 $(options.priceBox).html(($(event.target).attr('data-price')));
                 $(options.titleBox).html(($(event.target).attr('title')));
+                $(options.theidBox).html(($(event.target).attr('data-theid')));
                 //console.log($(event.target).attr('title'));
 
                 if (options.bringToFront && event.type == 'click') {
@@ -151,6 +155,7 @@
                     console.log($(event.target).attr('title'));//added by farnaz
                     $(options.priceBox).html(($(event.target).attr('data-price'))); //added by farnaz
                     $(options.titleBox).html(($(event.target).attr('title'))); //added by farnaz
+                    $(options.theidBox).html(($(event.target).attr('data-theid'))); //added by farnaz
                     //var	diff = idx - frontIndex;                    
                     var diff = (idx - frontIndex) % images.length;
                     if (Math.abs(diff) > images.length / 2) {
@@ -187,6 +192,7 @@
           // console.log(this);
            $(options.titleBox).html("");
            $(options.priceBox).html("");
+            $(options.theidBox).html("");
 
             //console.log($(items[this.frontIndex].image).attr('data_price')); //added by Farnaz
             //$(options.titleBox).html($(items[this.frontIndex].image).attr('title'));
@@ -331,6 +337,7 @@
                 yRadius: 0,
                 priceBox: null,
                 titleBox: null,
+                theidBox: null,
                 FPS: 20,
                 autoRotate: 'right',
                 autoRotateDelay: 6000,

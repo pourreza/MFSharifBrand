@@ -101,12 +101,12 @@ def items_wanted(request):
     if search_string:
         for term in search_string.split():
             for elem in desired_prod:
-                if term in elem.name:
-                    final_prod.append(elem)
+                for i in elem.name.split():
+                    if term == i:
+                        final_prod.append(elem)
     else:
+        print ("empty")
         final_prod = desired_prod
-
-    print('final_prod',final_prod)
 
 
     if not page_size:
@@ -127,16 +127,16 @@ def items_wanted(request):
     print('len(items)',len(items))
 
     responselist = []
-    for elem in final_prod:
+    for elem in items:
         dic_el = {'category': category_, 'price': elem.price, 'id': elem.pk, 'name': elem.name, 'picUrl': elem.image.url }
         responselist.append(dic_el)
 
-    responselist_ult = []
-    for i in responselist:
-        if i not in responselist_ult:
-            responselist.append(i)
+    #responselist_ult = []
+    #for i in responselist:
+    #    if i not in responselist_ult:
+    #        responselist.append(i)
 
-    response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist_ult}
+    response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

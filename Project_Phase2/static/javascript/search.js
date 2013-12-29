@@ -91,6 +91,7 @@ function loadProducts( whichpage, category_, search_string){
 				img_elem.setAttribute("data-price",data.productList[i].price);
 				img_elem.setAttribute("title",data.productList[i].name);
 				img_elem.setAttribute("id", "_img_"+data.productList[i].id);
+                img_elem.setAttribute("data-theid", data.productList[i].id);
 
 
 				document.getElementById("carousel1").appendChild(img_elem);
@@ -126,6 +127,7 @@ function loadProducts( whichpage, category_, search_string){
 						 buttonRight: $("#right-but"),
 						priceBox: $("#price"),
 						titleBox: $("#title-text"),
+                        theidBox: $("#hidden_id"),
 
 					});
 		   

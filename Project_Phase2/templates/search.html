@@ -23,6 +23,15 @@
 		//serach_string__ o value e un element ro "" konam
 
     }
+            function go_to_product_page(){
+                var str ='/product/';
+                var s1 = $("#hidden_id").html();
+                var str_ult = str.concat(s1);
+                if (s1 !== "")
+                {
+                    window.location.href = str_ult;
+                }
+            }
 
     </script>
 
@@ -101,7 +110,7 @@
 
 <div id ="what_is_selected"> <p id= "cat_title">دسته‌ی انتخاب شده</p> <p id="selected_category">  </p> </div>
 
-<button id ="see_product" class="btn-small" onclick="window.location.href='ProductDetail.html'"> مشاهده‌ی محصول</button>
+<button id ="see_product" class="btn-small" onclick="go_to_product_page()"> مشاهده‌ی محصول</button>
 <button id="add_to_cart_" class="btn-small" onclick="addRealQuick()">اضافه کردن به سبد</button>
 
 
@@ -117,6 +126,8 @@
 <p id="price"></p>
 </div>
 </div>
+
+<div id="hidden_id"></div>
 
 <div id="items_container"> </div>
 
