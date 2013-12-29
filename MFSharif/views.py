@@ -56,12 +56,12 @@ def items_wanted(request):
     desired_cat = []
     desired_prod = []
 
-    desired_cat = Category.objects.filter(name = category_)
+    desired_cat = Category.objects.filter( pk = category_)
     print("desired_cat", desired_cat)
 
     if desired_cat:
         for x in desired_cat:
-            desired_prod = Products.objects.filter(category = x)
+            desired_prod = Product.objects.filter(category = x)
 
     if search_string:
         qset = Q()
@@ -78,9 +78,14 @@ def items_wanted(request):
         whichpage = 1
 
     items = paginator.page(whichpage)
-    totalResults = len(desired_prod)
+    totalresults = len(desired_prod)
 
-    response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalResults, 'productList': desired_prod}
+    responselist = []
+    for elem in desired_prod:
+        dic_el = {'category': category_, 'price': elem.price, 'id': elem.pk, 'name': elem.name, 'picUrl': elem.image.url }
+        responselist.append(dic_el)
+
+    response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
@@ -91,14 +96,12 @@ def into_search(request, category, search_str):
 
 def list_categories(request):
     list_of_cats = Category.objects.all()
-    categoryList = []
-    i = 10
+    categorylist = []
     for elem in list_of_cats:
-        dic_el = {'name': elem.name, 'id': i}
-        i += 1
-        categoryList.append(dic_el)
+        dic_el = {'name': elem.name, 'id': elem.pk}
+        categorylist.append(dic_el)
 
-    response_data = {'categoryList': categoryList}
+    response_data = {'categoryList': categorylist}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

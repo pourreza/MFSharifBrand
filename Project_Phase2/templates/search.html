@@ -175,8 +175,7 @@
 //         console.log(category__);
 
 
- // category__ = 10; // 10 -> all the jewelries, 11 -> rings , 12 -> necklaces, 13 ->earings
- //15-> all clothes, 16-> men, 17-> women, 18-> children
+
 search_string__ = "{{p_search_str_}}";
 category__ = "{{p_category_}}";
 
@@ -186,7 +185,7 @@ console.log(category__);
 if (search_string__ === "None")
 	search_string__ = "";
 if (category__ === "")
-	category__ = 10;	//default category
+	category__ = 1;	//default category
 
  loadProducts(1, category__, search_string__); //the first parameter must always be 1
 
