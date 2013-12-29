@@ -24,6 +24,8 @@ class Product(models.Model):
    description = models.CharField('توضیح', max_length = 255)
    image = models.ImageField('عکس', upload_to='images/products')
    popular = models.BooleanField('پرطرفدار',default=False)
+   recommended = models.BooleanField('پرطرفدار',default=False)
+
 
 class Comment(models.Model):
    comment = models.CharField('نظر', max_length = 1000)

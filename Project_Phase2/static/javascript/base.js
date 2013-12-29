@@ -1,60 +1,72 @@
 var cart_price = [];
-var urlCartList = "http://webproject.roohy.me/ajax/2/m&f/cart/list";
-$.ajax({
-    url: urlCartList,
-    type: 'post',
-    dataType: 'json',
-    data: '',
-    success: function (data, status, xhr) {
-        if (data.result == 0) {
-            // Request error
-        } else {
-            sum = 0;
-            for (var i = 0; i < data.cart.length; i++) {
-                $(".my-dropdown").append('<li role="presentation" id="' + data.cart[i].id + '"><a href="#" class="cross" onclick="exit(' + data.cart[i].id + ')"> &#10006;<span style="font-weight: bold">' + data.cart[i].name + '</span></a></li>');
-                var temp = [data.cart[i].id, data.cart[i].price];
-                cart_price.push(temp);
-                sum += data.cart[i].price;
-            }
-
-            for (var prp in cart_price) {
-                console.log(cart_price[prp][0]);
-            }
-            $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع: <span style="font-weight: bold">' + sum + '  تومان</span></span></a></li>');
-        }
+if (window.localStorage && localStorage.getItem('products'))
+{
+    sum = 0;
+    var storedNames = JSON.parse(localStorage["products"]);
+    var storedPrices = JSON.parse(localStorage["prices"])
+    for (var i = 0; i < storedNames.length; i++) {
+        $(".my-dropdown").append('<li role="presentation" id="' + i + '"><a href="#" class="cross" onclick="exit(' + i + ')"> &#10006;<span style="font-weight: bold">' + storedNames[i] + '</span></a></li>');
+        sum += parseInt(storedPrices[i]);
     }
-});
+
+    $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع: <span style="font-weight: bold">' + sum + '  تومان</span></span></a></li>');
+}else{
+    document.getElementsByClassName('my-dropdown')[0].innerHTML='<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع: <span style="font-weight: bold">' + 0 + '  تومان</span></span></a></li>';
+}
 
 function exit(id){
-    var urlNewComment = "http://webproject.roohy.me/ajax/2/m&f/cart/remove";
-    var ajaxNewComment = {
-        "productId": id
+    var storedNames = JSON.parse(localStorage["products"]);
+    var storedIndexes = JSON.parse(localStorage["indexes"]);
+    for (var i=id; i<storedNames.length; i++)
+    {
+        storedIndexes[i] = (parseInt(storedIndexes[i]))-1;
     }
-    $.ajax({
-        url: urlNewComment,
-        type: 'post',
-        dataType: 'json',
-        data: ajaxNewComment,
-        success: function (data, status, xhr) {
-            if (data.result == 0) {
-            } else {
-            }
-        }
-        // ...
-    });
+    storedNames.splice(id,1);
+    storedIndexes.splice(id,1);
+    var storedPrices = JSON.parse(localStorage["prices"]);
+    storedPrices.splice(id,1);
+
+    localStorage["products"] = JSON.stringify(storedNames);
+    localStorage["prices"] = JSON.stringify(storedPrices);
+    localStorage["indexes"] = JSON.stringify(storedIndexes);
+    sum = 0;
+    for(var i=0; i<storedPrices.length; i++)
+    {
+        sum += parseInt(storedPrices[i]);
+    }
+
     document.getElementById(id).remove();
     $('.my-dropdown li:last').remove();
     $('.my-dropdown li:last').remove();
-    var index = 0;
-    var temp = [];
-    for (var prp in cart_price){
-        temp.push(cart_price[prp][0]);
-    }
-
-    var i = temp.indexOf(id);
-    if (i!=-1){
-        sum -= cart_price[i][1];
-        cart_price.splice(i, 1);
-    }
     $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع:' + sum + '   تومان</a></li>');
+    alert('کالای انتخاب شده از سبد خرید حذف گردید.');
+}
+
+function add_cart(name,price) {
+    var storedNames = [];
+    var storedPrices = [];
+    var storedIndexes = [];
+    if (localStorage["products"])
+    {
+        storedNames = JSON.parse(localStorage["products"]);
+        storedPrices = JSON.parse(localStorage["prices"]);
+        storedIndexes = JSON.parse(localStorage["indexes"]);
+    }
+    storedNames.push(name);
+    storedPrices.push(price);
+    storedIndexes.push((storedNames.length-1));
+    localStorage["products"] = JSON.stringify(storedNames);
+    localStorage["prices"] = JSON.stringify(storedPrices);
+    localStorage["indexes"] = JSON.stringify(storedIndexes);
+    sum = 0;
+    for (var i=0; i<storedPrices.length; i++)
+    {
+        sum += parseInt(storedPrices[i]);
+    }
+    $('.my-dropdown li:last').remove();
+    $('.my-dropdown li:last').remove();
+    $(".my-dropdown").append('<li role="presentation" id="' + (storedNames.length-1) + '"><a href="#" class="cross" onclick="exit(' + (storedNames.length-1) + ')"> &#10006;<span style="font-weight: bold">' + name + '</span></a></li>');
+    $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع:' + sum + '   تومان</a></li>');
+    alert("این کالا به سبد خرید اضافه شد :)")
+
 }

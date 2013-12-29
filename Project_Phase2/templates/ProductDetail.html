@@ -34,7 +34,7 @@
         <p class="pr-name">
             {{ product.0.name }}
         </p>
-        <button id="my-cart-add" class="btn-mini add-cart" onclick="add_cart()"> اضافه کردن به سبد</button>
+        <button id="my-cart-add" class="btn-mini add-cart" onclick="add_cart('{{ product.0.name }}','{{ product.0.price }}')"> اضافه کردن به سبد</button>
     </div>
     <div class="product-info">
         <div class="pr-info-header">
