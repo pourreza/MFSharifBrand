@@ -8,8 +8,10 @@ var url = "categorylisturl";
 		success: function(data, status, xhr){
 		    if (data.result == 0){
 		       // Request error
+                console.log ("Error shod alan?");
 		    }else 
 		    {
+                console.log ("javabe ajax umad");
 
 		    	//data__ = data.categoryList;
 		     for (var i = 0  ; i < data.categoryList.length ; i++)
