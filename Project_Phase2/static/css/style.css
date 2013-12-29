@@ -105,3 +105,7 @@ ul>li>a{
 .cross:hover{
     background-color: burlywood !important;
 }
+
+a {
+    text-decoration: none;
+}
