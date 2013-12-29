@@ -23,8 +23,9 @@ def index(request):
         men_items.append(item.subcategory)
 
     pro = Product.objects.filter(popular=True)
+    recoms = Product.objects.filter(recommended = True)
 
-    context = {'men_items':men_items, 'women_items':women_items, 'products':pro}
+    context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms}
     return render(request, 'base.html', context)
 
 def product_info(request, pro_id):
