@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 from MFSharif.models import *
-
-
+sub11, ok = Category.objects.get_or_create(name='ساعت', img="images/profilepics/men_wathc.jpg")
+pro1, ok = Product.objects.get_or_create(name='ساعت همیلتون', category = sub11, price=3250000, popular = True, description='ساعت همیلتون، ساخته شده در کشور سوئیس، وارد کننده: علی خردمند', image="images/products/watch men.jpg")
 def init():
     cat1, ok = Category.objects.get_or_create(name='زنانه', img="images/profilepics/Capture.JPG")
 
@@ -17,7 +17,7 @@ def init():
     sub8, ok = Category.objects.get_or_create(name='کت و شلوار', img="images/profilepics/suit.jpg")
     sub9, ok = Category.objects.get_or_create(name='متعلقات', img="images/profilepics/tie.jpg")
     sub10, ok = Category.objects.get_or_create(name='عطر', img="images/profilepics/perfume5.jpg")
-    sub11, ok = Category.objects.get_or_create(name='ساعت', img="images/profilepics/men_wathc.jpg")
+    # sub11, ok = Category.objects.get_or_create(name='ساعت', img="images/profilepics/men_wathc.jpg")
     sub12, ok = Category.objects.get_or_create(name='کیف', img="images/profilepics/bag_man.jpg")
 
     rel1, ok = SubCats.objects.get_or_create(category=cat1, subcategory=sub1)
@@ -33,7 +33,16 @@ def init():
     rel11, ok = SubCats.objects.get_or_create(category=cat2, subcategory=sub11)
     rel12, ok = SubCats.objects.get_or_create(category=cat2, subcategory=sub12)
 
-    pro1 = Product.objects.get_or_create(name='ساعت همیلتون', category = sub11, price=3250000, popular = True, description='ساعت همیلتون، ساخته شده در کشور سوئیس، وارد کننده: علی خردمند', image="images/products/watch men.jpg")
-    pro2 = Product.objects.get_or_create(name='عطر گوچی', category=sub4, price=325000, popular=True, description='عطر گوچی 100 میلی لیتری مناسب برای خانم ها در تمامی سنین', image="images/products/perfume3.jpg")
-    pro3 = Product.objects.get_or_create(name='کفش ایروبلو', category=sub1, price=265000, popular=True, description='بگذارید راز بلندی قد شما همیشه بین خودتان و کفشتان باقی بماند!! کفش های پاشنه بلند ایروبلو', image="images/products/6.jpg")
-    pro4 = Product.objects.get_or_create(name='ست مروارید', category=sub3, price=5036500, popular=True, description='برای آنان که قصد عروسی دارند!! ست مروارید با تخفیفی باورنکردنی', image="images/products/jewlry.jpg")
+    # pro1, ok = Product.objects.get_or_create(name='ساعت همیلتون', category = sub11, price=3250000, popular = True, description='ساعت همیلتون، ساخته شده در کشور سوئیس، وارد کننده: علی خردمند', image="images/products/watch men.jpg")
+    pro2, ok = Product.objects.get_or_create(name='عطر گوچی', category=sub4, price=325000, popular=True, description='عطر گوچی 100 میلی لیتری مناسب برای خانم ها در تمامی سنین', image="images/products/perfume3.jpg")
+    pro3, ok = Product.objects.get_or_create(name='کفش ایروبلو', category=sub1, price=265000, popular=True, description='بگذارید راز بلندی قد شما همیشه بین خودتان و کفشتان باقی بماند!! کفش های پاشنه بلند ایروبلو', image="images/products/6.jpg")
+    pro4, ok = Product.objects.get_or_create(name='ست مروارید', category=sub3, price=5036500, popular=True, description='برای آنان که قصد عروسی دارند!! ست مروارید با تخفیفی باورنکردنی', image="images/products/jewlry.jpg")
+
+    com1, ok = Comment.objects.get_or_create(name='مریم', product=pro1,comment='خوشگله')
+    com2, ok = Comment.objects.get_or_create(name='مریم', product=pro2,comment='خوشگله')
+    com3, ok = Comment.objects.get_or_create(name='فرناز', product=pro1,comment='گنده است')
+
+def init2():
+    com4, ok = Comment.objects.get_or_create(name='علی', product=pro1,comment='دوستش داشتم')
+    com5, ok = Comment.objects.get_or_create(name='هادی', product=pro1,comment='خوبه')
+

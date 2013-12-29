@@ -1,4 +1,4 @@
-var pro_id;
+var pro_id ;
 var pro_price;
 var pro_name;
 
@@ -20,7 +20,7 @@ $.ajax({
         if (data.result == 0) {
             // Request error
         } else {
-            pro_id = data.productList[0].id;
+//            pro_id = data.productList[0].id;
             pro_name = data.productList[0].name;
             pro_price = data.productList[0].price;
 //            $(".pr-name").html(data.productList[0].name);
@@ -49,9 +49,9 @@ $.ajax({
         if (data.result == 0) {
             // Request error
         } else {
-            for (var i = 0; i < data.commentList.length; i++) {
-                $("#prev-comments").append('<li>' + data.commentList[i].name + ' :  ' + data.commentList[i].message + '</li>');
-            }
+//            for (var i = 0; i < data.commentList.length; i++) {
+//                $("#prev-comments").append('<li>' + data.commentList[i].name + ' :  ' + data.commentList[i].message + '</li>');
+//            }
         }
     }
     // ...
@@ -84,29 +84,35 @@ $.ajax({
     }
 });
 
-function add() {
-
+function add(pk) {
+    alert(pk);
     var comment = document.getElementById('newComment');
-    $("#prev-comments").append('<li>ذوالفقار: ' + comment.value + '</li>');
-    document.getElementById('newComment').value="";
-    var urlNewComment = "http://webproject.roohy.me/ajax/2/m&f/comment/add";
+//    $("#prev-comments").append('<li>ذوالفقار: ' + comment.value + '</li>');
+    var urlNewComment = "../addComment";
     var ajaxNewComment = {
-        "message": comment.value
+        "message": comment.value,
+        "name": 'هادی',
+        "pro_id": pk
     }
     $.ajax({
         url: urlNewComment,
-        type: 'post',
+        type: 'get',
         dataType: 'json',
         data: ajaxNewComment,
         success: function (data, status, xhr) {
             if (data.result == 0) {
                 // Request error
             } else {
-//                    alert("resid");
+                alert("resid");
+//                $("#prev-comments").innerHTML = "";
+//                for (var cm in data.comments){
+//                    $("#prev-comments").append('<li>'+cm.name+':'+cm.comment+'<p>تاریخ:'+cm.date+'</p></li>');
+//                }
             }
         }
         // ...
     });
+    document.getElementById('newComment').value="";
 }
 
 function add_cart() {

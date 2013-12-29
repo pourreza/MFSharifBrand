@@ -56,7 +56,7 @@
         </div>
         <div class="new-comment">
             <span>
-                <button id="submit-comment" onclick="add()">
+                <button id="submit-comment" onclick="add('{{ product.0.pk }}')">
                     ثبت نظر
                 </button>
             </span>
@@ -72,7 +72,16 @@
             <span id="nc2">
             </span>
             <ul id="prev-comments" dir="RTL">
-
+                {% if comments %}
+                    {% for comment in comments %}
+                        <li>
+                            {{ comment.name }}:{{ comment.comment }}
+                            <p>
+                                تاریخ: {{ comment.date }}
+                            </p>
+                        </li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
 
