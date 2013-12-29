@@ -80,22 +80,16 @@ def items_wanted(request):
     desired_prod = []
 
     desired_cat = Category.objects.filter( pk = category_)
-    print("desired_cat", desired_cat)
 
     desired_subcat = SubCats.objects.filter( category = desired_cat[0])
-    print("desired_subcat", desired_subcat)
 
     from itertools import chain
     desired_cats = list(chain(desired_cat, desired_subcat))
-
-    print('desired_cats:', desired_cats)
 
     if desired_cats:
         for x in desired_cats:
             if Product.objects.filter(category = x):
                 desired_prod = list(chain(Product.objects.filter(category = x), desired_prod))
-
-    print('Desired_prod', desired_prod)
 
     #if search_string:
     #    qset = Q()
@@ -123,15 +117,26 @@ def items_wanted(request):
     if not whichpage:
         whichpage = 1
 
+    print ('whichpage', whichpage)
+    print('pagesize', page_size)
+
+
     items = paginator.page(whichpage)
     totalresults = len(final_prod)
+
+    print('len(items)',len(items))
 
     responselist = []
     for elem in final_prod:
         dic_el = {'category': category_, 'price': elem.price, 'id': elem.pk, 'name': elem.name, 'picUrl': elem.image.url }
         responselist.append(dic_el)
 
-    response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist}
+    responselist_ult = []
+    for i in responselist:
+        if i not in responselist_ult:
+            responselist.append(i)
+
+    response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist_ult}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
