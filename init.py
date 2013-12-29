@@ -42,6 +42,10 @@ def init():
     pro7, ok = Product.objects.get_or_create(name='دستبند فرد و جورج', category=sub3, price=69000, popular=False, recommended = True, description='برای آنان که قسم خورده‌اند قصد انجام کار خوبی ندارند', image="images/products/3_3.jpg")
     pro8, ok = Product.objects.get_or_create(name='گوشواره‌های مینا کاری شده', category=sub3, price=69000, popular=False, recommended = True, description='بهترین و رنگارنگ‌ترین هدیه برای دوستتان', image="images/products/3_02.jpg")
     pro9, ok = Product.objects.get_or_create(name='گردنبند گردن سوراخ کن', category=sub3, price=70000, popular=False, recommended = False, description='برای آنان که مشکلی با سوراخی گردن خود ندارند', image="images/products/3_6.jpg")
+    pro10, ok = Product.objects.get_or_create(name='پیراهن خیلی صورتی', category=sub2, price=170000, popular=False, recommended = False, description='نکته‌ی مثبت در مورد این پیراهن این است که نه صورتی آدامسی است نه باربی‌ای', image="images/products/4_12.jpg")
+    pro11, ok = Product.objects.get_or_create(name='پالتو ومپایری', category=sub2, price=230000, popular=False, recommended = False, description='برای علاقه‌مندان به ابهت یک ومپایر', image="images/products/4_5.jpg")
+
+
 
     com1, ok = Comment.objects.get_or_create(name='مریم', product=pro1,comment='خوشگله')
     com2, ok = Comment.objects.get_or_create(name='مریم', product=pro2,comment='خوشگله')

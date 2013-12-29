@@ -5241,6 +5241,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .modal.fade {
+    z-index: -1050; /*added by farnaz*/
     top: -25%;
     -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
     -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
@@ -5250,6 +5251,8 @@ input[type="submit"].btn.btn-mini {
 
 .modal.fade.in {
     top: 10%;
+     z-index: 1050; /*added by farnaz*/
+
 }
 
 .modal-header {
