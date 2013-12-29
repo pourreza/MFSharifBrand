@@ -37,13 +37,17 @@ def init():
     pro2, ok = Product.objects.get_or_create(name='عطر گوچی', category=sub4, price=325000, popular=True, recommended = False, description='عطر گوچی 100 میلی لیتری مناسب برای خانم ها در تمامی سنین', image="images/products/perfume3.jpg")
     pro3, ok = Product.objects.get_or_create(name='کفش ایروبلو', category=sub1, price=265000, popular=True, recommended = False, description='بگذارید راز بلندی قد شما همیشه بین خودتان و کفشتان باقی بماند!! کفش های پاشنه بلند ایروبلو', image="images/products/6.jpg")
     pro4, ok = Product.objects.get_or_create(name='ست مروارید', category=sub3, price=5036500, popular=True, recommended = False, description='برای آنان که قصد عروسی دارند!! ست مروارید با تخفیفی باورنکردنی', image="images/products/jewlry.jpg")
-    pro5, ok = Product.objects.get_or_create(name='انگشتر پاپیون', category=sub3, price=15036500, popular=False, recommended = True, description='انگشتر الماس بسیار شیک برای آنان که پول دارند', image="images/products/3_00.jpg")
+    pro5, ok = Product.objects.get_or_create(name='انگشتر پاپیون', category=sub3, price=15036500, popular=False, recommended = False, description='انگشتر الماس بسیار شیک برای آنان که پول دارند', image="images/products/3_00.jpg")
     pro6, ok = Product.objects.get_or_create(name=' دستبند برگ زرد', category=sub3, price=638500, popular=False, recommended = True, description='اجازه دهید پاییز همیشه همراهتان باشد', image="images/products/3_1.jpg")
     pro7, ok = Product.objects.get_or_create(name='دستبند فرد و جورج', category=sub3, price=69000, popular=False, recommended = True, description='برای آنان که قسم خورده‌اند قصد انجام کار خوبی ندارند', image="images/products/3_3.jpg")
     pro8, ok = Product.objects.get_or_create(name='گوشواره‌های مینا کاری شده', category=sub3, price=69000, popular=False, recommended = True, description='بهترین و رنگارنگ‌ترین هدیه برای دوستتان', image="images/products/3_02.jpg")
-    pro9, ok = Product.objects.get_or_create(name='گردنبند گردن سوراخ کن', category=sub3, price=70000, popular=False, recommended = False, description='برای آنان که مشکلی با سوراخی گردن خود ندارند', image="images/products/3_6.jpg")
+    pro9, ok = Product.objects.get_or_create(name='گردنبند گردن سوراخ کن', category=sub3, price=70000, popular=False, recommended = True, description='برای آنان که مشکلی با سوراخی گردن خود ندارند', image="images/products/3_6.jpg")
     pro10, ok = Product.objects.get_or_create(name='پیراهن خیلی صورتی', category=sub2, price=170000, popular=False, recommended = False, description='نکته‌ی مثبت در مورد این پیراهن این است که نه صورتی آدامسی است نه باربی‌ای', image="images/products/4_12.jpg")
     pro11, ok = Product.objects.get_or_create(name='پالتو ومپایری', category=sub2, price=230000, popular=False, recommended = False, description='برای علاقه‌مندان به ابهت یک ومپایر', image="images/products/4_5.jpg")
+    pro12, ok = Product.objects.get_or_create(name='کفش آل‌استار', category=sub1, price=230000, popular=False, recommended = False, description='در طرح‌ها و رنگ‌های مختلف متناسب با سلیقه‌ی شما', image="images/products/1_02.jpg")
+    pro13, ok = Product.objects.get_or_create(name='بوت خیلی بلند', category=sub1, price=320000, popular=False, recommended = False, description='این بوت هم خودش بلند است هم کمک می‌کند شما بلند به نظر برسید', image="images/products/1_03.jpg")
+    pro14, ok = Product.objects.get_or_create(name=' سندل خیلی ظریف', category=sub1, price=140000, popular=False, recommended = False, description='این سندل هم خودش ظریف است هم کمک می‌کند شما ظریف به نظر برسید', image="images/products/1_04.jpg")
+    pro15, ok = Product.objects.get_or_create(name=' نیم بوت قهوه‌ای', category=sub1, price=180000, popular=False, recommended = False, description='این نیم‌بوت بسیار گرم و بسیار قهوه‌ایست', image="images/products/1_7.jpg")
 
 
 

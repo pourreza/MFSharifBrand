@@ -25,7 +25,10 @@ class Product(models.Model):
    image = models.ImageField('عکس', upload_to='images/products')
    popular = models.BooleanField('پرطرفدار',default=False)
    recommended = models.BooleanField('پرطرفدار',default=False)
-
+   def __unicode__(self):
+         return str(self.id)
+   def __str__(self):
+         return str(self.id)
 
 class Comment(models.Model):
    comment = models.CharField('نظر', max_length = 1000)
