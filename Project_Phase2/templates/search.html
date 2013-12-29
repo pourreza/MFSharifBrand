@@ -180,9 +180,12 @@
 search_string__ = "{{p_search_str_}}";
 category__ = "{{p_category_}}";
 
-if (search_string__ === undefined)
+console.log("search_string:",search_string__);
+console.log(category__);
+
+if (search_string__ === "None")
 	search_string__ = "";
-if (category__ === undefined)
+if (category__ === "")
 	category__ = 10;	//default category
 
  loadProducts(1, category__, search_string__); //the first parameter must always be 1

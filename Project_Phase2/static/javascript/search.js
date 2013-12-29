@@ -2,6 +2,7 @@
 
 
 function loadProducts( whichpage, category_, search_string){
+    console.log ("ejra shodi alan?!");
 
 	var ajaxData = {
 		"category": category_,
@@ -12,6 +13,7 @@ function loadProducts( whichpage, category_, search_string){
 
 	//var url = "http://webproject.roohy.me/ajax/2/m&f/product/list";
     var url = "loadproductitems";
+    console.log ("inam ejra misheee?!");
 	$.ajax({
 		url: url,
 		type : 'get',
@@ -22,6 +24,7 @@ function loadProducts( whichpage, category_, search_string){
 
 				console.log(search_string);
 				console.log(category_);
+                console.log ("in chiii?!");
 				setProducts(data, whichpage);
 
 
@@ -33,6 +36,7 @@ function loadProducts( whichpage, category_, search_string){
 			
 
 			},
+
 
 	});
 

@@ -54,7 +54,7 @@ var url = "http://webproject.roohy.me/ajax/2/m&f/category/list";
 				// console.log ("category__ "+ category__);
       
 				//window.location.href ="search.html";
-                    var str1i = "search/";
+                    var str1i = "search.html/";
                     var str2i = str1i.concat(category__);
                     var str3i = str2i.concat('/');
                     var str4i = str3i.concat(search_string__);
