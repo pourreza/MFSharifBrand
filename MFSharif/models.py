@@ -1,20 +1,18 @@
 ## Create your models here.
 ## -*- coding: utf-8 -*-
 from django.db import models
-# import Image
-#import os
-#
-#def get_image_path(instance, filename):
-#    return os.path.join('img', str(instance.category), filename)
-#
 
 class Category(models.Model):
    name = models.CharField(max_length = 50)
    img = models.ImageField('image', upload_to='images/profilepics')
+   def __str__(self):
+       return str(self.name)
 
 class SubCats(models.Model):
     category = models.ForeignKey(Category,related_name='creator')
     subcategory = models.ForeignKey(Category,related_name='subcategory')
+    def __str__(self):
+        return str(self.category.name)
 #
 class Product(models.Model):
    name = models.CharField("نام کالا", max_length = 255)
@@ -26,10 +24,15 @@ class Product(models.Model):
    popular = models.BooleanField('پرطرفدار',default=False)
    recommended = models.BooleanField('پرطرفدار',default=False)
    def __unicode__(self):
-         return str(self.id)
+         return str(self.name)
    def __str__(self):
-         return str(self.id)
+         return str(self.name)
 
+class PopularProducts(models.Model):
+    product = models.ForeignKey(Product,verbose_name='کالا')
+    image = models.ImageField('عکس تبلیغاتی', upload_to='images/products')
+    def __str__(self):
+        return str(self.product.name)
 
 class UploadedImage(models.Model):
     image = models.ImageField('عکس', upload_to='images/products')
@@ -39,6 +42,8 @@ class Comment(models.Model):
    date = models.DateTimeField( 'زمان', auto_now_add = True)
    name = models.CharField('کاربر',max_length=70)
    product = models.ForeignKey(Product,verbose_name = "محصول")
+   def __str__(self):
+       return str(self.product.name)
 
 class MarketBasket(models.Model):
     # general fields

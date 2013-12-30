@@ -1,17 +1,37 @@
 {% extends 'base.html' %}
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/add_style.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/imgareaselect-default.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/css/imgareaselect-animated.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/css/imgareaselect-deprecated.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/css/imgareaselect-default.css"/>
 {% endblock %}
 {% block js %}
-    <script type="text/javascript" src="{{ STATIC_URL }}javascript/add_product.js"></script>
 
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.7.2.min.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.min.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery.form.js"></script>
+{#    <link rel="stylesheet" type="text/css" href="css/imgareaselect-default.css" />#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.js"></script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.pack.js"></script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.min.js"></script>#}
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+{#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/add_product.js"></script>#}
+
+{#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.10.2.js"></script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery.js"></script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.7.2.min.js"></script>#}
 {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.min.js"></script>#}
-    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.pack.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.js"></script>
+{#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.pack.js"></script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.min.js"></script>#}
+{#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.js"></script>#}
 {% endblock %}
 {% block title %}
     اضافه کردن محصول جدید
@@ -56,7 +76,7 @@
         <div class="pr-info-header">
             اضافه کردن محصول جدید:
         </div>
-        <form name="myform" id="my-add-form">
+        <form action="submitProduct" method="get" name="myform" id="my-add-form">
             <table>
                 <tr>
                     <td class="td-input">
@@ -82,16 +102,35 @@
                         دسته محصول:
                     </td>
                     <td class="id-input">
-                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px; ">
-                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"
-                                    dir="rtl" style="border-radius: 5px; text-align: right">
+{#                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px; ">#}
+{#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
+{#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
+{#                                <span class="caret" style="margin-left:8px"></span>#}
+{#                                انتخاب دسته#}
+{#                            </button>#}
+{#                            <ul id="dropdown_ul" class="dropdown-menu">#}
+{##}
+{#                            </ul>#}
+                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px;">
+                            <button  id="select-button"  class="span2 btn dropdown-toggle" data-toggle="dropdown" dir="rtl" style="border-radius: 5px; text-align: right">
                                 <span class="caret" style="margin-left:8px"></span>
                                 انتخاب دسته
                             </button>
-                            <ul id="dropdown_ul" class="dropdown-menu">
+                            <ul id="dropdown_ul" class="dropdown-menu"style=" max-height:200px; overflow-y: auto;overflow-x: hidden;">
 
                             </ul>
                         </div>
+{#                        </div>#}
+{#                        <div id="dropdown_toggle" class="btn-group"style="margin-right:10px; ">#}
+{#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
+{#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
+{#                                انتخاب دسته‌ها#}
+{#                                <span class="caret"></span>#}
+{#                            </button>#}
+{#                            <ul id="dropdown_ul" class="dropdown-menu">#}
+{##}
+{#                            </ul>#}
+{#                        </div>#}
 
                     </td>
                 </tr>
@@ -106,46 +145,74 @@
 
                 </tr>
 
-                <tr>
-
-                    <td class="td-input">
-                        تصویر محصول:
-                    </td>
-                    <td class="td-input">
-
-                    </td>
-                </tr>
+{#                <tr>#}
+{##}
+{#                    <td class="td-input">#}
+{#                        تصویر محصول:#}
+{#                        <img src='{{ images.image.url }}' style="width:50px; height: 50px;">#}
+{#                    </td>#}
+{#                    <td class="td-input">#}
+{##}
+{#                    </td>#}
+{#                </tr>#}
             </table>
-
+            <input id="x1"  type="hidden" name="x1" value="0" />
+            <input id="y1" type="hidden" name="y1" value="0" />
+            <input id="w" type="hidden" name="w" value="0" />
+            <input id="h" type="hidden" name="h" value="0" />
+            <input id="hidden-image" type="hidden" name="image" value="{{ images.image.name }}" />
 
         </form>
 
-        <form id="imageForm">
+{#        <form id="imageForm">#}
 {#            {% csrf_token %}#}
-            <input class="span3" type="file" name="image" style="height:35px; margin-right: 120px; margin-top:-70px"
-                   id="pro-img">
+{#            <input class="span3" type="file" name="image" style="height:35px; margin-right: 120px; margin-top:-70px"#}
+{#                   id="pro-img">#}
+{#        <button class="my-submit" type="button" onclick="crop()">جداکردن عکس</button>#}
+        <form action="{% url 'addProduct' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <span class="td-input" style="margin-top: -100px;padding-top: -100px;">
+                تصویر محصول:
+            </span>
+            <span>{{ form.non_field_errors }}</span>
+            <span style="margin-right: 8px; margin-top: 10px; ">
+                {{ form.docfile.errors }}
+                {{ form.docfile }}
+            </span>
+            <p><input class="my-submit" type="submit" value="جداکردن عکس" /></p>
         </form>
-        <button class="my-submit" type="button" onclick="crop()">جداکردن عکس</button>
         <button class="my-submit2" type="button" onclick="product_add()">ثبت محصول</button>
 
 
     </div>
+{#    <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 1090px; top: 170px; color:  white;">#}
+{#        جداکردن عکس#}
+{#    </p>#}
+{##}
+{#    <div id="imageSelect">#}
+{#        <img src='{{ images.image.url }}' id="img-select" style="width:300px; height: 300px; position: relative"/>#}
+{##}
+{#    </div>#}
+{#    <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 895px; top: 170px; color:  white;">#}
+{#        عکس نهایی#}
+{#    </p>#}
+{##}
+{#    <div id="final-image">#}
+{#        <img src='{{ images.image.url }}' id="img-final" style="width:100px; height: 100px; position: relative; "/>#}
+{#    </div>#}
     <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 1090px; top: 170px; color:  white;">
         جداکردن عکس
     </p>
-
-    <div id="imageSelect">
-        <img src="" id="img-select" style="width:300px; height: 300px; position: relative"/>
+    <div id="imageSelect" style="width:300px; height: 300px; overflow: hidden">
+        <img src="{{ images.image.url }}" id="img-select" style="width:300px; height: 300px;"/>
 
     </div>
     <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 895px; top: 170px; color:  white;">
         عکس نهایی
     </p>
-
-    <div id="final-image">
-        <img src="" id="img-final" style="width:100px; height: 100px; position: relative; "/>
+    <div id="final-image" style="width:100px; height: 100px; overflow: hidden" dir="ltr">
+        <img src="{{ images.image.url }}" id="img-final" style="width:100px; height: 100px;"/>
     </div>
-
 </div>
 
 {% endblock %}
@@ -154,60 +221,30 @@
     <script type="text/javascript" src="static/javascript/add_product.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-//        $('<div><img src="static/images/2.jpg" style=" position: relative;" /><div>')
-//                .css({
-//                    float: 'left',
-//                    position: 'relative',
-//                    overflow: 'hidden',
-//                    width: '100px',
-//                    height: '100px'
-//                })
-//                .insertAfter($('#img-select'));
-            $('#img-select').imgAreaSelect({ aspectRatio: '1:1', onSelectChange: preview });
+            $('#img-select').imgAreaSelect({ aspectRatio: '1:1', handles: true , onSelectChange: preview,
+                onSelectEnd: function (img, selection) {
+                $('input[name="x1"]').val(selection.x1);
+                $('input[name="y1"]').val(selection.y1);
+                $('input[name="w"]').val(selection.x2);
+                $('input[name="h"]').val(selection.y2);
+            }});
         });
         function preview(img, selection) {
-//        var scaleX = 100 / (selection.width || 1);
-//        var scaleY = 100 / (selection.height || 1);
-//
-//        $('img-final').css({
-//            width: Math.round(scaleX * 400) + 'px',
-//            height: Math.round(scaleY * 300) + 'px',
-//            marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
-//            marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
-//        });
-//        var scaleX = 100 * (selection.width || 1);
-//        var scaleX = Math.round(selection.width / 3);
-////        alert(selection.width);
-////        var scaleY = 100 * (selection.height || 1);
-//        var scaleY = Math.round(selection.height / 3);
-//
-//        var ScaleX1 = Math.round(selection.x1 / 3);
-//        var ScaleY1 = Math.round(selection.y1 / 3);
-//        console.log(selection.x1);
-//        console.log(selection.y1);
-////        alert(selection.x1);
-////        alert(selection.height);
-//
-//        $('#img-final').css({
-////            width: Math.round(scaleX / 300) + 'px',
-////            height: Math.round(scaleY / 300) + 'px',
-//            width: scaleX + 'px',
-//            height: scaleY + 'px',
-//
-//            marginLeft: '-' + ScaleX1 + 'px',
-//            marginTop: '-' + ScaleY1 + 'px'
-//        });
-
+{#            alert("call");#}
             var scaleX = 100 / (selection.width || 1);
             var scaleY = 100 / (selection.height || 1);
+            console.log("width:".concat(scaleX*300));
+            console.log("height:".concat(scaleY*300));
+
 
             $('#img-final').css({
-                width: Math.round(scaleX * 300) + 'px',
-                height: Math.round(scaleY * 300) + 'px',
-                marginRight: '-' + Math.round(scaleX * selection.x1) + 'px',
+                width: (Math.round(scaleX * 300)) + 'px',
+                height: (Math.round(scaleY * 300)) + 'px',
+                marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
                 marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
             });
         }
-
     </script>
+
+
 {% endblock %}

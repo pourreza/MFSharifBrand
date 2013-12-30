@@ -1,14 +1,28 @@
+import json
+
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from django.db.models import Q
 from django.core.serializers.json import DjangoJSONEncoder
-import json
 from django.http import HttpResponse
-from MFSharif.models import *
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
+from MFSharif.forms import DocumentForm
+
+from MFSharif.models import *
+from PIL import Image
+import os
+import tempfile
+
+image_uploaded = False
+number_crop = 0
 
 # Create your views here.
 def index(request):
+    global image_uploaded
+    image_uploaded = False
     cat_women = Category.objects.filter(name='زنانه')
     cat_men = Category.objects.filter(name='مردانه')
 
@@ -29,6 +43,8 @@ def index(request):
     return render(request, 'base.html', context)
 
 def product_info(request, pro_id):
+    global image_uploaded
+    image_uploaded = False
     pid = int(pro_id)
     pro = Product.objects.filter(pk=pid)
     comments = Comment.objects.filter(product=pro).order_by('-date')
@@ -45,6 +61,8 @@ def product_info(request, pro_id):
     similars = []
     for i in range(3):
         if proches[i]:
+            print('proches:',proches[i])
+            print('url:', proches[i].image.url)
             dic_el = {'category': proches[i].category, 'price': proches[i].price, 'id': proches[i].pk, 'name': proches[i].name, 'picUrl': proches[i].image.url }
             similars.append(dic_el)
 
@@ -52,6 +70,8 @@ def product_info(request, pro_id):
     return render(request,'ProductDetail.html', context)
 
 def addComment(request):
+    global image_uploaded
+    image_uploaded = False
     msg = request.GET.get('message')
     pro_id = request.GET.get('pro_id')
     nm = request.GET.get('name')
@@ -77,11 +97,15 @@ def addComment(request):
 
 
 def loadsearch(request):
+    global image_uploaded
+    image_uploaded = False
     context = {}
     return render(request, 'search.html', context)
 
 
 def items_wanted(request):
+    global image_uploaded
+    image_uploaded = False
     category_ = request.GET["category"]
     search_string = request.GET["search"]
     whichpage = request.GET["page"]
@@ -150,15 +174,24 @@ def items_wanted(request):
     #        responselist.append(i)
 
     response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist}
+    recoms = Product.objects.filter(recommended = True)
+    context = { 'recoms':recoms}
+    render(request,'search.html', context)
+
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 def into_search(request, category, search_str):
-    context = {'p_category_': category, 'p_search_str_': search_str};
+    global image_uploaded
+    image_uploaded = False
+    recoms = Product.objects.filter(recommended = True)
+    context = {'p_category_': category, 'p_search_str_': search_str, 'recoms': recoms};
     return render(request, 'search.html', context)
 
 
 def list_categories(request):
+    global image_uploaded
+    image_uploaded = False
     list_of_cats = Category.objects.all()
     categorylist = []
     for elem in list_of_cats:
@@ -170,6 +203,8 @@ def list_categories(request):
 
 
 def upload_image(request):
+    global image_uploaded
+    image_uploaded = False
     print("tu upload image am")
     response_data = {'result':1}
     # response_data = {'result':1, 'comments':comments}
@@ -177,5 +212,109 @@ def upload_image(request):
 
 
 def addProduct(request):
-    context = {}
-    return render(request,'AddProduct.html', context)
+    global image_uploaded
+    global number_crop
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            image_uploaded = True
+            newdoc = UploadedImage(image = request.FILES['docfile'])
+            newdoc.save()
+            return HttpResponseRedirect(reverse('MFSharif.views.addProduct'))
+    else:
+        form = DocumentForm()
+
+    imageFiles = UploadedImage.objects.all()
+    img = imageFiles.last()
+    if image_uploaded == False:
+        img = ''
+    return render_to_response('AddProduct.html', {'images':img , 'form': form},context_instance=RequestContext(request))
+
+def submit_product(request):
+    global number_crop
+    nm = request.GET["name"]
+    ctid = request.GET["category"]
+    cat = Category.objects.get(pk=ctid)
+    pr = request.GET["price"]
+    prc = int(pr)
+
+    des = request.GET["description"]
+
+    strr = request.GET["picURL"]
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        script_dir2 = os.path.dirname(script_dir)
+        print(script_dir2)
+        tr = os.path.join(script_dir2, 'media\images\products')
+        print(tr)
+        print(strr[16:])
+        ttr = os.path.join(tr,strr[16:])
+        print(ttr)
+        im = Image.open(ttr)
+
+    except Exception as inst:
+        print(inst)
+
+    try:
+        x = request.GET["x"]
+        xx = int(x)
+        y = request.GET["y"]
+        yy = int(y)
+        w = request.GET["w"]
+        ww = int(w)
+        h = request.GET["h"]
+        hh = int(h)
+        width, height = im.size
+        xx = (xx*width)/300
+        ww = (ww*width)/300
+        hh = (hh*height)/300
+        yy = (yy*height)/300
+        xx = int(xx)
+        yy = int(yy)
+        ww = int(ww)
+        hh = int(hh)
+        immm = im.crop((xx ,yy,ww,hh))
+    except Exception as num:
+        print(num)
+
+    try:
+        m = str(len(UploadedImage.objects.all()))
+        strnm = "images/products/"+m+".JPEG"
+        print("strnm")
+        print(strnm)
+    except Exception as num:
+        print("exe dige injaaa ??!!!")
+        print(num)
+
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        script_dir2 = os.path.dirname(script_dir)
+
+        m = str(len(UploadedImage.objects.all()))
+        st2 = "media\images\products\\"+ m + ".JPEG"
+        tr = os.path.join(script_dir2, st2)
+        temp_file = open(tr,"w")
+    except Exception as num:
+        print("tu open temp file ")
+        print(num)
+
+    try:
+        immm.save(temp_file,format("JPEG"))
+    except Exception as num:
+        print("in save crop")
+        print(num)
+
+    try:
+        print("new Product")
+        pr = Product.objects.get_or_create(name=nm, category=cat, price=prc, description=des, image= strnm)
+    except Exception as num:
+        print("tu save prodcut ")
+        print(num)
+
+    prsss = Product.objects.all().last()
+    print(prsss.name)
+    print(prsss.pk)
+    print(prsss.image.url)
+
+    response_data = {'result':1}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
