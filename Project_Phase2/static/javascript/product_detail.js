@@ -3,7 +3,7 @@ function add(pk) {
     var urlNewComment = "../addComment";
     var ajaxNewComment = {
         "message": comment.value,
-        "name": 'هادی',
+        "name": 'ذوالفقار',
         "pro_id": pk
     }
     $.ajax({
