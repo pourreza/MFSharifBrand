@@ -32,10 +32,11 @@ function loadProducts( whichpage, category_, search_string){
 				else
 					console.log("nashod");
 
-			
-			
 
 			},
+        error: function(){
+                                alert ('متأسفانه پاسخ مناسب از سرور دریافت نشد.');
+        }
 
 
 	});
