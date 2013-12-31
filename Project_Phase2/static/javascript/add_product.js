@@ -76,6 +76,7 @@ $.ajax({
                 id_str= prim_str.substring(3);
                 console.log(id_str);
                 document.getElementById("select-button").childNodes[2].nodeValue = event.target.name;
+                document.getElementById("cat").value = event.target.id;
                 categry=event.target.id;
 
 
@@ -102,42 +103,76 @@ function product_add(){
     }
     else{
         var picId;
-        if (img ==""){
+        if (img ==0){
             alert("لطفا ابتدا قسمت مورد نظر از عکس را جدا کنید!")
         }else{
-            var ajaxAddPro ={
-                "name": namepr,
-                "description": infopr,
-                "category":categry,
-                "price":pricepr,
-                "picURL":img,
-                "x": x,
-                "y": y,
-                "w": w,
-                "h": h
-            }
-            var urlAdd ="submitProduct";
-            $.ajax({
-                url: urlAdd,
-                type: 'get',
-                dataType: 'json',
-                data: ajaxAddPro,
-                success: function(data, status, xhr){
-                    if (data.result == 0){
-                        alert("error!");
-                    }else
-                    {
-                        alert("محصول جدید با موفقیت در سیستم به ثبت رسید :)");
-                        $("input").val('');
-                        $(".my-submit").val('جداکردن عکس');
-                        document.getElementById("select-button").childNodes[2].nodeValue = "انتخاب دسته";
+//            alert("here");
+//            $("#my-add-form").ajaxSubmit();
+            //                var postData = $(this).serializeArray();
+//                var formURL = $(this).attr("action");
+//                $.ajax(
+//                    {
+            $("#my-add-form").ajaxSubmit({
 
-                    }
-                },
-                error: function(){
-                    alert("error!!");
-                }
-            });
+                        url : "submitProduct",
+                        type: "POST",
+//                        data : postData,
+                        success:function(data, textStatus, jqXHR)
+                        {
+                            if (data.result == 0){
+                                alert("result 0");
+                            }else{
+                                alert("محصول جدید با موفقیت در سیستم به ثبت رسید :)");
+                                $("input").val('');
+                                $(".my-submit").val('جداکردن عکس');
+                                document.getElementById("select-button").childNodes[2].nodeValue = "انتخاب دسته";
+                                document.getElementById("img-final").src = '';
+                                document.getElementById("img-select").src = '';
+                            }
+                            //data: return data from server
+                        },
+                        error: function(jqXHR, textStatus, errorThrown)
+                        {
+                            alert("error!");
+                            //if fails		alert
+                        }
+                    });
+//                e.preventDefault();	//STOP default action
+//            });
+//            $("#my-add-form").submit();
+//            var ajaxAddPro ={
+//                "name": namepr,
+//                "description": infopr,
+//                "category":categry,
+//                "price":pricepr,
+//                "picURL":img,
+//                "x": x,
+//                "y": y,
+//                "w": w,
+//                "h": h
+//            }
+//            var urlAdd ="submitProduct";
+//            $.ajax({
+//                url: urlAdd,
+//                type: 'get',
+//                dataType: 'json',
+//                data: ajaxAddPro,
+//                success: function(data, status, xhr){
+//                    if (data.result == 0){
+//                        alert("error!");
+//                    }else
+//                    {
+//                        alert("محصول جدید با موفقیت در سیستم به ثبت رسید :)");
+//                        $("input").val('');
+//                        $(".my-submit").val('جداکردن عکس');
+//                        document.getElementById("select-button").childNodes[2].nodeValue = "انتخاب دسته";
+//
+//                    }
+//                },
+//                error: function(){
+//                    alert("error!!");
+//                }
+//            });
         }
 
     }

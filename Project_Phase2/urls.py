@@ -15,8 +15,12 @@ urlpatterns = patterns('',
     url(r'^product/(?P<pro_id>\d+)$', 'MFSharif.views.product_info', name = 'product'),
     url(r'^addComment$', 'MFSharif.views.addComment', name='add_comment'),
     url(r'^addProduct$', 'MFSharif.views.addProduct', name='addProduct'),
+    url(r'^addProduct2$', 'MFSharif.views.addProduct2', name='addProduct2'),
     url(r'^upload$', 'MFSharif.views.upload_image', name='upload_image'),
     url(r'^submitProduct', 'MFSharif.views.submit_product', name='submit_product'),
+    url(r'^transactions','MFSharif.views.transactions', name = 'transactions'),
+    url(r'^editProducts','MFSharif.views.edit_products', name = 'edit-products'),
+    url(r'^editP','MFSharif.views.edit_pro', name = 'editp'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

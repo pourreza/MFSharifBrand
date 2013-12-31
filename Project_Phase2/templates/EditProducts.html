@@ -1,0 +1,294 @@
+{% extends 'AddProduct.html' %}
+{% block title %}
+    مشاهده تراکنش ها
+{% endblock %}
+{% block menu %}
+    <div class="my_menu">
+        <ul>
+            <li class="li-header">
+                بخش مدیریت اجناس
+            </li>
+            <li>
+                <a href="{% url 'addProduct2' %}" style="color:ghostwhite; text-decoration: none">
+                    اضافه کردن محصول
+                </a>
+            </li>
+            <li >
+
+                <a href="{% url 'transactions' %}" style="color:ghostwhite; text-decoration: none">
+                    مشاهده تراکنش ها
+                </a>
+            </li>
+            <li style="background-color: rosybrown">
+                    ویرایش محصولات
+                <i class="fa fa-arrow-left" style="margin-top: 3px; margin-right: 40px;"></i>
+            </li>
+            <li>
+                تعیین موجودی
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block breadcrum %}
+    <li>
+        <span class="divider">/</span>
+        <a href="{% url 'addProduct' %}">
+            بخش مدیریت
+        </a>
+    </li>
+    <li class="active">
+        <span class="divider">/</span>
+        لیست محصولات
+    </li>
+{% endblock %}
+
+{% block  producer_main %}
+    <div class="pr-add-form" style="height: 430px;">
+    <div class="pr-info-header">
+        لیست محصولات:
+    </div>
+    <div class="transaction-table" style="margin-top: 30px;max-height: 350px; overflow: auto; margin-left: 150px;margin-right: 100px;">
+        <table class="table table-condensed" dir="rtl" style=" width: 800px;  ">
+            <thead>
+            <th class="trans_hd" style="width: 50px;">
+                ردیف
+            </th>
+            <th class="trans_hd">
+
+            </th>
+            <th class="trans_hd">
+                کد محصول
+            </th>
+            <th class="trans_hd">
+                نام محصول
+            </th>
+            <th class="trans_hd">
+                دسته
+            </th>
+            <th class="trans_hd">
+                موجودی
+            </th>
+            <th class="trans_hd">
+                قیمت
+            </th>
+            <th class="trans_hd">
+            </th>
+            </thead>
+            <tbody>
+            <tr id="tr_1">
+                <td class="trans_td"  style="width: 50px;">
+                    1
+                </td>
+                <td class="trans_td">
+                    <img src="{{ STATIC_URL }}images/allstar.jpg" style="width: 50px;height: 50px">
+                </td>
+                <td class="trans_td">
+                    94732
+                </td>
+                <td class="trans_td">
+                    کفش آل استار
+                </td>
+                <td class="trans_td">
+کفش
+                </td>
+                <td class="trans_td">
+                    20 جفت
+                </td>
+                <td class="trans_td">
+                    150000 تومان
+                </td>
+                <td class="trans_td">
+                    <button class="info-button" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        <a href="{% url 'editp' %}" style="text-decoration: none; color: ghostwhite">
+                            ویرایش
+                        </a>
+                    </button>
+                    <button class="info-button" type="button" onclick="remove2(1)" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        حذف
+                    </button>
+                </td>
+            </tr>
+            <tr id="tr_2">
+                <td class="trans_td"  style="width: 50px;">
+                    2
+                </td>
+                <td class="trans_td">
+                    <img src="{{ STATIC_URL }}images/4_12.jpg" style="width: 50px;height: 50px">
+                </td>
+                <td class="trans_td">
+                    87421
+                </td>
+                <td class="trans_td">
+                    پیراهن خیلی صورتی
+                </td>
+                <td class="trans_td">
+   لباس
+                </td>
+                <td class="trans_td">
+                    5 عدد
+                </td>
+                <td class="trans_td">
+                    500000 تومان
+                </td>
+                <td class="trans_td">
+                    <button class="info-button" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        <a href="{% url 'editp' %}" style="text-decoration: none; color: ghostwhite">
+                            ویرایش
+                        </a>
+                    </button>
+                    <button class="info-button" type="button" onclick="remove2(2)" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        حذف
+                    </button>
+                </td>
+            </tr>
+            <tr id="tr_3">
+                <td class="trans_td"  style="width: 50px;">
+                    3
+                </td>
+                <td class="trans_td">
+                    <img src="{{ STATIC_URL }}images/ca4272_l.jpg" style="width: 50px;height: 50px">
+                </td>
+                <td class="trans_td">
+                    43241
+                </td>
+                <td class="trans_td">
+                    دستکش چرمی
+                </td>
+                <td class="trans_td">
+                    لباس
+                </td>
+                <td class="trans_td">
+                    15 جفت
+                </td>
+                <td class="trans_td">
+                    70000 تومان
+                </td>
+                <td class="trans_td">
+                    <button class="info-button" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        <a href="{% url 'editp' %}" style="text-decoration: none; color: ghostwhite">
+                            ویرایش
+                        </a>
+                    </button>
+                    <button class="info-button" type="button" onclick="remove2(3)" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        حذف
+                    </button>
+                </td>
+            </tr>
+            <tr id="tr_4">
+                <td class="trans_td"  style="width: 50px;">
+                    4
+                </td>
+                <td class="trans_td">
+                    <img src="{{ STATIC_URL }}images/4_5.jpg" style="width: 50px;height: 50px">
+                </td>
+                <td class="trans_td">
+                    98741
+                </td>
+                <td class="trans_td">
+                    پالتو ومپایری
+                </td>
+                <td class="trans_td">
+                    لباس
+                </td>
+                <td class="trans_td">
+                    10 عدد
+                </td>
+                <td class="trans_td">
+                    300000 تومان
+                </td>
+                <td class="trans_td">
+                    <button class="info-button" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        <a href="{% url 'editp' %}" style="text-decoration: none; color: ghostwhite">
+                            ویرایش
+                        </a>
+                    </button>
+                    <button class="info-button" onclick="remove2(4)" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        حذف
+                    </button>
+                </td>
+            </tr>
+            <tr id="id_5">
+                <td class="trans_td"  style="width: 50px;">
+                    5
+                </td>
+                <td class="trans_td">
+                    <img src="{{ STATIC_URL }}images/tie2.jpg" style="width: 50px;height: 50px">
+                </td>
+                <td class="trans_td">
+                    53252
+                </td>
+                <td class="trans_td">
+                    کراوات
+                </td>
+                <td class="trans_td">
+                    متعلقات
+                </td>
+                <td class="trans_td">
+13 عدد
+                </td>
+                <td class="trans_td">
+50000 تومان
+                </td>
+                <td class="trans_td">
+                    <button class="info-button" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        <a href="{% url 'editp' %}" style="text-decoration: none; color: ghostwhite">
+                            ویرایش
+                        </a>
+                    </button>
+                    <button class="info-button" onclick="remove2(5)" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        حذف
+                    </button>
+                </td>
+            </tr>
+            <tr id="tr_6">
+                <td class="trans_td"  style="width: 50px;">
+                    6
+                </td>
+                <td class="trans_td">
+                    <img src="{{ STATIC_URL }}images/63521M.jpg" style="width: 50px;height: 50px">
+                </td>
+                <td class="trans_td">
+                    43134
+                </td>
+                <td class="trans_td">
+                    عطر گوچی
+                </td>
+                <td class="trans_td">
+                    عطر
+                </td>
+                <td class="trans_td">
+16 عدد
+                </td>
+                <td class="trans_td">
+300000 تومان
+                </td>
+                <td class="trans_td">
+                    <button class="info-button" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        <a href="{% url 'editp' %}" style="text-decoration: none; color: ghostwhite">
+                            ویرایش
+                        </a>
+                    </button>
+                    <button class="info-button" onclick="remove2(6)" type="button" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                        حذف
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}
+{% block crop-image %}
+{% endblock %}
+{% block js_very_end %}
+    <script type="text/javascript">
+    function remove2(id){
+        var temp = "tr_"+id;
+        var tr = document.getElementById(temp);
+        tr.parentNode.removeChild(tr);
+    }
+    function edit(){
+
+    }
+    </script>
+{% endblock %}

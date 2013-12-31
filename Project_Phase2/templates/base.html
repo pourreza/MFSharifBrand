@@ -68,7 +68,7 @@
 
 
             <div id="recom">
-                <a href="">
+                <a href="" style="color:ghostwhite; text-decoration: none">
                 <div  data-toggle="modal" data-target="#myModal">
           	محصولات پیشنهادی برای شما
                 </div>
@@ -155,30 +155,30 @@
                         {% if products %}
                             {% for pro in products %}
                                 {% with forloop.counter as num %}
-                                    {% ifequal num 1 %}
+                                    {% ifequal num 4 %}
                                         <div class="active item">
                                             <img src="{{ pro.image.url }}" class="carousel-img" >
                                             <p dir="rtl" class="carsoul-detail">
-                                            {{ pro.description }}
+                                            {{ pro.product.description }}
                                             <br/>
                                             <br/>
-                                            {{ pro.price }} تومان
+                                            {{ pro.product.price }} تومان
                                             <br/>
                                             <br/>
-                                            <a href="product/{{ pro.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
+                                            <a href="product/{{ pro.product.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
                                             </p>
                                         </div>
                                     {% else %}
                                         <div class="item">
                                             <img src="{{ pro.image.url }}" class="carousel-img" >
                                             <p dir="rtl" class="carsoul-detail">
-                                                {{ pro.description }}
+                                                {{ pro.product.description }}
                                                 <br/>
                                                 <br/>
-                                                {{ pro.price }} تومان
+                                                {{ pro.product.price }} تومان
                                                 <br/>
                                                 <br/>
-                                                <a href="product/{{ pro.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
+                                                <a href="product/{{ pro.product.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
                                             </p>
                                         </div>
                                     {% endifequal %}

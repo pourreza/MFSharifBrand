@@ -1,0 +1,47 @@
+{% extends 'AddProduct.html' %}
+{% block title %}
+    مشاهده تراکنش ها
+{% endblock %}
+{% block menu %}
+    <div class="my_menu">
+        <ul>
+            <li class="li-header">
+                بخش مدیریت اجناس
+            </li>
+            <li>
+                <a href="{% url 'addProduct2' %}" style="color:ghostwhite; text-decoration: none">
+                    اضافه کردن محصول
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'transactions' %}" style="color:ghostwhite; text-decoration: none">
+                    مشاهده تراکنش ها
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'edit-products' %}" style="color:ghostwhite; text-decoration: none">
+                    ویرایش محصولات
+                </a>
+            </li>
+            <li>
+                تعیین موجودی
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block breadcrum %}
+    <li class="active">
+        <span class="divider">/</span>
+مدیریت اجناس
+    </li>
+{% endblock %}
+{% block producer_main %}
+    <div class="pr-add-form" style="height: 300px;">
+    <div class="pr-info-header" style="margin-top: 100px; margin-right: 350px; font-size: 70px;">
+        بخش مدیریت اجناس
+    </div>
+    </div>
+{% endblock %}
+
+{% block crop-image %}
+{% endblock %}

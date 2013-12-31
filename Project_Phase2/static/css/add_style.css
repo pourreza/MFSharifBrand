@@ -13,6 +13,19 @@
     border: 2px dotted ghostwhite;
     border-radius: 10px;
 }
+.trans_hd{
+    margin-top: 80px;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+}
+.trans_td{
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 10px;
+    width: 100px;
+    height: 60px;
+}
 
 .my_menu>ul>li{
     /*margin-bottom: 10px;*/
@@ -56,6 +69,7 @@
     padding-top: -5px;
     font-size:30px;
 }
+
 
 .add-pr{
     position: absolute;

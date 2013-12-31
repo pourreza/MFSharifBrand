@@ -1,0 +1,233 @@
+{% extends 'EditProducts.html' %}
+{% block breadcrum %}
+    <li>
+        <span class="divider">/</span>
+        <a href="{% url 'addProduct' %}">
+            بخش مدیریت
+        </a>
+    </li>
+    <li>
+        <span class="divider">/</span>
+        <a href="{% url 'edit-products' %}">
+لیست محصولات
+        </a>
+    </li>
+    <li class="active">
+        <span class="divider">/</span>
+        ویرایش محصول
+    </li>
+{% endblock %}
+    {% block  producer_main %}
+        <div class="pr-add-form">
+
+        <div class="pr-info-header">
+            ویرایش محصول:
+        </div>
+        <form action="submitProduct" method="get" name="myform" id="my-add-form">
+            <table>
+                <tr>
+                    <td class="td-input">
+                        نام محصول:
+                    </td>
+                    <td class="td-input">
+                        <input class="span2" id="name-pr" type="text" name="mytextfield" value="عطر گل محمدی"
+                               style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-input">
+                        قیمت:
+                    </td>
+                    <td class="td-input">
+                        <input class="span2" id="price-pr" type="number" value='300000' name="mytextfield" min='0'
+                               style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center;"/>
+                        تومان
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-input">
+                        دسته محصول:
+                    </td>
+                    <td class="id-input">
+                        {#                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px; ">#}
+                        {#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
+                        {#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
+                        {#                                <span class="caret" style="margin-left:8px"></span>#}
+                        {#                                انتخاب دسته#}
+                        {#                            </button>#}
+                        {#                            <ul id="dropdown_ul" class="dropdown-menu">#}
+                        {##}
+                        {#                            </ul>#}
+                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px;">
+                            <button  id="select-button"  class="span2 btn dropdown-toggle" data-toggle="dropdown" dir="rtl" style="border-radius: 5px; text-align: right">
+                                <span class="caret" style="margin-left:8px"></span>
+                                انتخاب دسته
+                            </button>
+                            <ul id="dropdown_ul" class="dropdown-menu"style=" max-height:200px; overflow-y: auto;overflow-x: hidden;">
+
+                            </ul>
+                        </div>
+                        {#                        </div>#}
+                        {#                        <div id="dropdown_toggle" class="btn-group"style="margin-right:10px; ">#}
+                        {#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
+                        {#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
+                        {#                                انتخاب دسته‌ها#}
+                        {#                                <span class="caret"></span>#}
+                        {#                            </button>#}
+                        {#                            <ul id="dropdown_ul" class="dropdown-menu">#}
+                        {##}
+                        {#                            </ul>#}
+                        {#                        </div>#}
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td-input">
+                        توضیح محصول:
+                    </td>
+                    <td class="td-input">
+                        <input class="span5" id="info-pr" type="text" name="mytextfield" value="به کلاس ما خوش آمدی :دی"
+                               style="height: 35px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
+                    </td>
+
+                </tr>
+
+                {#                <tr>#}
+                {##}
+                {#                    <td class="td-input">#}
+                {#                        تصویر محصول:#}
+                {#                        <img src='{{ images.image.url }}' style="width:50px; height: 50px;">#}
+                {#                    </td>#}
+                {#                    <td class="td-input">#}
+                {##}
+                {#                    </td>#}
+                {#                </tr>#}
+                <tr>
+
+                    <td class="td-input">
+                        تصویر محصول:
+                    </td>
+                    <td class="td-input" >
+
+                    </td>
+                </tr>
+            </table>
+            <input id="x1"  type="hidden" name="x1" value="0" />
+            <input id="y1" type="hidden" name="y1" value="0" />
+            <input id="w" type="hidden" name="w" value="0" />
+            <input id="h" type="hidden" name="h" value="0" />
+            <input id="hidden-image" type="hidden" name="image" value="{{ images.image.name }}" />
+
+        </form>
+
+        {#        <form id="imageForm">#}
+        {#            {% csrf_token %}#}
+        {#            <input class="span3" type="file" name="image" style="height:35px; margin-right: 120px; margin-top:-70px"#}
+        {#                   id="pro-img">#}
+        {#        <button class="my-submit" type="button" onclick="crop()">جداکردن عکس</button>#}
+            <form id="imageForm">
+                <input class="span3" type="file" id="files" name="files[]" style="height:35px; margin-right: 120px; margin-top:-70px">
+{#            <p><button class="my-submit" onclick="crop2()" >جداکردن عکس </button></p>#}
+        </form>
+        <button class="my-submit2"  style="margin-right: 120px; margin-top: -30px;" type="button" onclick="product_edit()">ثبت ویرایش</button>
+            <button class="my-submit2"  style="margin-right:10px; margin-top: -30px;" type="button">
+                <a href="{% url 'edit-products' %}" style="text-decoration: none; color: ghostwhite">
+                انصراف
+                    </a>
+            </button>
+
+</div>
+{% endblock %}
+{% block crop-image %}
+    <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 1090px; top: 170px; color:  white;">
+        جداکردن عکس
+    </p>
+    <div id="imageSelect" style="width:300px; height: 300px; overflow: hidden">
+        <img src="{{ STATIC_URL }}images/perfume61.gif" id="img-select" style="width:300px; height: 300px;"/>
+
+    </div>
+    <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 895px; top: 170px; color:  white;">
+        عکس نهایی
+    </p>
+    <div id="final-image" style="width:100px; height: 100px; overflow: hidden" dir="ltr">
+        <img src="{{ STATIC_URL }}images/perfume61.gif" id="img-final" style="width:100px; height: 100px;"/>
+    </div>
+    </div>
+{% endblock %}
+{% block js_very_end %}
+    <script type="text/javascript" src="static/javascript/base.js"></script>
+    <script type="text/javascript" src="static/javascript/add_product.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById("select-button").childNodes[2].nodeValue = "عطر";
+            $('#img-select').imgAreaSelect({ aspectRatio: '1:1', handles: true , onSelectChange: preview,
+                onSelectEnd: function (img, selection) {
+                    $('input[name="x1"]').val(selection.x1);
+                    $('input[name="y1"]').val(selection.y1);
+                    $('input[name="w"]').val(selection.x2);
+                    $('input[name="h"]').val(selection.y2);
+                }});
+        });
+        function preview(img, selection) {
+            {#            alert("call");#}
+            var scaleX = 100 / (selection.width || 1);
+            var scaleY = 100 / (selection.height || 1);
+            console.log("width:".concat(scaleX*300));
+            console.log("height:".concat(scaleY*300));
+
+
+            $('#img-final').css({
+                width: (Math.round(scaleX * 300)) + 'px',
+                height: (Math.round(scaleY * 300)) + 'px',
+                marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+                marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+            });
+        }
+        function crop2(){
+            alert("crop");
+            var temp = document.getElementById("pro-img").value;
+            alert(temp);
+            $("#img-final").attr('src',temp);
+            $("#img-select").attr('src',temp);
+        }
+
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+
+            // Loop through the FileList and render image files as thumbnails.
+            for (var i = 0, f; f = files[i]; i++) {
+
+                // Only process image files.
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        // Render thumbnail.
+                        var s = document.getElementById("img-final").src = e.target.result;
+                        var s = document.getElementById("img-select").src = e.target.result;
+{#                        var span = document.createElement('span');#}
+{#                        span.innerHTML = ['<img class="thumb" src="', e.target.result,#}
+{#                            '" title="', escape(theFile.name), '"/>'].join('');#}
+{#                        document.getElementById('list').insertBefore(span, null);#}
+                    };
+                })(f);
+
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
+            }
+        }
+
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    function product_edit(){
+       alert("تغییرات ایجاد شده در سیستم به ثبت رسیدند!")
+        window.location.href = "editProducts";
+    }
+    </script>
+
+
+{% endblock %}

@@ -1,5 +1,4 @@
 function add(pk) {
-    alert(pk);
     var comment = document.getElementById('newComment');
     var urlNewComment = "../addComment";
     var ajaxNewComment = {
@@ -16,7 +15,6 @@ function add(pk) {
             if (data.result == 0) {
                 alert("ajax error!");
             } else {
-                alert("resid");
                 var com = document.getElementById("prev-comments");
                 com.innerHTML = "";
                 for (var cm=0; cm< data.comments.length; cm++){

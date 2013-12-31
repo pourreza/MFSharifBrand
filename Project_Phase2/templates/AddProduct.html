@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/add_style.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/product_style.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/imgareaselect-default.css" />
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/css/imgareaselect-animated.css"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/css/imgareaselect-deprecated.css"/>
@@ -20,6 +21,7 @@
 {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.js"></script>#}
 {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.pack.js"></script>#}
 {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.min.js"></script>#}
+    <script src="http://malsup.github.com/jquery.form.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
@@ -39,26 +41,32 @@
 {% block main_content %}
 <div class="main" dir="rtl">
     <img id="background-image" src="static/images/dark-wood-wallpaper.jpg" style="z-index: -1;"/>
-
+{% block menu %}
     <div class="my_menu">
         <ul>
             <li class="li-header">
                 بخش مدیریت اجناس
             </li>
-            <li>
+            <li style="background-color: rosybrown">
                 اضافه کردن محصول
+                <i class="fa fa-arrow-left" style="margin-top: 2px; margin-right: 25px;"></i>
             </li>
             <li>
-                لیست محصولات ارئه شده
+                <a href="{% url 'transactions' %}" style="color:ghostwhite; text-decoration: none">
+                    مشاهده تراکنش ها
+                </a>
             </li>
             <li>
-                فعالیت های من
+                <a href="{% url 'edit-products' %}" style="color:ghostwhite; text-decoration: none">
+                ویرایش محصولات
+                </a>
             </li>
             <li>
                 تعیین موجودی
             </li>
         </ul>
     </div>
+{% endblock %}
     <ul class="breadcrumb my_crums add-pr">
         <li>
             <i class="icon-home icon-large"></i>
@@ -66,24 +74,35 @@
                 ام اف شریف
             </a>
         </li>
+        {% block breadcrum %}
+            <li>
+                <span class="divider">/</span>
+                <a href="{% url 'addProduct' %}">
+بخش مدیریت
+                </a>
+            </li>
         <li class="active">
             <span class="divider">/</span>
             اضافه کردن محصول جدید
         </li>
+        {% endblock %}
 
     </ul>
+    {% block  producer_main %}
     <div class="pr-add-form">
+
         <div class="pr-info-header">
             اضافه کردن محصول جدید:
         </div>
-        <form action="submitProduct" method="get" name="myform" id="my-add-form">
+        <form action="submitProduct" method="post" name="myform" id="my-add-form" enctype="multipart/form-data">
+            {% csrf_token %}
             <table>
                 <tr>
                     <td class="td-input">
                         نام محصول:
                     </td>
                     <td class="td-input">
-                        <input class="span2" id="name-pr" type="text" name="mytextfield"
+                        <input class="span2" id="name-pr" type="text" name="name"
                                style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
                     </td>
                 </tr>
@@ -92,7 +111,7 @@
                         قیمت:
                     </td>
                     <td class="td-input">
-                        <input class="span2" id="price-pr" type="number" value='0' name="mytextfield" min='0'
+                        <input class="span2" id="price-pr" type="number" value='0' name="price" min='0'
                                style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center;"/>
                         تومان
                     </td>
@@ -120,6 +139,7 @@
 
                             </ul>
                         </div>
+                        <input id="cat"  type="hidden" name="category" value="0" />
 {#                        </div>#}
 {#                        <div id="dropdown_toggle" class="btn-group"style="margin-right:10px; ">#}
 {#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
@@ -139,7 +159,7 @@
                         توضیح محصول:
                     </td>
                     <td class="td-input">
-                        <input class="span5" id="info-pr" type="text" name="mytextfield"
+                        <input class="span5" id="info-pr" type="text" name="description"
                                style="height: 35px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
                     </td>
 
@@ -155,12 +175,22 @@
 {##}
 {#                    </td>#}
 {#                </tr>#}
+                <tr>
+
+                    <td class="td-input">
+                        تصویر محصول:
+                    </td>
+                    <td class="td-input" >
+                        <input class="span3" type="file" id="files" name="files">
+                    </td>
+                </tr>
             </table>
             <input id="x1"  type="hidden" name="x1" value="0" />
             <input id="y1" type="hidden" name="y1" value="0" />
-            <input id="w" type="hidden" name="w" value="0" />
-            <input id="h" type="hidden" name="h" value="0" />
-            <input id="hidden-image" type="hidden" name="image" value="{{ images.image.name }}" />
+            <input id="w" type="hidden" name="w" value="300" />
+            <input id="h" type="hidden" name="h" value="300" />
+            <input id="hidden-image" type="hidden" name="image" value="0" />
+
 
         </form>
 
@@ -169,22 +199,25 @@
 {#            <input class="span3" type="file" name="image" style="height:35px; margin-right: 120px; margin-top:-70px"#}
 {#                   id="pro-img">#}
 {#        <button class="my-submit" type="button" onclick="crop()">جداکردن عکس</button>#}
-        <form action="{% url 'addProduct' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <span class="td-input" style="margin-top: -100px;padding-top: -100px;">
-                تصویر محصول:
-            </span>
-            <span>{{ form.non_field_errors }}</span>
-            <span style="margin-right: 8px; margin-top: 10px; ">
-                {{ form.docfile.errors }}
-                {{ form.docfile }}
-            </span>
-            <p><input class="my-submit" type="submit" value="جداکردن عکس" /></p>
-        </form>
-        <button class="my-submit2" type="button" onclick="product_add()">ثبت محصول</button>
+{#        <form action="{% url 'addProduct' %}" method="post" enctype="multipart/form-data">#}
+{#            {% csrf_token %}#}
+{#            <span class="td-input" style="margin-top: -100px;padding-top: -100px;">#}
+{#                تصویر محصول:#}
+{#            </span>#}
+{#            <span>{{ form.non_field_errors }}</span>#}
+{#            <span style="margin-right: 8px; margin-top: 10px; ">#}
+{#                {{ form.docfile.errors }}#}
+{#                {{ form.docfile }}#}
+{#            </span>#}
+{#            <p><input class="my-submit" type="submit" value="جداکردن عکس" /></p>#}
+{#        <form id="imageForm">#}
+{##}
+{#        </form>#}
+        <button class="my-submit2" style="margin-right: 120px; margin-top: 10px;"type="button" onclick="product_add()">ثبت محصول</button>
 
 
     </div>
+    {% endblock %}
 {#    <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 1090px; top: 170px; color:  white;">#}
 {#        جداکردن عکس#}
 {#    </p>#}
@@ -200,6 +233,7 @@
 {#    <div id="final-image">#}
 {#        <img src='{{ images.image.url }}' id="img-final" style="width:100px; height: 100px; position: relative; "/>#}
 {#    </div>#}
+{% block crop-image %}
     <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 1090px; top: 170px; color:  white;">
         جداکردن عکس
     </p>
@@ -214,6 +248,7 @@
         <img src="{{ images.image.url }}" id="img-final" style="width:100px; height: 100px;"/>
     </div>
 </div>
+{% endblock %}
 
 {% endblock %}
 {% block js_very_end %}
@@ -244,6 +279,47 @@
                 marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
             });
         }
+        var fileBlobs = [];
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+
+            // Loop through the FileList and render image files as thumbnails.
+
+            for (var i = 0, f; f = files[i]; i++) {
+
+                // Only process image files.
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+                var reader = new FileReader();
+{#                fileBlobs = reader.readAsBinaryString(f);#}
+                // Closure to capture the file information.
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        // Render thumbnail.
+                        var s = document.getElementById("img-final").src = e.target.result;
+                        var s = document.getElementById("img-select").src = e.target.result;
+                        var s = document.getElementById("hidden-image").value = 1;
+{#                        document.getElementById("hidden-image").value = e.target.result;#}
+                        {#                        var span = document.createElement('span');#}
+                        {#                        span.innerHTML = ['<img class="thumb" src="', e.target.result,#}
+                        {#                            '" title="', escape(theFile.name), '"/>'].join('');#}
+                        {#                        document.getElementById('list').insertBefore(span, null);#}
+                    };
+                    })(f);
+
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
+            }
+{#            var bb = new BlobBuilder();#}
+{#            bb.appendfileBlobs.(fileBlobs);#}
+{#            var name = "{{ MEDIA_URL }}images/products/test"#}
+{#            alert(name);#}
+{#            window.saveAs(bb.getBlob(), name);#}
+        }
+
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
     </script>
 
 
