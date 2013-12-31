@@ -29,6 +29,7 @@
     height: 350px;
     border: 2px dotted navajowhite;
     border-radius: 10px;
+    z-index: 2;
 }
 
 .pr-name{
@@ -241,3 +242,20 @@
 }
 
 .close:hover { background: burlywood; }
+
+#hidden_div {
+    display: none;
+}
+.petit{
+    max-width: 200px;
+    min-height: 212px;
+    max-height: 240px;
+}
+#show_similars{
+    display: inline-block;
+    float: left;
+    position: absolute;
+    top: 140px;
+    margin-left: 80px;
+    z-index: 3;
+}

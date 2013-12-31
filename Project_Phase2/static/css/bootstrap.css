@@ -5222,7 +5222,7 @@ input[type="submit"].btn.btn-mini {
     top: 10%;
     left: 50%;
     z-index: 1050;
-    width: 560px;
+    /*width: 560px;*/
     margin-left: -280px;
     background-color: #ffffff;
     border: 1px solid #999;
@@ -5413,7 +5413,9 @@ input[type="submit"].btn.btn-mini {
     left: 0;
     z-index: 1010;
     display: none;
-    max-width: 276px;
+    max-width: 600px;
+    min-width: 230px;
+    height: 370px;
     padding: 1px;
     text-align: left;
     white-space: normal;
@@ -5436,7 +5438,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .popover.right {
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .popover.bottom {

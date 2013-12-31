@@ -36,8 +36,7 @@ def index(request):
     for item in subs2:
         men_items.append(item.subcategory)
 
-    # pro = Product.objects.filter(popular=True)
-    pro = PopularProducts.objects.all()
+    pro = Product.objects.filter(popular=True)
     recoms = Product.objects.filter(recommended = True)
 
     context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms}
@@ -62,7 +61,7 @@ def product_info(request, pro_id):
     similars = []
     for i in range(3):
         if proches[i]:
-            print('proches:',proches[i])
+            #print('proches:',proches[i])
             print('url:', proches[i].image.url)
             dic_el = {'category': proches[i].category, 'price': proches[i].price, 'id': proches[i].pk, 'name': proches[i].name, 'picUrl': proches[i].image.url }
             similars.append(dic_el)
@@ -81,7 +80,7 @@ def addComment(request):
     cm = Comment.objects.get_or_create(comment=msg, name=nm, product=prd)
 
     comments = Comment.objects.filter(product=prd).order_by('-date')
-    print(comments[0].comment)
+    #print(comments[0].comment)
     cm = []
     nms = []
     dt = []
@@ -123,11 +122,18 @@ def items_wanted(request):
 
     from itertools import chain
     desired_cats = list(chain(desired_cat, desired_subcat))
+    #print('desiredcats',desired_cats[0])
+    #
+    #print('in',len(Product.objects.filter(category = desired_cats[5])))
 
-    if desired_cats:
-        for x in desired_cats:
-            if Product.objects.filter(category = x):
-                desired_prod = list(chain(Product.objects.filter(category = x), desired_prod))
+
+    if desired_subcat:
+        for x in desired_subcat:
+            if Product.objects.filter(category = x.subcategory):
+                desired_prod = list(chain(Product.objects.filter(category = x.subcategory), desired_prod))
+    else:
+        if Product.objects.filter(category = desired_cat[0]):
+            desired_prod = list(Product.objects.filter(category = desired_cat[0]))
 
     #if search_string:
     #    qset = Q()
@@ -212,7 +218,7 @@ def upload_image(request):
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 
-def addProduct2(request):
+def addProduct(request):
     global image_uploaded
     global number_crop
     if request.method == 'POST':
@@ -231,85 +237,41 @@ def addProduct2(request):
         img = ''
     return render_to_response('AddProduct.html', {'images':img , 'form': form},context_instance=RequestContext(request))
 
-def addProduct(request):
-    context={}
-    return render(request,'ManageProducts.html', context)
-
-def edit_pro(request):
-    context={}
-    return render(request,'ProductEdit.html', context)
-
-def handle_uploaded_file(f):
-    print("in uploaded file")
-    try:
-        print(f.size)
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        script_dir2 = os.path.dirname(script_dir)
-        m = str(len(Product.objects.all()))
-        st2 = "media\images\\test\\"+ m + ".JPEG"
-        print(st2)
-        tr = os.path.join(script_dir2, st2)
-        with open(tr, 'wb+') as destination:
-            for chunk in f.chunks():
-                destination.write(chunk)
-    except Exception as num:
-        print("chunks")
-        print(num)
-
-
 def submit_product(request):
-    print("i'm hereeeeeeee")
     global number_crop
-    nm = request.POST["name"]
-    print("name")
-    ctid = request.POST["category"]
+    nm = request.GET["name"]
+    ctid = request.GET["category"]
     cat = Category.objects.get(pk=ctid)
-    pr = request.POST["price"]
-    print("pr")
+    pr = request.GET["price"]
     prc = int(pr)
 
-    des = request.POST["description"]
-    # print(request.POST["files"])
-    handle_uploaded_file(request.FILES["files"])
-    # try:
-    # print(request.FILES["files"])
-    # except Exception as num:
-    #     print("in xata")
-    #     print(num)
+    des = request.GET["description"]
 
-    # form = DocumentForm(request.POST, request.FILES)
-    # print(form.is_valid())
-    # strr = request.GET["picURL"]
+    strr = request.GET["picURL"]
     try:
-        # script_dir = os.path.dirname(os.path.abspath(__file__))
-        # script_dir2 = os.path.dirname(script_dir)
-        # print(script_dir2)
-        # tr = os.path.join(script_dir2, 'media\images\products')
-        # print(tr)
-        # print(strr[16:])
-        # ttr = os.path.join(tr,strr[16:])
-        # print(ttr)
         script_dir = os.path.dirname(os.path.abspath(__file__))
         script_dir2 = os.path.dirname(script_dir)
-        m = str(len(Product.objects.all()))
-        st2 = "media\images\\test\\"+ m + ".JPEG"
-        im = Image.open(st2)
+        #print(script_dir2)
+        tr = os.path.join(script_dir2, 'media\images\products')
+        print(tr)
+        print(strr[16:])
+        ttr = os.path.join(tr,strr[16:])
+        print(ttr)
+        im = Image.open(ttr)
 
     except Exception as inst:
         print(inst)
 
     try:
-        x = request.POST["x1"]
+        x = request.GET["x"]
         xx = int(x)
-        y = request.POST["y1"]
+        y = request.GET["y"]
         yy = int(y)
-        w = request.POST["w"]
+        w = request.GET["w"]
         ww = int(w)
-        h = request.POST["h"]
+        h = request.GET["h"]
         hh = int(h)
         width, height = im.size
-        print(width)
-        print(height)
         xx = (xx*width)/300
         ww = (ww*width)/300
         hh = (hh*height)/300
@@ -320,11 +282,10 @@ def submit_product(request):
         hh = int(hh)
         immm = im.crop((xx ,yy,ww,hh))
     except Exception as num:
-        print("in cropping")
         print(num)
 
     try:
-        m = str(len(Product.objects.all()))
+        m = str(len(UploadedImage.objects.all()))
         strnm = "images/products/"+m+".JPEG"
         print("strnm")
         print(strnm)
@@ -336,7 +297,7 @@ def submit_product(request):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         script_dir2 = os.path.dirname(script_dir)
 
-        m = str(len(Product.objects.all()))
+        m = str(len(UploadedImage.objects.all()))
         st2 = "media\images\products\\"+ m + ".JPEG"
         tr = os.path.join(script_dir2, st2)
         temp_file = open(tr,"w")
@@ -358,17 +319,9 @@ def submit_product(request):
         print(num)
 
     prsss = Product.objects.all().last()
-    print(prsss.name)
+    #print(prsss.name)
     print(prsss.pk)
     print(prsss.image.url)
 
     response_data = {'result':1}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
-
-def transactions(request):
-    context={}
-    return render(request,"transactions.html",context)
-
-def edit_products(request):
-    context={}
-    return render(request,"EditProducts.html",context)
