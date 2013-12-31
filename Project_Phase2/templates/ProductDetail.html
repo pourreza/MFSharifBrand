@@ -7,15 +7,65 @@
 {% endblock %}
 {% block main_content %}
 
-                <div  data-toggle="modal" data-target="#myModal">
-                </div>
+<button id="show_similars" class="btn-small add-cart" data-toggle="popover">محصولات مشابه</button>
 
- <div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="hidden_div">
+    <div id="myCarousel_pop2" class="carousel slide" width="50%">
+           <ol class="carousel-indicators">
+              <li data-target="#myCarousel_pop2" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel_pop2" data-slide-to="1"></li>
+              <li data-target="#myCarousel_pop2" data-slide-to="2"></li>
+              <li data-target="#myCarousel_pop2" data-slide-to="3"></li>
+          </ol>
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            {% if similars %}
+                            {% for similar in similars %}
+                                {% with forloop.counter as num_pop2 %}
+                                    {% ifequal num_pop2 1 %}
+                                        <div class="active item">
+                                            <img src="{{ similar.picUrl }}" class="petit" >
+                                            <p dir="rtl" class="carsoul-detail">
+                                            {{ pro.description }}
+                                            <br/>
+                                            <br/>
+                                            {{ pro.price }} تومان
+                                            <br/>
+                                            <br/>
+                                            <a href="{{ similar.id }}" class="btn-mini add-cart"> مشخصات محصول</a>
+                                            </p>
+                                        </div>
+                                    {% else %}
+                                        <div class="item">
+                                            <img src="{{ similar.picUrl }}" class="petit" >
+                                            <p dir="rtl" class="carsoul-detail">
+                                                {{ pro.description }}
+                                                <br/>
+                                                <br/>
+                                                {{ pro.price }} تومان
+                                                <br/>
+                                                <br/>
+                                                <a href="{{ similar.id }}" class="btn-mini add-cart"> مشخصات محصول</a>
+                                            </p>
+                                        </div>
+                                    {% endifequal %}
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+          </div>
+          <!-- Carousel nav -->
+          <a class="carousel-control left" href="#myCarousel_pop2" data-slide="prev">&lsaquo;</a>
+          <a class="carousel-control right" href="#myCarousel_pop2" data-slide="next">&rsaquo;</a>
+        </div>
+
+</div>
+
+<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">  محصولات مرتبط  </h4>
+        <h4 class="modal-title" id="myModalLabel">  محصولات پیشنهادی </h4>
       </div>
       <div class="modal-body">
 
@@ -29,12 +79,12 @@
           </ol>
           <!-- Carousel items -->
           <div class="carousel-inner">
-            {% if similars %}
-                            {% for similar in similars %}
+            {% if recoms %}
+                            {% for recom in recoms %}
                                 {% with forloop.counter as num_pop %}
                                     {% ifequal num_pop 1 %}
                                         <div class="active item">
-                                            <img src="{{ similar.image.url }}" class="carousel-img_pop" >
+                                            <img src="{{ recom.image.url }}" class="carousel-img_pop" >
                                             <p dir="rtl" class="carsoul-detail">
                                             {{ pro.description }}
                                             <br/>
@@ -42,12 +92,12 @@
                                             {{ pro.price }} تومان
                                             <br/>
                                             <br/>
-                                            <a href="product/{{ similar.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
+                                            <a href="{{ recom.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
                                             </p>
                                         </div>
                                     {% else %}
                                         <div class="item">
-                                            <img src="{{ similar.image.url }}" class="carousel-img_pop" >
+                                            <img src="{{ recom.image.url }}" class="carousel-img_pop" >
                                             <p dir="rtl" class="carsoul-detail">
                                                 {{ pro.description }}
                                                 <br/>
@@ -55,7 +105,7 @@
                                                 {{ pro.price }} تومان
                                                 <br/>
                                                 <br/>
-                                                <a href="product/{{ similar.pk }}" id="this_button" class="btn-mini add-cart"> مشخصات محصول</a>
+                                                <a href="{{ recom.pk }}" id="this_button" class="btn-mini add-cart"> مشخصات محصول</a>
                                             </p>
                                         </div>
                                     {% endifequal %}
@@ -70,78 +120,9 @@
 
 
       </div>
-      <!--<div class="modal-footer">-->
-        <!--<button type="button" class="btn btn-default" data-dismiss="modal">اوکی</button>-->
-      <!--</div>-->
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-
-      <div class="modal fade" id="myModal2"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel2">  محصولات پیشنهادی </h4>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">بستن پنجره</button>
       </div>
-      <div class="modal-body">
-
-
-       <div id="myCarousel_pop2" class="carousel slide" width="50%">
-           <ol class="carousel-indicators">
-              <li data-target="#myCarousel_pop2" data-slide-to="0" class="active"></li>
-              <li data-target="#myCarousel_pop2" data-slide-to="1"></li>
-              <li data-target="#myCarousel_pop2" data-slide-to="2"></li>
-              <li data-target="#myCarousel_pop2" data-slide-to="3"></li>
-          </ol>
-          <!-- Carousel items -->
-          <div class="carousel-inner">
-            {% if recoms %}
-                            {% for recom in recoms %}
-                                {% with forloop.counter as num_pop %}
-                                    {% ifequal num_pop_2 1 %}
-                                        <div class="active item">
-                                            <img src="{{ recom.image.url }}" class="carousel-img_pop" >
-                                            <p dir="rtl" class="carsoul-detail">
-                                            {{ pro.description }}
-                                            <br/>
-                                            <br/>
-                                            {{ pro.price }} تومان
-                                            <br/>
-                                            <br/>
-                                            <a href="product/{{ recom.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
-                                            </p>
-                                        </div>
-                                    {% else %}
-                                        <div class="item">
-                                            <img src="{{ recom.image.url }}" class="carousel-img_pop" >
-                                            <p dir="rtl" class="carsoul-detail">
-                                                {{ pro.description }}
-                                                <br/>
-                                                <br/>
-                                                {{ pro.price }} تومان
-                                                <br/>
-                                                <br/>
-                                                <a href="product/{{ recom.pk }}"  class="btn-mini add-cart"> مشخصات محصول</a>
-                                            </p>
-                                        </div>
-                                    {% endifequal %}
-                                {% endwith %}
-                            {% endfor %}
-                        {% endif %}
-          </div>
-          <!-- Carousel nav -->
-          <a class="carousel-control left" href="#myCarousel_pop2" data-slide="prev">&lsaquo;</a>
-          <a class="carousel-control right" href="#myCarousel_pop2" data-slide="next">&rsaquo;</a>
-        </div>
-
-
-      </div>
-      <!--<div class="modal-footer">-->
-        <!--<button type="button" class="btn btn-default" data-dismiss="modal">اوکی</button>-->
-      <!--</div>-->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -163,9 +144,9 @@
             </li>
 
         </ul>
-        <a href="#openModal"><img id="pr-image" src="{{ product.0.image.url }}"/></a>
+        <a href="#openModal3"><img id="pr-image" src="{{ product.0.image.url }}"/></a>
 
-        <div id="openModal" class="modalDialog">
+        <div id="openModal3" class="modalDialog">
             <div>
                 <a href="#close" title="Close" class="close">X</a>
                 <img id="pr-image-big" src="{{ product.0.image.url }}"/>
@@ -233,5 +214,12 @@
 
     {% block js_very_end %}
         <script type="text/javascript" src= "{{ STATIC_URL }}javascript/product_detail.js"></script>
+
+
     {% endblock %}
+
+          <script>
+            var s = $('#hidden_div').html();
+        $('#show_similars').popover({ placement: 'bottom' ,title: 'محصولات مشابه', content: s , html:true });
+        </script>
 {% endblock %}

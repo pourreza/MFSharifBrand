@@ -48,6 +48,41 @@ def init():
     pro13, ok = Product.objects.get_or_create(name='بوت خیلی بلند', category=sub1, price=320000, popular=False, recommended = False, description='این بوت هم خودش بلند است هم کمک می‌کند شما بلند به نظر برسید', image="images/products/1_03.jpg")
     pro14, ok = Product.objects.get_or_create(name=' سندل خیلی ظریف', category=sub1, price=140000, popular=False, recommended = False, description='این سندل هم خودش ظریف است هم کمک می‌کند شما ظریف به نظر برسید', image="images/products/1_04.jpg")
     pro15, ok = Product.objects.get_or_create(name=' نیم بوت قهوه‌ای', category=sub1, price=180000, popular=False, recommended = False, description='این نیم‌بوت بسیار گرم و بسیار قهوه‌ایست', image="images/products/1_7.jpg")
+    pro16, ok = Product.objects.get_or_create(name=' پیراهن گل‌منگلی', category=sub2, price=240000, popular=False, recommended = False, description='با پوشیدن این پیراهن شما به گل‌منگلی‌ترین خانم مجلس تبدیل خواهید شد.', image="images/products/4_16.jpg")
+    pro17, ok = Product.objects.get_or_create(name='  تی‌شرت تیرخوردگی', category=sub2, price=140000, popular=False, recommended = False, description='یک تی‌شرت زیبا برای آنان که مرض دارند.', image="images/products/4_9.jpg")
+    pro18, ok = Product.objects.get_or_create(name='عطر بولگاری ', category=sub4, price=425000, popular= False, recommended = False, description='عطر بولگاری بسیار خوشبو مناسب برای بعضی سنین', image="images/products/4_03.jpg")
+    pro19, ok = Product.objects.get_or_create(name='عطر خاویار قرمز ', category=sub4, price=250000, popular= False, recommended = False, description='بهترین هدیه برای آن کس که دوستش دارید', image="images/products/4_01.jpg")
+    pro20, ok = Product.objects.get_or_create(name='عطر چوب ', category=sub4, price=250000, popular= False, recommended = False, description='مناسب برای آنان که از این دنیا فقط یک صندلی چوبی می‌خواهند', image="images/products/4_02.jpg")
+    pro21, ok = Product.objects.get_or_create(name='ساعت عهد شاه وزوزک ', category = sub11, price=2750000, popular = False, recommended= False, description='گذشته‌ها را به خاطر بیاورید. زمان در دستان شماست', image="images/products/11_1.jpg")
+    pro22, ok = Product.objects.get_or_create(name='ساعت بنددراز', category = sub11, price=120000, popular = False, recommended= False, description='بند بسیار بلند این ساعت چشم همگان را به خود خیره خواهد ساخت', image="images/products/11_2.jpg")
+    pro23, ok = Product.objects.get_or_create(name=' ساعت گیکی', category = sub11, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/11_3.jpg")
+    #pro24, ok = Product.objects.get_or_create(name='  متعل یک', category = sub9, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/3_3.jpg")
+    #pro25, ok = Product.objects.get_or_create(name='  متعل دو', category = sub9, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/1_7.jpg")
+    #pro26, ok = Product.objects.get_or_create(name='  متعل سه', category = sub9, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/4_03.jpg")
+    #pro27, ok = Product.objects.get_or_create(name='  کت شلوار یک', category = sub8, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/3_3.jpg")
+    #pro28, ok = Product.objects.get_or_create(name='  کت شلوار دو', category = sub8, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/1_7.jpg")
+    #pro29, ok = Product.objects.get_or_create(name='کت شلوار سه', category = sub8, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/4_03.jpg")
+    #pro30, ok = Product.objects.get_or_create(name='عطر یک', category = sub10, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/3_3.jpg")
+    #pro31, ok = Product.objects.get_or_create(name='عطردو', category = sub10, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/1_7.jpg")
+    #pro32, ok = Product.objects.get_or_create(name='عطر سه', category = sub10, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/4_03.jpg")
+    #pro33, ok = Product.objects.get_or_create(name=' کفش یک', category = sub7, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/3_3.jpg")
+    #pro34, ok = Product.objects.get_or_create(name='کفش دو', category = sub7, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/1_7.jpg")
+    #pro35, ok = Product.objects.get_or_create(name=' کفش سه', category = sub7, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/4_03.jpg")
+    #pro36, ok = Product.objects.get_or_create(name=' کیف یک', category = sub12, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/3_3.jpg")
+    #pro37, ok = Product.objects.get_or_create(name=' کیف دو', category = sub12, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/1_7.jpg")
+    #pro38, ok = Product.objects.get_or_create(name='کیف سه', category = sub12, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/4_03.jpg")
+    #pro39, ok = Product.objects.get_or_create(name='  ساعت یک', category = sub5, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/3_3.jpg")
+    #pro40, ok = Product.objects.get_or_create(name='ساعت دو ', category = sub5, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/1_7.jpg")
+    #pro41, ok = Product.objects.get_or_create(name='ساعت۳', category = sub5, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/4_03.jpg")
+    #pro42, ok = Product.objects.get_or_create(name=' کیف یک', category = sub6, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/3_3.jpg")
+    #pro43, ok = Product.objects.get_or_create(name=' کیف دو', category = sub6, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/1_7.jpg")
+    #pro44, ok = Product.objects.get_or_create(name='کیف سه', category = sub6, price=2080000, popular = False, recommended= False, description='ساعت پیشرفته مناسب برای گیک‌ها در تمامی سنین', image="images/products/4_03.jpg")
+    #
+    #
+    #
+
+
+
 
 
 

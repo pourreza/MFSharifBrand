@@ -6,13 +6,13 @@ class Category(models.Model):
    name = models.CharField(max_length = 50)
    img = models.ImageField('image', upload_to='images/profilepics')
    def __str__(self):
-       return str(self.name)
+       return str(self.pk)
 
 class SubCats(models.Model):
     category = models.ForeignKey(Category,related_name='creator')
     subcategory = models.ForeignKey(Category,related_name='subcategory')
     def __str__(self):
-        return str(self.category.name)
+        return str(self.category.pk)
 #
 class Product(models.Model):
    name = models.CharField("نام کالا", max_length = 255)

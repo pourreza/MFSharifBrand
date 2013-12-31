@@ -58,6 +58,73 @@
 
 
  {% block main_content %}
+        <div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">  محصولات پیشنهادی </h4>
+      </div>
+      <div class="modal-body">
+
+
+       <div id="myCarousel_pop" class="carousel slide" width="50%">
+           <ol class="carousel-indicators">
+              <li data-target="#myCarousel_pop" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel_pop" data-slide-to="1"></li>
+              <li data-target="#myCarousel_pop" data-slide-to="2"></li>
+              <li data-target="#myCarousel_pop" data-slide-to="3"></li>
+          </ol>
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            {% if recoms %}
+                            {% for recom in recoms %}
+                                {% with forloop.counter as num_pop %}
+                                    {% ifequal num_pop 1 %}
+                                        <div class="active item">
+                                            <img src="{{ recom.image.url }}" class="carousel-img_pop" >
+                                            <p dir="rtl" class="carsoul-detail">
+                                            {{ pro.description }}
+                                            <br/>
+                                            <br/>
+                                            {{ pro.price }} تومان
+                                            <br/>
+                                            <br/>
+                                            <a href="/product/{{ recom.pk }}" class="btn-mini add-cart"> مشخصات محصول</a>
+                                            </p>
+                                        </div>
+                                    {% else %}
+                                        <div class="item">
+                                            <img src="{{ recom.image.url }}" class="carousel-img_pop" >
+                                            <p dir="rtl" class="carsoul-detail">
+                                                {{ pro.description }}
+                                                <br/>
+                                                <br/>
+                                                {{ pro.price }} تومان
+                                                <br/>
+                                                <br/>
+                                                <a href="/product/{{ recom.pk }}" id="this_button" class="btn-mini add-cart"> مشخصات محصول</a>
+                                            </p>
+                                        </div>
+                                    {% endifequal %}
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+          </div>
+          <!-- Carousel nav -->
+          <a class="carousel-control left" href="#myCarousel_pop" data-slide="prev">&lsaquo;</a>
+          <a class="carousel-control right" href="#myCarousel_pop" data-slide="next">&rsaquo;</a>
+        </div>
+
+
+      </div>
+      <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">بستن پنجره</button>-->
+      <!--</div>-->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
         <div id="page_main" class="main">
     <img id="background-image" src="{{STATIC_URL}}images/dark-wood-wallpaper.jpg" style="z-index: -1;"/>
 

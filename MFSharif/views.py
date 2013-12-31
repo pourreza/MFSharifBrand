@@ -61,7 +61,7 @@ def product_info(request, pro_id):
     similars = []
     for i in range(3):
         if proches[i]:
-            print('proches:',proches[i])
+            #print('proches:',proches[i])
             print('url:', proches[i].image.url)
             dic_el = {'category': proches[i].category, 'price': proches[i].price, 'id': proches[i].pk, 'name': proches[i].name, 'picUrl': proches[i].image.url }
             similars.append(dic_el)
@@ -80,7 +80,7 @@ def addComment(request):
     cm = Comment.objects.get_or_create(comment=msg, name=nm, product=prd)
 
     comments = Comment.objects.filter(product=prd).order_by('-date')
-    print(comments[0].comment)
+    #print(comments[0].comment)
     cm = []
     nms = []
     dt = []
@@ -122,11 +122,18 @@ def items_wanted(request):
 
     from itertools import chain
     desired_cats = list(chain(desired_cat, desired_subcat))
+    #print('desiredcats',desired_cats[0])
+    #
+    #print('in',len(Product.objects.filter(category = desired_cats[5])))
 
-    if desired_cats:
-        for x in desired_cats:
-            if Product.objects.filter(category = x):
-                desired_prod = list(chain(Product.objects.filter(category = x), desired_prod))
+
+    if desired_subcat:
+        for x in desired_subcat:
+            if Product.objects.filter(category = x.subcategory):
+                desired_prod = list(chain(Product.objects.filter(category = x.subcategory), desired_prod))
+    else:
+        if Product.objects.filter(category = desired_cat[0]):
+            desired_prod = list(Product.objects.filter(category = desired_cat[0]))
 
     #if search_string:
     #    qset = Q()
@@ -244,7 +251,7 @@ def submit_product(request):
     try:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         script_dir2 = os.path.dirname(script_dir)
-        print(script_dir2)
+        #print(script_dir2)
         tr = os.path.join(script_dir2, 'media\images\products')
         print(tr)
         print(strr[16:])
@@ -312,7 +319,7 @@ def submit_product(request):
         print(num)
 
     prsss = Product.objects.all().last()
-    print(prsss.name)
+    #print(prsss.name)
     print(prsss.pk)
     print(prsss.image.url)
 
