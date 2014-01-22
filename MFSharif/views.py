@@ -8,8 +8,11 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
 
 from MFSharif.forms import DocumentForm
+from MFSharif.forms import RegisterUser
 
 from MFSharif.models import *
 from PIL import Image
@@ -378,3 +381,32 @@ def transactions(request):
 def edit_products(request):
     context={}
     return render(request,"EditProducts.html",context)
+
+def regFormSent(request):
+    if request.method == 'POST':
+        form = RegisterUser(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            #send email
+            return HttpResponseRedirect('/thanks/')
+
+    else:
+        form = RegisterUser()
+    return render(request, 'Register.html', {'form': form})
+
+
+def UserEnter(request):
+    user_n = request.POST["username"]
+    pass_w = request.POST['password']
+    user = authenticate(username = user_n, password = pass_w)
+    if user is not None:
+        if user.is_active:
+            login(request,user)
+        else:
+            pass;
+    else:
+        pass;

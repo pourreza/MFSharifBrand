@@ -1,0 +1,1 @@
+salam haji, bia vase confirm boro in tu {{site.domain}}/accounts/activate/{{activation_key}}

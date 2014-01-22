@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+        <div id="page_main" class="main">
+    <img id="background-image" src="{{STATIC_URL}}images/dark-wood-wallpaper.jpg" style="z-index: -1;"/>
+
+
+      <div class="crums" style="width: 300px; background-color: none; height: 30px; position: absolute; right: 20px" dir="rtl">
+
+	       <ul class="breadcrumb my_crums" style="background-color: none !important;">
+
+	           <li>
+
+	               <a href="/">
+	                   ام اف شریف
+	                   <i class="icon-home icon-large"></i>
+	               </a>
+	           </li>
+	           <li class="active">
+	                   <span class="divider">/</span>
+ثبت کاربر جدید
+	           </li>
+
+                <li class="active">
+	                   <span class="divider">/</span>
+پایان عملیات فعالسازی
+   </li>
+
+	       </ul>
+   </div>
+
+
+        <p>فعالسازی با موفقیت انجام شد</p>
+</div>
+{% endblock %}

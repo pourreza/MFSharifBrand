@@ -1,0 +1,1 @@
+confirmation email for {{site.name}}

@@ -1,6 +1,7 @@
 ## Create your models here.
 ## -*- coding: utf-8 -*-
 from django.db import models
+from django.contrib.auth.models import User
 
 class Category(models.Model):
    name = models.CharField(max_length = 50)
@@ -44,6 +45,11 @@ class Comment(models.Model):
    product = models.ForeignKey(Product,verbose_name = "محصول")
    def __str__(self):
        return str(self.product.name)
+
+#class bills(models.Model):
+#    owner = models.ForeignKey(User)
+#    products_included = models.ManyToManyField(Product)
+
 
 class MarketBasket(models.Model):
     # general fields

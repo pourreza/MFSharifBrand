@@ -21,8 +21,13 @@ urlpatterns = patterns('',
     url(r'^transactions','MFSharif.views.transactions', name = 'transactions'),
     url(r'^editProducts','MFSharif.views.edit_products', name = 'edit-products'),
     url(r'^editP','MFSharif.views.edit_pro', name = 'editp'),
+    url(r'^register/$','MFSharif.views.regFormSent', name='regFormSent'),
+    url(r'^doLogin/$', 'MFSharif.views.UserEnter', name= 'UserEnter'),
 
-    url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^accounts/', include('registration.backends.default.urls')),
+
+
 )
 
 
