@@ -10,6 +10,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
+from django.contrib import messages
+from django.contrib.auth import logout
 
 from MFSharif.forms import DocumentForm
 from MFSharif.forms import RegisterUser
@@ -42,7 +44,7 @@ def index(request):
     pro = PopularProducts.objects.all()
     recoms = Product.objects.filter(recommended = True)
 
-    context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms}
+    context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms, 'URL': ''}
     return render(request, 'base.html', context)
 
 def product_info(request, pro_id):
@@ -69,7 +71,7 @@ def product_info(request, pro_id):
             dic_el = {'category': proches[i].category, 'price': proches[i].price, 'id': proches[i].pk, 'name': proches[i].name, 'picUrl': proches[i].image.url }
             similars.append(dic_el)
 
-    context={'product':pro, 'comments':comments, 'dates':dates, 'similars': similars, 'recoms': recoms}
+    context={'product':pro, 'comments':comments, 'dates':dates, 'similars': similars, 'recoms': recoms, 'URL':'ProductDetail'}
     return render(request,'ProductDetail.html', context)
 
 def addComment(request):
@@ -102,7 +104,7 @@ def addComment(request):
 def loadsearch(request):
     global image_uploaded
     image_uploaded = False
-    context = {}
+    context = {'URL':'search'}
     return render(request, 'search.html', context)
 
 
@@ -185,7 +187,7 @@ def items_wanted(request):
 
     response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist}
     recoms = Product.objects.filter(recommended = True)
-    context = { 'recoms':recoms}
+    context = { 'recoms':recoms, 'URL': 'search.html'}
     render(request,'search.html', context)
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -195,7 +197,7 @@ def into_search(request, category, search_str):
     global image_uploaded
     image_uploaded = False
     recoms = Product.objects.filter(recommended = True)
-    context = {'p_category_': category, 'p_search_str_': search_str, 'recoms': recoms};
+    context = {'p_category_': category, 'p_search_str_': search_str, 'recoms': recoms, 'URL': 'search'};
     return render(request, 'search.html', context)
 
 
@@ -241,11 +243,11 @@ def addProduct2(request):
     return render_to_response('AddProduct.html', {'images':img , 'form': form},context_instance=RequestContext(request))
 
 def addProduct(request):
-    context={}
+    context={'URL':'ManageProducts'}
     return render(request,'ManageProducts.html', context)
 
 def edit_pro(request):
-    context={}
+    context={'ProductEdit'}
     return render(request,'ProductEdit.html', context)
 
 def handle_uploaded_file(f):
@@ -375,38 +377,65 @@ def submit_product(request):
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 def transactions(request):
-    context={}
+    context={'URL':'transactions'}
     return render(request,"transactions.html",context)
 
 def edit_products(request):
-    context={}
+    context={'URL':'EditProducts'}
     return render(request,"EditProducts.html",context)
 
-def regFormSent(request):
-    if request.method == 'POST':
-        form = RegisterUser(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            #send email
-            return HttpResponseRedirect('/thanks/')
-
-    else:
-        form = RegisterUser()
-    return render(request, 'Register.html', {'form': form})
+#def regFormSent(request):
+#    if request.method == 'POST':
+#        form = RegisterUser(request.POST)
+#        if form.is_valid():
+#            username = form.cleaned_data['username']
+#            first_name = form.cleaned_data['first_name']
+#            last_name = form.cleaned_data['last_name']
+#            email = form.cleaned_data['email']
+#            password = form.cleaned_data['password']
+#            #send email
+#            return HttpResponseRedirect('/thanks/')
+#
+#    else:
+#        form = RegisterUser()
+#    return render(request, 'Register.html', {'form': form})
 
 
 def UserEnter(request):
     user_n = request.POST["username"]
     pass_w = request.POST['password']
+
+    print ('user_n: ',user_n)
+
+    if user_n is '' or pass_w is '':
+        custom_message= 'لطفاً تمامی فیلدها را پر کنید'
+        response_data={'custom_message': custom_message, 'status':'moldy'}
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
     user = authenticate(username = user_n, password = pass_w)
+
     if user is not None:
         if user.is_active:
             login(request,user)
+            custom_message= 'خوش آمدید'
+            response_data={'custom_message': custom_message, 'status':'ok'}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
         else:
-            pass;
+            custom_message= 'کاربر غیرفعال است'
+            response_data={'custom_message': custom_message, 'status':'moldy'}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
     else:
-        pass;
+       custom_message = 'کاربری با کلمه‌ی عبور وارد شده وجود ندارد'
+       response_data={'custom_message': custom_message, 'status':'moldy'}
+       return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+
+
+def UserExit(request):
+    logout(request)
+    return HttpResponse(json.dumps({}), content_type="application/json")
+

@@ -52,8 +52,19 @@
             ام اف شریف برند
             <div id="login">
                 <span style="opacity:0.6">
-                    <div  data-toggle="modal" data-target="#LoginModal">
-ورود کاربر                </div>
+
+
+                        {% if not user.is_authenticated %}
+                           <div  data-toggle="modal" data-target="#LoginModal">
+                               ورود کاربر
+                               </div>
+                         {% else %}
+                    <button type="button" onclick="logOut()">خروج</button>
+{{user.first_name}}
+
+
+                    {% endif %}
+
                 </span>
 
                 <div class="dropdown">
@@ -281,55 +292,6 @@
         </div>
 
 
-<a href="accounts/register"> helloo</a>
-
-    <div class="modal fade" id="LoginModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="LoginModalLabel">ورود کاربر </h4>
-      </div>
-      <div class="modal-body">
-
-<form action="/doLogin/" method="post" class="form-horizontal" role="form">{% csrf_token %}
-  <div class="form-group">
-    <label for="inputUsername3" class="col-sm-2 control-label">نام کاربری</label>
-    <div class="col-sm-10">
-      <input type="text" name="username" class="form-control" id="inputUsername3" placeholder="Username">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputPassword3" class="col-sm-2 control-label">کلمه‌ی عبور</label>
-    <div class="col-sm-10">
-      <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <div class="checkbox">
-        <!--<label>-->
-          <!--<input type="checkbox"> Remember me-->
-        <!--</label>-->
-      </div>
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">ورود</button>
-              <button type="submit" class="btn btn-default"> ثبت‌نام</button>
-    </div>
-  </div>
-</form>
-
-      </div>
-      <!--<div class="modal-footer">-->
-        <!--<button type="button" class="btn btn-default" data-dismiss="modal">بستن پنجره</button>-->
-      <!--</div>-->
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 
 
 
@@ -351,4 +313,104 @@
 
 {% block js_very_end %}
 {% endblock %}
+
+  <div class="modal fade" id="LoginModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="LoginModalLabel">ورود کاربر </h4>
+      </div>
+      <div class="modal-body">
+
+<form action="/doLogin/" id = "login_form" method="post" class="form-horizontal" role="form">{% csrf_token %}
+  <div class="form-group">
+    <label for="inputUsername3" class="col-sm-2 control-label">نام کاربری </label>
+    <div class="col-sm-10">
+      <input type="text" name="username" class="form-control" id="inputUsername3" placeholder="Username">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-2 control-label"> کلمه‌ی عبور</label>
+    <div class="col-sm-10">
+      <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <div class="checkbox">
+        <!--<label>-->
+          <!--<input type="checkbox"> Remember me-->
+        <!--</label>-->
+      </div>
+    </div>
+  </div>
+
+    <div id = "message_div"></div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">ورود</button>
+              <button type="button" onclick="goRegister()" class="btn btn-default"> ثبت‌نام</button>
+    </div>
+  </div>
+</form>
+
+      </div>
+      <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal">بستن پنجره</button>-->
+      <!--</div>-->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </html>
+
+<script type="text/javascript">
+
+    var frm = $('#login_form');
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data.status === "moldy"){
+                $("#message_div").html(data.custom_message);
+                   }
+                else
+                {
+                    window.location.href = './';
+                }
+
+            },
+            error: function(data) {
+//                $("#MESSAGE-DIV").html("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
+
+    function logOut(){
+        var url = "/doLogOut/";
+
+	$.ajax({
+		url: url,
+		type: 'get',
+		dataType: 'json',
+		success: function(data, status, xhr){
+            window.location.href="./"
+        },
+        error: function(){
+
+        }
+
+    })
+
+    }
+
+    function goRegister(){
+        window.location.href ="/accounts/register"
+    }
+
+</script>
