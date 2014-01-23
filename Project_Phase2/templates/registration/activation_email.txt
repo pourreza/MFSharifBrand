@@ -1,1 +1,3 @@
-salam haji, bia vase confirm boro in tu {{site.domain}}/accounts/activate/{{activation_key}}
+با سلام
+ لطفاً برای فعالسازی حساب کاربری خود بر روی لینک کلیک کنید.
+{{site.domain}}/accounts/activate/{{activation_key}}

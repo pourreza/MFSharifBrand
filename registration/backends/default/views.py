@@ -6,7 +6,9 @@ from registration import signals
 from registration.models import RegistrationProfile
 from registration.views import ActivationView as BaseActivationView
 from registration.views import RegistrationView as BaseRegistrationView
+from django.contrib.auth.models import Permission
 
+from MFSharif.models import *
 
 
 class RegistrationView(BaseRegistrationView):
@@ -73,15 +75,21 @@ class RegistrationView(BaseRegistrationView):
         class of this backend as the sender.
 
         """
-        username,first_name, last_name, email, password = cleaned_data['username'],cleaned_data['first_name'],cleaned_data['last_name'], cleaned_data['email'], cleaned_data['password1']
+        username,first_name, last_name, email, password, phone, postal_code, address, city = cleaned_data['username'],cleaned_data['first_name'],cleaned_data['last_name'], cleaned_data['email'], cleaned_data['password1'],cleaned_data['phone'],cleaned_data['postal_code'], cleaned_data['address'], cleaned_data['city']
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
         new_user = RegistrationProfile.objects.create_inactive_user(username,first_name,last_name, email,
                                                                     password, site)
-        new_user.last_name = last_name
-        new_user.first_name = first_name
+
+        perm1 = Permission.objects.get(codename='is_customer')
+
+        new_user.user_permissions.add(perm1)
+        #new_user.last_name = last_name
+        #new_user.first_name = first_name
+        MFUser.objects.create(phone= phone,postal_code = postal_code,address =  address,city = city, user = new_user)
+
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=request)

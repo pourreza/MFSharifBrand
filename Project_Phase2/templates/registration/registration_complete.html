@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+    {% block css %}
+
+ <link type="text/css" href="{{STATIC_URL}}css/registrationStyle.css" rel="stylesheet" />
+
+        {% endblock %}
 
 {% block main_content %}
 
@@ -31,9 +36,9 @@
    </div>
 
 
-<div>
-    <p>email ferestadim berid confirm konid</p>
-</div>
+
+    <p id="reg_end" class="regnotify"> ایمیل حاوی اطلاعات فعالسازی حساب کاربری شما به آدرس ایمیل شما فرستاده شد </p>
+
 
 
 

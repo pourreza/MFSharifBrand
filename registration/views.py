@@ -8,7 +8,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
 from registration import signals
-from registration.forms import RegistrationForm
+from registration.forms import RegistrationFormTermsOfService
 #from MFSharif.models import *
 #from django.shortcuts import render
 
@@ -68,7 +68,7 @@ class RegistrationView(_RequestPassingFormView):
     """
 
     disallowed_url = 'registration_disallowed'
-    form_class = RegistrationForm
+    form_class = RegistrationFormTermsOfService
     http_method_names = ['get', 'post', 'head', 'options', 'trace']
     success_url = None
     template_name = 'registration/registration_form.html'

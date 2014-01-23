@@ -201,3 +201,13 @@ a {
 a:hover {
     text-decoration: none;
 }
+
+.aligned_label{
+    direction: rtl;
+    text-align: right;
+    margin-right: 6px;
+    font-family: nastaliq;
+    font-size: 15px;
+    padding-bottom: 0px;
+
+}

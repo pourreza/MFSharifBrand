@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     #url(r'^register/$','MFSharif.views.regFormSent', name='regFormSent'),
     url(r'^doLogin/$', 'MFSharif.views.UserEnter', name= 'UserEnter'),
     url(r'^doLogOut/$', 'MFSharif.views.UserExit', name='UserExit'),
+    url(r'Profile$', 'MFSharif.views.ShowProfile', name='ShowProfile'),
+    url(r'changeinfo/$', 'MFSharif.views.ChangeInfo', name='ChangeInfo'),
+
 
 
     url(r'^accounts/', include('registration.backends.default.urls')),

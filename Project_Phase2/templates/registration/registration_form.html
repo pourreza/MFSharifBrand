@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+            {% block css %}
+
+ <link type="text/css" href="{{STATIC_URL}}css/registrationStyle.css" rel="stylesheet" />
+
+        {% endblock %}
+
+
 {% block main_content %}
 
 
@@ -26,16 +33,92 @@
 	       </ul>
    </div>
 
+            <div id="terms_conditions"></div>
 
+<div id="reg_form">
         <form action="" method = "post">{% csrf_token %} {{form.non_field_errors}}
-         {% for field in form %}
-            <div class="fieldWrapper">
-                {{field.label_tag}}
-                {{field}}
-                {{field.errors}}
-            </div>
-            {% endfor %}
-            <p><input type="submit" value="Submit"> </p>
+            <table>
+                <tr>
+                    <td>
+                        {{form.first_name.label_tag}}
+                        {{form.first_name}}
+                        {{form.first_name.errors}}
+                    </td>
+                    <td>
+                        {{form.last_name.label_tag}}
+                        {{form.last_name}}
+                        {{form.last_name.errors}}
+                    </td>
+                    <td>
+                        {{form.username.label_tag}}
+                        {{form.username}}
+                        {{form.username.errors}}
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        {{form.email.label_tag}}
+                        {{form.email}}
+                        {{form.email.errors}}
+                    </td>
+                    <td>
+                        {{form.password1.label_tag}}
+                        {{form.password1}}
+                        {{form.password1.errors}}
+                    </td>
+                    <td>
+                        {{form.password2.label_tag}}
+                        {{form.password2}}
+                        {{form.password2.errors}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{form.phone.label_tag}}
+                        {{form.phone}}
+                        {{form.phone.errors}}
+                    </td>
+                    <td>
+                        {{form.city.label_tag}}
+                        {{form.city}}
+                        {{form.city.errors}}
+
+                    </td>
+
+                    <td>
+                        {{form.postal_code.label_tag}}
+                        {{form.postal_code}}
+                        {{form.postal_code.errors}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{form.address.label_tag}}
+                        {{form.address}}
+                        {{form.address.errors}}
+
+                    </td>
+                    <td>
+                        {{form.tos}}
+                        {{form.tos.label_tag}}
+                        {{form.tos.errors}}
+                    </td>
+                </tr>
+
+            </table>
+
+         <!--{% for field in form %}-->
+            <!--<div class="fieldWrapper">-->
+                <!--{{field.label_tag}}-->
+                <!--{{field}}-->
+                <!--{{field.errors}}-->
+            <!--</div>-->
+            <!--{% endfor %}-->
+
+            <p><button  class="btn btn-default " type="submit" value="Submit"> ثبت </button> </p>
         </form>
+
+    </div>
 </div>
 {% endblock %}

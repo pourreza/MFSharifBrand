@@ -10,6 +10,7 @@ from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
+
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -84,6 +85,7 @@ class RegistrationManager(models.Manager):
         new_user = User.objects.create_user(username,email, password)
         new_user.first_name = name
         new_user.last_name = last_name
+
         new_user.is_active = False
         new_user.save()
 
@@ -181,7 +183,7 @@ class RegistrationProfile(models.Model):
     account registration and activation.
     
     """
-    ACTIVATED = "ALREADY_ACTIVATED"
+    ACTIVATED = u"ALREADY_ACTIVATED"
     
     user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
     activation_key = models.CharField(_('activation key'), max_length=40)
@@ -193,7 +195,7 @@ class RegistrationProfile(models.Model):
         verbose_name_plural = _('registration profiles')
     
     def __unicode__(self):
-        return "Registration information for %s" % self.user
+        return u"Registration information for %s" % self.user
     
     def activation_key_expired(self):
         """

@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 from MFSharif.forms import DocumentForm
 from MFSharif.forms import RegisterUser
@@ -387,22 +388,6 @@ def edit_products(request):
     context={'URL':'EditProducts'}
     return render(request,"EditProducts.html",context)
 
-#def regFormSent(request):
-#    if request.method == 'POST':
-#        form = RegisterUser(request.POST)
-#        if form.is_valid():
-#            username = form.cleaned_data['username']
-#            first_name = form.cleaned_data['first_name']
-#            last_name = form.cleaned_data['last_name']
-#            email = form.cleaned_data['email']
-#            password = form.cleaned_data['password']
-#            #send email
-#            return HttpResponseRedirect('/thanks/')
-#
-#    else:
-#        form = RegisterUser()
-#    return render(request, 'Register.html', {'form': form})
-
 
 def UserEnter(request):
     user_n = request.POST["username"]
@@ -442,3 +427,26 @@ def UserExit(request):
     logout(request)
     return HttpResponse(json.dumps({}), content_type="application/json")
 
+def ShowProfile(request):
+    return render(request, 'Profile.html', {})
+
+def ChangeInfo(request):
+    username_ = request.POST['username']
+    first_name_ = request.POST['first_name']
+    last_name_ = request.POST['last_name']
+    phone_ = request.POST['phone']
+    postal_code_ = request.POST['postal_code']
+    password_ = request.POST['password']
+    address_ = request.POST['address']
+
+    user = User.objects.get(username__exact = username_)
+    user.set_password(password_)
+    user.first_name = first_name_
+    user.last_name = last_name_
+    user.mfuser.phone = phone_
+    user.mfuser.postal_code = postal_code_
+    user.mfuser.address = address_
+    user.save()
+    user.mfuser.save()
+
+    return HttpResponseRedirect('/Profile')
