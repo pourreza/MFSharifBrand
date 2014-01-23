@@ -20,12 +20,15 @@ from MFSharif.models import *
 from PIL import Image
 import os
 import tempfile
+import re
+
 
 image_uploaded = False
 number_crop = 0
 
 # Create your views here.
 def index(request):
+    print(request.user)
     global image_uploaded
     image_uploaded = False
     cat_women = Category.objects.filter(name='زنانه')
