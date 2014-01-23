@@ -8,24 +8,34 @@ purchaseChoices = (
     ('not_paid', 'پرداخت نشده')
 )
 
-class MFUser(User):
+class MFUser(models.Model):
     phone = models.CharField(max_length = 12, verbose_name = " شماره تلفن")
 
     postal_code = models.CharField(max_length = 10, verbose_name = "کدپستی", blank = True)
     address = models.TextField(verbose_name = " آدرس")
     city = models.CharField(max_length = 20, verbose_name = " شهر")
+    user = models.OneToOneField(User,verbose_name='کاربر')
+    class Meta:
+        verbose_name = 'کاربر سایت'
+        verbose_name_plural = 'کاربران سایت'
 
 class Category(models.Model):
    name = models.CharField(max_length = 50)
    img = models.ImageField('image', upload_to='images/profilepics')
    def __str__(self):
        return str(self.pk)
+   class Meta:
+       verbose_name = 'دسته محصول'
+       verbose_name_plural = 'دسته های محصولات'
 
 class SubCats(models.Model):
     category = models.ForeignKey(Category,related_name='creator')
     subcategory = models.ForeignKey(Category,related_name='subcategory')
     def __str__(self):
         return str(self.category.pk)
+    class Meta:
+        verbose_name = 'زیردسته'
+        verbose_name_plural = 'زیردسته ها'
 #
 class Product(models.Model):
    name = models.CharField("نام کالا", max_length = 255)
@@ -41,12 +51,18 @@ class Product(models.Model):
          return str(self.name)
    def __str__(self):
          return str(self.name)
+   class Meta:
+       verbose_name = 'مجصول'
+       verbose_name_plural = 'مجصولات'
 
 class PopularProducts(models.Model):
     product = models.ForeignKey(Product,verbose_name='کالا')
     image = models.ImageField('عکس تبلیغاتی', upload_to='images/products')
     def __str__(self):
         return str(self.product.name)
+    class Meta:
+        verbose_name = 'محصول پرطرفدار'
+        verbose_name_plural = 'محصولات پرطرفدار'
 
 class UploadedImage(models.Model):
     image = models.ImageField('عکس', upload_to='images/products')
@@ -58,20 +74,26 @@ class Comment(models.Model):
    product = models.ForeignKey(Product,verbose_name = "محصول")
    def __str__(self):
        return str(self.product.name)
+   class Meta:
+       verbose_name = 'نظر کاربر'
+       verbose_name_plural = 'نظرات کاربران'
 
 
 class MarketBasket(models.Model):
 
     # lastModified = models.DateTimeField(auto_now = True, 'آخرین تغییر')
-    paid = models.CharField(max_length = 9, choices = purchaseChoices, verbose_name = 'پرداخت شده یا نشده')
+    paid = models.CharField(max_length = 9, choices = purchaseChoices, verbose_name = 'پرداخت شده یا نشده' , default='not_paid')
     totalPrice = models.PositiveIntegerField('مبلغ کل',default = 0)
-    customer = models.OneToOneField(MFUser, related_name = 'marketBasket', verbose_name = 'خریدار')
+    customer = models.ForeignKey(MFUser, related_name = 'marketBasket', verbose_name = 'خریدار')
 
     # relation with products
     productList = models.ManyToManyField(Product, through = 'MarketBasket_Product')
 
     # variables
     itemsNum = 0  # should update every time an item removed or added or object created
+
+    def __str__(self):
+        return str(self.customer.username)
 
     def __init__(self, *args, **kwargs):
         super(MarketBasket, self).__init__(*args, **kwargs)
@@ -122,6 +144,10 @@ class MarketBasket(models.Model):
         self.save()
         self.itemsNum = 0
 
+    class Meta:
+        verbose_name = 'سبد خرید'
+        verbose_name_plural = 'سبدهای خرید'
+
 
 class MarketBasket_Product(models.Model):
     # foreign keys
@@ -130,3 +156,8 @@ class MarketBasket_Product(models.Model):
 
     # fields
     number = models.IntegerField(default = 1)
+    def __str__(self):
+        return str(self.product.name)
+    class Meta:
+        verbose_name = 'محصول سبد خرید'
+        verbose_name_plural = 'محصولات سبد خرید'

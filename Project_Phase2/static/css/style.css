@@ -33,18 +33,51 @@
     opacity:0.6;
 
     position: absolute;
-    margin-left: 790px;
+    margin-left: 830px;
 
     font-size: 23px;
     text-align: right;
     font-family: entezar;
 }
 
+#cart{
+    opacity:0.6;
+
+    position: absolute;
+    margin-left: 300px;
+
+    font-size: 23px;
+    text-align: right;
+    font-family: entezar;
+}
+
+#profile{
+    opacity:0.6;
+
+    margin-left: 510px;
+    position:absolute;
+
+    font-size: 23px;
+    font-family: entezar;
+}
+
+
+#manage{
+    opacity:0.6;
+
+    margin-left: 590px;
+    position:absolute;
+
+    font-size: 23px;
+    font-family: entezar;
+}
+
+
 
 #add{
 	opacity:0.6;
 
-	margin-left: 590px;
+	margin-left: 650px;
 	position:absolute;
 
 	font-size: 23px;
@@ -52,7 +85,7 @@
 }
 
 #login{
-    margin-left: 350px;
+    margin-left: 355px;
     position:absolute;
 
     font-size: 23px;

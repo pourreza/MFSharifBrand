@@ -9,31 +9,32 @@ def init():
     perm1, ok = Permission.objects.get_or_create(content_type = ct, codename = 'is_customer', name = 'Can act like a normal customer')
     perm2, ok = Permission.objects.get_or_create(content_type = ct, codename = 'is_salesman', name = 'Can act like a salesman')
 
-    customer1, ok = MFUser.objects.get_or_create(username = 'maryam', first_name = 'مریم', last_name = 'پوررضا', email = 'mm.pourreza@gmail.com',
-                                                 postal_code = '1234567890', address = 'بلوار ارشاد-خیابان وحدت - نبش وحدت 6- مجتمع مسکونی یاس', phone = '66', city = 'مشهد')
-    customer1.set_password('123')
-    customer1.save()
+    user1, ok =User.objects.get_or_create(username = 'maryam', first_name = 'مریم', last_name = 'پوررضا', email = 'mm.pourreza@gmail.com')
+    user1.set_password('123')
+    user1.save()
+    user2, ok =User.objects.get_or_create(username = 'farnaz', first_name = 'فرناز', last_name = 'جهان بخش', email = 'farnaz.jahanbakhsh92@gmail.com')
+    user2.set_password('123')
+    user2.save()
+    user3, ok =User.objects.get_or_create(username = 'ali', first_name = 'علی', last_name = 'خردمند', email = 'a.i.kheradmand@gmail.com')
+    user3.set_password('123')
+    user3.save()
+    user4, ok =User.objects.get_or_create(username = 'atiye', first_name = 'عطیه', last_name = 'اشعری', email = 'atiyeashari@gmail.com')
+    user4.set_password('123')
+    user4.save()
 
-    customer2, ok = MFUser.objects.get_or_create(username = 'farnaz', first_name = 'فرناز', last_name = 'جهان بخش', email = 'farnaz.jahanbakhsh92@gmail.com',
-                                                 postal_code = '1234567890', address = 'نزدیک باغ ارم', phone = '66', city = 'شیراز')
-    customer2.set_password('123')
-    customer2.save()
+    customer1, ok = MFUser.objects.get_or_create(postal_code = '1234567890', address = 'بلوار ارشاد-خیابان وحدت - نبش وحدت 6- مجتمع مسکونی یاس', phone = '66', city = 'مشهد', user= user1)
 
-    customer3, ok = MFUser.objects.get_or_create(username = 'ali', first_name = 'علی', last_name = 'خردمند', email = 'a.i.kheradmand@gmail.com',
-                                                 postal_code = '1234567890', address = 'خیابان پل خواجو :-؟؟', phone = '66', city = 'اصفهان')
-    customer3.set_password('123')
-    customer3.save()
+    customer2, ok = MFUser.objects.get_or_create(user=user2,postal_code = '1234567890', address = 'نزدیک باغ ارم', phone = '66', city = 'شیراز')
 
-    customer4, ok = MFUser.objects.get_or_create(username = 'atiye', first_name = 'عطیه', last_name = 'اشعری', email = 'atiyeashari@gmail.com',
-                                                 postal_code = '1234567890', address = 'بلوار اول، خیابان دوم', phone = '66', city = 'کرج')
-    customer4.set_password('123')
-    customer4.save()
+    customer3, ok = MFUser.objects.get_or_create(user = user3,postal_code = '1234567890', address = 'خیابان پل خواجو :-؟؟', phone = '66', city = 'اصفهان')
 
-    customer1.user_permissions.add(perm2)
-    customer3.user_permissions.add(perm2)
+    customer4, ok = MFUser.objects.get_or_create(user = user4,postal_code = '1234567890', address = 'بلوار اول، خیابان دوم', phone = '66', city = 'کرج')
 
-    customer2.user_permissions.add(perm1)
-    customer4.user_permissions.add(perm1)
+    user1.user_permissions.add(perm2)
+    user3.user_permissions.add(perm2)
+
+    user2.user_permissions.add(perm1)
+    user4.user_permissions.add(perm1)
 
     cat1, ok = Category.objects.get_or_create(name='زنانه', img="images/profilepics/Capture.JPG")
 
