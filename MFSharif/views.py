@@ -12,7 +12,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.utils.itercompat import product
+from django.contrib.auth.models import User
 
 from MFSharif.forms import DocumentForm
 from MFSharif.forms import RegisterUser
@@ -50,110 +50,6 @@ def index(request):
 
     context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms, 'URL': ''}
     return render(request, 'base.html', context)
-
-def cartProducts(request):
-    usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    print(marketbasket)
-    if marketbasket:
-        prs = marketbasket[0].productList.all()
-    else:
-        mfuser = MFUser.objects.get(user = usr)
-        MarketBasket.createForCustomer(mfuser)
-        marketbasket = MarketBasket.objects.filter(customer=mfuser,paid='not_paid')
-        prs = []
-
-    product_ids = []
-    product_names = []
-    product_count = []
-    product_unit = []
-    for pr in prs:
-        mr = marketbasket[0]
-        product_ids.append(pr.pk)
-        product_names.append(pr.name)
-        product_unit.append(pr.unit)
-        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
-        product_count.append(num)
-
-    if marketbasket:
-        sum = marketbasket[0].totalPrice
-    else:
-        sum = 0
-    response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
-    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
-
-def removeCartProduct(request):
-    usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    id = request.GET.get('id')
-
-    pr = Product.objects.get(pk = id)
-    marketbasket[0].remove_item(pr)
-    sum = marketbasket[0].totalPrice
-
-    response_data = {'result':1, 'sum':sum}
-    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
-
-def addCartProduct(request):
-    usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    id = request.GET.get('id')
-    pr = Product.objects.get(pk=id)
-    mr = marketbasket[0]
-    num = MarketBasket_Product.objects.filter(basket=mr,product=pr)
-    if len(num)>0:
-        n = num[0].number
-        num[0].number = n+1
-        num[0].save()
-
-    marketbasket[0].add_item(pr)
-    marketbasket[0].updateItems()
-
-    prs = marketbasket[0].productList.all()
-    product_ids = []
-    product_names = []
-    product_count = []
-    product_unit = []
-
-    for pr in prs:
-        product_ids.append(pr.pk)
-        product_names.append(pr.name)
-        product_unit.append(pr.unit)
-        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
-        print(num)
-        product_count.append(num)
-
-    sum = marketbasket[0].totalPrice
-    response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
-    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
-
-def buyProducts(request):
-    usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    if len(marketbasket)>0:
-        products = []
-        prs = marketbasket[0].productList.all()
-        if len(prs)>0:
-            mr = marketbasket[0]
-            for pr in prs:
-                num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
-                products.append((pr,num))
-            total = marketbasket[0].totalPrice
-            context = {'products':products, 'sum':total}
-        else:
-            context = {'error':'سبد خرید خالیست!'}
-    else:
-        context = {'error':'سبد خرید خالیست!'}
-    return render(request, "BuyProducts.html", context)
-
-def confirmBuy(request):
-    usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    if len(marketbasket)>0:
-        marketbasket[0].paid = 'paid'
-        marketbasket[0].save()
-    response_data = {'result':1, }
-    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 def product_info(request, pro_id):
     global image_uploaded
@@ -492,28 +388,12 @@ def edit_products(request):
     context={'URL':'EditProducts'}
     return render(request,"EditProducts.html",context)
 
-#def regFormSent(request):
-#    if request.method == 'POST':
-#        form = RegisterUser(request.POST)
-#        if form.is_valid():
-#            username = form.cleaned_data['username']
-#            first_name = form.cleaned_data['first_name']
-#            last_name = form.cleaned_data['last_name']
-#            email = form.cleaned_data['email']
-#            password = form.cleaned_data['password']
-#            #send email
-#            return HttpResponseRedirect('/thanks/')
-#
-#    else:
-#        form = RegisterUser()
-#    return render(request, 'Register.html', {'form': form})
-
 
 def UserEnter(request):
     user_n = request.POST["username"]
     pass_w = request.POST['password']
 
-    print ('user_n: ',user_n)
+    #print ('user_n: ',user_n)
 
     if user_n is '' or pass_w is '':
         custom_message= 'لطفاً تمامی فیلدها را پر کنید'
@@ -547,3 +427,26 @@ def UserExit(request):
     logout(request)
     return HttpResponse(json.dumps({}), content_type="application/json")
 
+def ShowProfile(request):
+    return render(request, 'Profile.html', {})
+
+def ChangeInfo(request):
+    username_ = request.POST['username']
+    first_name_ = request.POST['first_name']
+    last_name_ = request.POST['last_name']
+    phone_ = request.POST['phone']
+    postal_code_ = request.POST['postal_code']
+    password_ = request.POST['password']
+    address_ = request.POST['address']
+
+    user = User.objects.get(username__exact = username_)
+    user.set_password(password_)
+    user.first_name = first_name_
+    user.last_name = last_name_
+    user.mfuser.phone = phone_
+    user.mfuser.postal_code = postal_code_
+    user.mfuser.address = address_
+    user.save()
+    user.mfuser.save()
+
+    return HttpResponseRedirect('/Profile')

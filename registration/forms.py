@@ -8,7 +8,7 @@ you're using a custom model.
 
 """
 
-
+from MFSharif.models import *
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -40,6 +40,11 @@ class RegistrationForm(forms.Form):
                                 label=_("کلمه‌عبور"),error_messages={'required': _('لطفاً‌کلمه‌ی عبور مدنظر خود را وارد کنید')})
     password2 = forms.CharField(widget=forms.PasswordInput,
                                 label=_(" تکرار کلمه‌ی عبور"), error_messages= {'required':_('این فیلد نباید خالی باشد')})
+
+    postal_code = forms.IntegerField(label=_('کد پستی'), error_messages={'required':'لطفاً کد پستی خود را وارد کنید', 'min_value': 'کد پستی باید از ۱۱۱۱۱۱۱ بزرگتر و از ۹۹۹۹۹۹۹ کوچکتر باشد', 'max_value': 'کد پستی باید از ۱۱۱۱۱۱۱ بزرگتر و از ۹۹۹۹۹۹۹ کوچکتر باشد'})
+    phone= forms.IntegerField(label=_('شماره تلفن') ,error_messages= {'required': 'وارد کردن شماره تلفن الزامی است'})
+    city = forms.ChoiceField(label= _('شهر') ,choices=([('1', 'تهران'),('2','شیراز'),('3', 'مشهد'),('4', 'اصفهان')]),error_messages={'required': _('لطفاً شهر خود را انتخاب کنید')})
+    address = forms.CharField(label= _('آدرس') ,max_length=150, widget=forms.Textarea, error_messages={'required':'وارد کردن آدرس الزامی است'})
     
     def clean_username(self):
         """
@@ -74,7 +79,7 @@ class RegistrationFormTermsOfService(RegistrationForm):
     
     """
     tos = forms.BooleanField(widget=forms.CheckboxInput,
-                             label=_('I have read and agree to the Terms of Service'),
+                             label=_(u'I have read and agree to the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})
 
 

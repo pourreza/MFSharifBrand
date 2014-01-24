@@ -1,0 +1,86 @@
+.regnotify{
+font-family: nastaligh ;
+padding-bottom: 5px;
+direction: rtl;
+color: ghostwhite;
+position: absolute;
+font-size: 60px;
+
+}
+#reg_end{
+top: 170px;
+right: 330px;
+}
+
+#active_end{
+    top: 170px;
+    right: 550px;
+}
+#activate_failed{
+    top:170px;
+    right: 330px;
+}
+
+#activate_id{
+    top: 192px;
+    right: 550;
+}
+
+.fieldWrapper{
+    font-size: 60px;
+    direction: rtl;
+    text-align: right;
+    padding: 5px;
+    color: ghostwhite;
+    font-family: nastaligh !important;
+}
+
+#reg_form{
+    border: #ffffff dotted;
+    border-radius: 16px;
+    float: right;
+    position: absolute;
+    top: 105px;
+    left: 50px ;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-top: 15px;
+    /*margin-: 30px;*/
+
+}
+
+#terms_conditions{
+    background-color: #ffffff;
+	opacity: 0.6;
+    border-radius: 25px;
+    position: absolute;
+    top: 150px;
+    right: 50px;
+    width: 380px;
+    height: 380px;
+}
+td{
+    padding: 8px;
+    /*margin-left: 18px;*/
+    /*margin-right: 14px;*/
+}
+
+ul {
+    list-style-type: none;
+}
+table{
+    font-size: 18px;
+    direction: rtl;
+    text-align: right;
+    /*padding: 5px;*/
+    color: ghostwhite;
+    font-family: nastaligh !important;
+}
+label {
+    font-size: 23px;
+}
+
+#id_address{
+    height: 30px  ;
+    overflow: scroll;
+}
