@@ -185,7 +185,6 @@ function addRealQuick() {
 					pro_price = parseInt(document.getElementById("price").innerHTML);
 					console.log (pro_price);
 					console.log(cart_price);
-
 					add_cart(pro_id);
 				}
 		}
@@ -193,40 +192,71 @@ function addRealQuick() {
 }
 
 
-function add_cart() {
-//        alert(pro_id);
-        var urlNewComment = "http://webproject.roohy.me/ajax/2/m&f/cart/add";
-        var ajaxNewComment = {
-            "productId": pro_id,
-        }
-        $.ajax({
-            url: urlNewComment,
-            type: 'get',
-            dataType: 'json',
-            data: ajaxNewComment,
-            success: function (data, status, xhr) {
-                if (data.result == 0) {
-                    // Request error
-//                    alert("resid");
-                } else {
-//                    alert("resid");
-                }
-            },
-            // ...
-        });
-        var temp = [pro_id, pro_price];
-        cart_price.push(temp);
-        $('.my-dropdown li:last').remove();
-        $('.my-dropdown li:last').remove();
-        console.log("++"+pro_id);
-        $(".my-dropdown").append('<li role="presentation" id="' +pro_id + '"><a href="#" class="cross" onclick="exit(' + pro_id + ')"> &#10006;<span style="font-weight: bold">' + pro_name + '</span></a></li>');
-       
-       sum += pro_price;
-       $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع:' + sum + '   تومان</a></li>');
-
-}
-
-
+//function add_cart() {
+////        alert(pro_id);
+//        var urlNewComment = "http://webproject.roohy.me/ajax/2/m&f/cart/add";
+//        var ajaxNewComment = {
+//            "productId": pro_id,
+//        }
+//        $.ajax({
+//            url: urlNewComment,
+//            type: 'get',
+//            dataType: 'json',
+//            data: ajaxNewComment,
+//            success: function (data, status, xhr) {
+//                if (data.result == 0) {
+//                    // Request error
+////                    alert("resid");
+//                } else {
+////                    alert("resid");
+//                }
+//            },
+//            // ...
+//        });
+//        var temp = [pro_id, pro_price];
+//        cart_price.push(temp);
+//        $('.my-dropdown li:last').remove();
+//        $('.my-dropdown li:last').remove();
+//        console.log("++"+pro_id);
+//        $(".my-dropdown").append('<li role="presentation" id="' +pro_id + '"><a href="#" class="cross" onclick="exit(' + pro_id + ')"> &#10006;<span style="font-weight: bold">' + pro_name + '</span></a></li>');
+//
+//       sum += pro_price;
+//       $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع:' + sum + '   تومان</a></li>');
+//
+//}
+//
+//function add_cart(id) {
+//
+//    var url = "../../addCartProduct";
+//    var categry;
+//    $.ajax({
+//        url: url,
+//        type: 'get',
+//        dataType: 'json',
+//        data : {'id':id},
+//        success: function(data, status, xhr){
+//            if (data.result == 0){
+//                // Request error
+//            }else
+//            {
+//                document.getElementsByClassName("my-dropdown")[0].innerHTML = ""
+//                for (var i = 0; i < data.product_names.length; i++) {
+//                    $(".my-dropdown").append('<li role="presentation" id="' + data.product_ids[i] + '"><a href="#" class="cross" onclick="exit(' + data.product_ids[i] + ')"> &#10006;<span style="font-weight: bold">' + data.product_names[i] + '('+ data.product_count[i]+' '+ data.product_unit[i]+')</span></a></li>');
+//                }
+//                if (data.sum!=0){
+//                    $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع: <span style="font-weight: bold">' + data.sum + '  تومان</span></span></a></li>');
+//                }
+//                else{
+//                    $(".my-dropdown").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold"> سبد خرید خالیست.</a></li>');
+//                }
+//                alert("این کالا به سبد خرید اضافه شد :)")
+//            }
+//        }
+//
+//
+//    });
+//
+//}
 function load_current_cart(){
 
 

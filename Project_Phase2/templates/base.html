@@ -35,6 +35,7 @@
         <script type="text/javascript" src="{{STATIC_URL}}javascript/bootstrap.js"></script>
         <script type="text/javascript" src="{{STATIC_URL}}javascript/home_page_search.js"></script>
         <script type="text/javascript" src="{{STATIC_URL}}javascript/search_variables.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}javascript/buy_product.js"></script>
     {% endblock %}
 
     <title>
@@ -94,7 +95,7 @@
 
         </div>
             <div id="add">
-                <a href="{% url 'addProduct' %}" style="color: ghostwhite; text-decoration: none;">
+                <a href="{% url 'buyProducts' %}" style="color: ghostwhite; text-decoration: none;">
                     خرید محصولات سبد
                 </a>
 

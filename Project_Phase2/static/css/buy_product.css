@@ -1,0 +1,44 @@
+.pr-add-form{
+    position: absolute;
+    right: 240px;
+    padding-right: 20px;
+    padding-top: 20px;
+    border: 2px dotted ghostwhite;
+    border-radius: 10px;
+    height: 450px;
+    margin-top: -10px;
+    margin-right: -220px;
+    width: 1300px;
+    font-family: bnazanin;
+    font-size: 18px;
+    font-weight: bold;
+    color:white;
+}
+.pr-info-header{
+    font-family: nastaligh;
+    font-size: 40px;
+    color: ghostwhite;
+}
+
+.trans_hd{
+    margin-top: 80px;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+}
+.trans_td{
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 10px;
+    width: 100px;
+    height: 60px;
+}
+
+.add-cart{
+    margin-top: 5px;
+    background-color: rgb(109, 68, 46);
+    color:floralwhite;
+    font-family: bnazanin;
+    font-size: 15px;
+    border:none;
+}

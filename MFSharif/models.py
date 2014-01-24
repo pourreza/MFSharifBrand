@@ -15,6 +15,9 @@ class MFUser(models.Model):
     address = models.TextField(verbose_name = " آدرس")
     city = models.CharField(max_length = 20, verbose_name = " شهر")
     user = models.OneToOneField(User,verbose_name='کاربر')
+    def __str__(self):
+        return self.user.username
+
     class Meta:
         verbose_name = 'کاربر سایت'
         verbose_name_plural = 'کاربران سایت'
@@ -93,7 +96,7 @@ class MarketBasket(models.Model):
     itemsNum = 0  # should update every time an item removed or added or object created
 
     def __str__(self):
-        return str(self.customer.username)
+        return str(self.customer.user.username)
 
     def __init__(self, *args, **kwargs):
         super(MarketBasket, self).__init__(*args, **kwargs)
@@ -102,7 +105,7 @@ class MarketBasket(models.Model):
 
     @staticmethod
     def createForCustomer(customer):
-        MarketBasket.objects.get_or_create(customer = customer)
+        MarketBasket.objects.create(customer = customer)
 
     def add_item(self, product):
         if self.set_item(product, -1):

@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/buy_product.css">
+{% endblock %}
+{% block title %}
+    خرید محصولات سبد
+{% endblock %}
+{% block main_content %}
+    <div class="main" dir="rtl">
+    <img id="background-image" src="static/images/dark-wood-wallpaper.jpg" style="z-index: -1;"/>
+
+    <ul class="breadcrumb my_crums add-pr">
+        <li>
+            <i class="icon-home icon-large"></i>
+            <a href="/">
+                ام اف شریف
+            </a>
+        </li>
+        {% block breadcrum %}
+            <li class="active">
+                <span class="divider">/</span>
+                خرید محصولات سبد
+            </li>
+        {% endblock %}
+
+    </ul>
+    {% block  producer_main %}
+        <div class="pr-add-form">
+
+            <div class="pr-info-header">
+                خرید محصولات سبد
+            </div>
+        {% if error %}
+            <div style="margin-top: 50px; margin-right: 100px; font-size: 20px; font-weight: bold;">
+            {{ error }}
+            </div>
+        {% else %}
+        <div class="transaction-table" style="margin-top: 20px;max-height: 300px; overflow: auto; margin-left: 260px;margin-right: 210px;">
+        <table class="table table-condensed" dir="rtl" style=" width: 800px;  ">
+        <thead>
+        <th class="trans_hd" style="width: 50px;">
+            ردیف
+        </th>
+        <th class="trans_hd">
+
+        </th>
+        <th class="trans_hd">
+            کد محصول
+        </th>
+        <th class="trans_hd">
+            نام محصول
+        </th>
+        <th class="trans_hd">
+            دسته
+        </th>
+        <th class="trans_hd">
+            تعداد
+        </th>
+        <th class="trans_hd">
+            قیمت
+        </th>
+        <th class="trans_hd">
+        </th>
+        </thead>
+        <tbody>
+        {% for pr, number in products %}
+            {% with forloop.counter as i %}
+                <tr id="tr_{{ pr.pk }}">
+                    <td class="trans_td"  style="width: 50px;">
+                        {{ i }}
+                    </td>
+                    <td class="trans_td">
+                        <img src="{{ pr.image.url }}" style="width: 50px;height: 50px">
+                    </td>
+                    <td class="trans_td">
+                        {{ pr.pk }}
+                    </td>
+                    <td class="trans_td">
+                        {{ pr.name }}
+                    </td>
+                    <td class="trans_td">
+                        {{ pr.category.name }}
+                    </td>
+                    <td class="trans_td">
+                        {{ number }} {{ pr.unit }}
+                    </td>
+                    <td class="trans_td">
+{{ pr.price }} تومان
+                    </td>
+                    <td class="trans_td">
+                        <button class="info-button" type="button" onclick="remove2({{ pr.pk }})" style="margin-top: 5px; background-color: rgb(109, 68, 46); color:floralwhite;font-family: bnazanin;font-size: 15px; border:none;">
+                            حذف
+                        </button>
+                    </td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+
+        </tbody>
+        </table>
+
+        </div>
+        <div style="margin-right: 520px;margin-top: 20px; ">
+     مجموع: {{ sum }} تومان
+        </div>
+        <button class="add-cart" style="margin-right: 560px; margin-top: 10px;"type="button" onclick="buy()">خرید محصولات</button>
+        {% endif %}
+    {% endblock %}
+    </div>
+{% endblock %}
+
+{% block js_very_end %}
+    <script type="text/javascript" src="static/javascript/base.js"></script>
+    <script type="text/javascript" src="static/javascript/add_product.js"></script>
+    <script type="text/javascript">
+        function remove2(id){
+            var temp = "tr_"+id;
+            var tr = document.getElementById(temp);
+            tr.parentNode.removeChild(tr);
+
+            var url = "../removeCartProduct";
+            var categry;
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'json',
+                data : {'id':id},
+                success: function(data, status, xhr){
+                    if (data.result == 0){
+                        // Request error
+                    }else
+                    {
+                        document.getElementById(id).remove();
+                        $('.my-dropdown li:last').remove();
+                        $('.my-dropdown li:last').remove();
+                        if (data.sum!=0){
+                            $(".my-dropdown").append('<li role="presentation" class="divider"></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold">مجموع:' + data.sum + '   تومان</a></li>');
+                        }else{
+                            $(".my-dropdown").append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="font-weight: bold"> سبد خرید خالیست.</a></li>');
+                        }
+                        alert('کالای انتخاب شده از سبد خرید حذف گردید.');
+                    }
+                }
+
+
+            });
+        }
+
+        function buy(){
+            var url = "../confirmBuy";
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'json',
+                success: function(data, status, xhr){
+                    if (data.result == 0){
+                        // Request error
+                    }else
+                    {
+                        alert("با تشکر از خرید شما. محصولات خریداری شده به آدرس شما ارسال می گردند.")
+                        window.location.replace('../');
+                    }
+                }
+
+
+            });
+        }
+    </script>
+
+
+{% endblock %}

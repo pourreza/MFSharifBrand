@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.utils.itercompat import product
 
 from MFSharif.forms import DocumentForm
 from MFSharif.forms import RegisterUser
@@ -49,6 +50,110 @@ def index(request):
 
     context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms, 'URL': ''}
     return render(request, 'base.html', context)
+
+def cartProducts(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    print(marketbasket)
+    if marketbasket:
+        prs = marketbasket[0].productList.all()
+    else:
+        mfuser = MFUser.objects.get(user = usr)
+        MarketBasket.createForCustomer(mfuser)
+        marketbasket = MarketBasket.objects.filter(customer=mfuser,paid='not_paid')
+        prs = []
+
+    product_ids = []
+    product_names = []
+    product_count = []
+    product_unit = []
+    for pr in prs:
+        mr = marketbasket[0]
+        product_ids.append(pr.pk)
+        product_names.append(pr.name)
+        product_unit.append(pr.unit)
+        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+        product_count.append(num)
+
+    if marketbasket:
+        sum = marketbasket[0].totalPrice
+    else:
+        sum = 0
+    response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+
+def removeCartProduct(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    id = request.GET.get('id')
+
+    pr = Product.objects.get(pk = id)
+    marketbasket[0].remove_item(pr)
+    sum = marketbasket[0].totalPrice
+
+    response_data = {'result':1, 'sum':sum}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+
+def addCartProduct(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    id = request.GET.get('id')
+    pr = Product.objects.get(pk=id)
+    mr = marketbasket[0]
+    num = MarketBasket_Product.objects.filter(basket=mr,product=pr)
+    if len(num)>0:
+        n = num[0].number
+        num[0].number = n+1
+        num[0].save()
+
+    marketbasket[0].add_item(pr)
+    marketbasket[0].updateItems()
+
+    prs = marketbasket[0].productList.all()
+    product_ids = []
+    product_names = []
+    product_count = []
+    product_unit = []
+
+    for pr in prs:
+        product_ids.append(pr.pk)
+        product_names.append(pr.name)
+        product_unit.append(pr.unit)
+        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+        print(num)
+        product_count.append(num)
+
+    sum = marketbasket[0].totalPrice
+    response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+
+def buyProducts(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    if len(marketbasket)>0:
+        products = []
+        prs = marketbasket[0].productList.all()
+        if len(prs)>0:
+            mr = marketbasket[0]
+            for pr in prs:
+                num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+                products.append((pr,num))
+            total = marketbasket[0].totalPrice
+            context = {'products':products, 'sum':total}
+        else:
+            context = {'error':'سبد خرید خالیست!'}
+    else:
+        context = {'error':'سبد خرید خالیست!'}
+    return render(request, "BuyProducts.html", context)
+
+def confirmBuy(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    if len(marketbasket)>0:
+        marketbasket[0].paid = 'paid'
+        marketbasket[0].save()
+    response_data = {'result':1, }
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 def product_info(request, pro_id):
     global image_uploaded
