@@ -155,7 +155,9 @@
         <p class="pr-name">
             {{ product.0.name }}
         </p>
-        <button id="my-cart-add" class="btn-mini add-cart" onclick="add_cart('{{ product.0.pk }}')"> اضافه کردن به سبد</button>
+        {% if not usr %}
+            <button id="my-cart-add" class="btn-mini add-cart" onclick="add_cart('{{ product.0.pk }}')"> اضافه کردن به سبد</button>
+        {% endif %}
     </div>
     <div class="product-info">
         <div class="pr-info-header">
@@ -177,9 +179,15 @@
         </div>
         <div class="new-comment">
             <span>
-                <button id="submit-comment" onclick="add('{{ product.0.pk }}')">
-                    ثبت نظر
-                </button>
+                {% if usr %}
+                    <button id="submit-comment" onclick="add('{{ product.0.pk }}',false)">
+                        ثبت نظر
+                    </button>
+                {% else %}
+                    <button id="submit-comment" onclick="add('{{ product.0.pk }}',true)">
+                        ثبت نظر
+                    </button>
+                {% endif %}
             </span>
 
             <input type="text" id="newComment" dir="rtl"/>
@@ -197,7 +205,7 @@
                     {% for comment in comments %}
                         {% with forloop.counter as num %}
                         <li>
-                            {{ comment.name }}:{{ comment.comment }}
+                            {{ comment.customer.user.first_name }}:{{ comment.comment }}
                             <p>
                                 تاریخ: {{ comment.date.date }}
                             </p>

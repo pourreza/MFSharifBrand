@@ -84,7 +84,7 @@ class Comment(models.Model):
 
 class MarketBasket(models.Model):
 
-    # lastModified = models.DateTimeField(auto_now = True, 'آخرین تغییر')
+    lastModified = models.DateTimeField(auto_now = True,verbose_name= 'آخرین تغییر')
     paid = models.CharField(max_length = 9, choices = purchaseChoices, verbose_name = 'پرداخت شده یا نشده' , default='not_paid')
     totalPrice = models.PositiveIntegerField('مبلغ کل',default = 0)
     customer = models.ForeignKey(MFUser, related_name = 'marketBasket', verbose_name = 'خریدار')

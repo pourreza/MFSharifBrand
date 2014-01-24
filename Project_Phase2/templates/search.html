@@ -177,8 +177,13 @@
 
 <div id ="what_is_selected"> <p id= "cat_title">دسته‌ی انتخاب شده</p> <p id="selected_category">  </p> </div>
 
-<button id ="see_product" class="btn-small" onclick="go_to_product_page()"> مشاهده‌ی محصول</button>
+
+           {% if not usr %}
+               <button id ="see_product" class="btn-small" onclick="go_to_product_page()"> مشاهده‌ی محصول</button>
 <button id="add_to_cart_" class="btn-small" onclick="addRealQuick()">اضافه کردن به سبد</button>
+               {% else %}
+               <button id ="see_product" class="btn-small" style="margin-right: 200px;margin-left: -60px;" onclick="go_to_product_page()"> مشاهده‌ی محصول</button>
+            {% endif %}
 
 
 <div id="description_container">

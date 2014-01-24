@@ -1,4 +1,32 @@
 {% extends 'EditProducts.html' %}
+{% block js %}
+
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/bootstrap.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.7.2.min.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.min.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery.form.js"></script>
+    {#    <link rel="stylesheet" type="text/css" href="css/imgareaselect-default.css" />#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.pack.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.min.js"></script>#}
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/add_product.js"></script>#}
+
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.10.2.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}javascript/jquery-1.7.2.min.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.min.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.pack.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.min.js"></script>#}
+    {#    <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery.imgareaselect.js"></script>#}
+{% endblock %}
 {% block breadcrum %}
     <li>
         <span class="divider">/</span>
@@ -23,113 +51,128 @@
         <div class="pr-info-header">
             ویرایش محصول:
         </div>
-        <form action="submitProduct" method="get" name="myform" id="my-add-form">
-            <table>
-                <tr>
-                    <td class="td-input">
-                        نام محصول:
-                    </td>
-                    <td class="td-input">
-                        <input class="span2" id="name-pr" type="text" name="mytextfield" value="عطر گل محمدی"
-                               style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="td-input">
-                        قیمت:
-                    </td>
-                    <td class="td-input">
-                        <input class="span2" id="price-pr" type="number" value='300000' name="mytextfield" min='0'
-                               style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center;"/>
-                        تومان
-                    </td>
-                </tr>
-                <tr>
-                    <td class="td-input">
-                        دسته محصول:
-                    </td>
-                    <td class="id-input">
-                        {#                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px; ">#}
-                        {#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
-                        {#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
-                        {#                                <span class="caret" style="margin-left:8px"></span>#}
-                        {#                                انتخاب دسته#}
-                        {#                            </button>#}
-                        {#                            <ul id="dropdown_ul" class="dropdown-menu">#}
-                        {##}
-                        {#                            </ul>#}
-                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px;">
-                            <button  id="select-button"  class="span2 btn dropdown-toggle" data-toggle="dropdown" dir="rtl" style="border-radius: 5px; text-align: right">
-                                <span class="caret" style="margin-left:8px"></span>
-                                انتخاب دسته
-                            </button>
-                            <ul id="dropdown_ul" class="dropdown-menu"style=" max-height:200px; overflow-y: auto;overflow-x: hidden;">
+            <form action="submitEditProduct" method="post" name="myform" id="my-edit-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td class="td-input">
+                            نام محصول:
+                        </td>
+                        <td class="td-input">
+                            <input class="span2" id="name-pr" type="text" name="name" value="{{ pr.name }}"
+                                   style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-input">
+                            قیمت:
+                        </td>
+                        <td class="td-input">
+                            <input class="span2" id="price-pr" type="number" value='{{ pr.price }}' name="price"  min='0'
+                                   style="height: 15px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center;"/>
+                            تومان
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-input">
+                            دسته محصول:
+                        </td>
+                        <td class="id-input">
+                            {#                        <div id="dropdown_toggle" class="btn-group" style="margin-right:10px; ">#}
+                            {#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
+                            {#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
+                            {#                                <span class="caret" style="margin-left:8px"></span>#}
+                            {#                                انتخاب دسته#}
+                            {#                            </button>#}
+                            {#                            <ul id="dropdown_ul" class="dropdown-menu">#}
+                            {##}
+                            {#                            </ul>#}
+                            <div id="dropdown_toggle" class="btn-group" style="margin-right:10px;">
+                                <button  id="select-button"  class="span2 btn dropdown-toggle" data-toggle="dropdown" dir="rtl" style="border-radius: 5px; text-align: right">
+                                    <span class="caret" style="margin-left:8px"></span>
+                                    انتخاب دسته
+                                </button>
+                                <ul id="dropdown_ul" class="dropdown-menu"style=" max-height:200px; overflow-y: auto;overflow-x: hidden;">
 
-                            </ul>
-                        </div>
-                        {#                        </div>#}
-                        {#                        <div id="dropdown_toggle" class="btn-group"style="margin-right:10px; ">#}
-                        {#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
-                        {#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
-                        {#                                انتخاب دسته‌ها#}
-                        {#                                <span class="caret"></span>#}
-                        {#                            </button>#}
-                        {#                            <ul id="dropdown_ul" class="dropdown-menu">#}
-                        {##}
-                        {#                            </ul>#}
-                        {#                        </div>#}
+                                </ul>
+                            </div>
+                            <input id="cat"  type="hidden" name="category" value="0" />
+                            {#                        </div>#}
+                            {#                        <div id="dropdown_toggle" class="btn-group"style="margin-right:10px; ">#}
+                            {#                            <button id="select-button" class="span2 btn dropdown-toggle" data-toggle="dropdown"#}
+                            {#                                    dir="rtl" style="border-radius: 5px; text-align: right">#}
+                            {#                                انتخاب دسته‌ها#}
+                            {#                                <span class="caret"></span>#}
+                            {#                            </button>#}
+                            {#                            <ul id="dropdown_ul" class="dropdown-menu">#}
+                            {##}
+                            {#                            </ul>#}
+                            {#                        </div>#}
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="td-input">
-                        توضیح محصول:
-                    </td>
-                    <td class="td-input">
-                        <input class="span5" id="info-pr" type="text" name="mytextfield" value="به کلاس ما خوش آمدی :دی"
-                               style="height: 35px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
-                    </td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-input">
+                            توضیح محصول:
+                        </td>
+                        <td class="td-input">
+                            <input class="span5" id="info-pr" type="text" name="description" value="{{ pr.description }}"
+                                   style="height: 35px; margin-top:5px;padding-top: 7px;padding-bottom: 7px ; text-align: center"/>
+                        </td>
 
-                </tr>
+                    </tr>
 
-                {#                <tr>#}
-                {##}
-                {#                    <td class="td-input">#}
-                {#                        تصویر محصول:#}
-                {#                        <img src='{{ images.image.url }}' style="width:50px; height: 50px;">#}
-                {#                    </td>#}
-                {#                    <td class="td-input">#}
-                {##}
-                {#                    </td>#}
-                {#                </tr>#}
-                <tr>
+                    {#                <tr>#}
+                    {##}
+                    {#                    <td class="td-input">#}
+                    {#                        تصویر محصول:#}
+                    {#                        <img src='{{ images.image.url }}' style="width:50px; height: 50px;">#}
+                    {#                    </td>#}
+                    {#                    <td class="td-input">#}
+                    {##}
+                    {#                    </td>#}
+                    {#                </tr>#}
+                    <tr>
 
-                    <td class="td-input">
-                        تصویر محصول:
-                    </td>
-                    <td class="td-input" >
+                        <td class="td-input">
+                            تصویر محصول:
+                        </td>
+                        <td class="td-input" >
+                            <input class="span3" type="file" id="files" name="files" value="{{ pr.image.url }}">
+                        </td>
+                    </tr>
+                </table>
+                <input id="x1"  type="hidden" name="x1" value="0" />
+                <input id="y1" type="hidden" name="y1" value="0" />
+                <input id="w" type="hidden" name="w" value="300" />
+                <input id="h" type="hidden" name="h" value="300" />
+                <input id="pr_id" type="hidden" name="id" value="{{ pr.pk }}">
+                <input id="hidden-image" type="hidden" name="image" value="0" />
 
-                    </td>
-                </tr>
-            </table>
-            <input id="x1"  type="hidden" name="x1" value="0" />
-            <input id="y1" type="hidden" name="y1" value="0" />
-            <input id="w" type="hidden" name="w" value="0" />
-            <input id="h" type="hidden" name="h" value="0" />
-            <input id="hidden-image" type="hidden" name="image" value="{{ images.image.name }}" />
 
-        </form>
+            </form>
 
-        {#        <form id="imageForm">#}
-        {#            {% csrf_token %}#}
-        {#            <input class="span3" type="file" name="image" style="height:35px; margin-right: 120px; margin-top:-70px"#}
-        {#                   id="pro-img">#}
-        {#        <button class="my-submit" type="button" onclick="crop()">جداکردن عکس</button>#}
-            <form id="imageForm">
-                <input class="span3" type="file" id="files" name="files[]" style="height:35px; margin-right: 120px; margin-top:-70px">
-{#            <p><button class="my-submit" onclick="crop2()" >جداکردن عکس </button></p>#}
-        </form>
-        <button class="my-submit2"  style="margin-right: 120px; margin-top: -30px;" type="button" onclick="product_edit()">ثبت ویرایش</button>
+            {#        <form id="imageForm">#}
+            {#            {% csrf_token %}#}
+            {#            <input class="span3" type="file" name="image" style="height:35px; margin-right: 120px; margin-top:-70px"#}
+            {#                   id="pro-img">#}
+            {#        <button class="my-submit" type="button" onclick="crop()">جداکردن عکس</button>#}
+            {#        <form action="{% url 'addProduct' %}" method="post" enctype="multipart/form-data">#}
+            {#            {% csrf_token %}#}
+            {#            <span class="td-input" style="margin-top: -100px;padding-top: -100px;">#}
+            {#                تصویر محصول:#}
+            {#            </span>#}
+            {#            <span>{{ form.non_field_errors }}</span>#}
+            {#            <span style="margin-right: 8px; margin-top: 10px; ">#}
+            {#                {{ form.docfile.errors }}#}
+            {#                {{ form.docfile }}#}
+            {#            </span>#}
+            {#            <p><input class="my-submit" type="submit" value="جداکردن عکس" /></p>#}
+            {#        <form id="imageForm">#}
+            {##}
+            {#        </form>#}
+
+            <button class="my-submit2"  style="margin-right: 120px; margin-top: -30px;" type="button" onclick="product_edit()">ثبت ویرایش</button>
             <button class="my-submit2"  style="margin-right:10px; margin-top: -30px;" type="button">
                 <a href="{% url 'edit-products' %}" style="text-decoration: none; color: ghostwhite">
                 انصراف
@@ -143,23 +186,115 @@
         جداکردن عکس
     </p>
     <div id="imageSelect" style="width:300px; height: 300px; overflow: hidden">
-        <img src="{{ STATIC_URL }}images/perfume61.gif" id="img-select" style="width:300px; height: 300px;"/>
+        <img src="{{ pr.image.url }}" id="img-select" style="width:300px; height: 300px;"/>
 
     </div>
     <p style="font-family: bnazanin; font-size: 19px; font-weight: bold; position: absolute; right: 895px; top: 170px; color:  white;">
         عکس نهایی
     </p>
     <div id="final-image" style="width:100px; height: 100px; overflow: hidden" dir="ltr">
-        <img src="{{ STATIC_URL }}images/perfume61.gif" id="img-final" style="width:100px; height: 100px;"/>
+        <img src="{{ pr.image.url }}" id="img-final" style="width:100px; height: 100px;"/>
     </div>
     </div>
 {% endblock %}
 {% block js_very_end %}
-    <script type="text/javascript" src="static/javascript/base.js"></script>
-    <script type="text/javascript" src="static/javascript/add_product.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/javascript/base.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}/javascript/add_product.js"></script>
     <script type="text/javascript">
+
         $(document).ready(function () {
-            document.getElementById("select-button").childNodes[2].nodeValue = "عطر";
+            var url = "../../categorylisturl";
+            var categry;
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'json',
+                success: function(data, status, xhr){
+                    if (data.result == 0){
+                        // Request error
+                    }else
+                    {
+                        for (var i = 0  ; i < data.categoryList.length/2 + 1 ; i++)
+                        {
+                            if ( i !== 1 ){
+                                var new_li = document.createElement('li');
+                                new_li.setAttribute("id", "li_"+ data.categoryList[i].id);
+                                new_li.setAttribute("class", "li_cat");
+                                $("#dropdown_ul").append(new_li);
+                                var new_a = document.createElement ('a');
+                                new_a.innerHTML = data.categoryList[i].name;
+                                new_a.setAttribute("id", data.categoryList[i].id);
+                                new_a.setAttribute("name", data.categoryList[i].name);
+                                new_a.setAttribute("href", "#");
+                                $("#li_"+data.categoryList[i].id).append(new_a);
+                            }
+                            if (i === 0 || i === 7)
+                            {
+                                var li_div = document.createElement('li');
+                                li_div.setAttribute("class", "divider");
+                                $("#dropdown_ul").append(li_div);
+                            }
+
+
+                        }
+
+                        var new_li = document.createElement('li');
+                        new_li.setAttribute("id", "li_"+ data.categoryList[1].id);
+                        new_li.setAttribute("class", "li_cat");
+                        $("#dropdown_ul").append(new_li);
+                        var new_a = document.createElement ('a');
+                        new_a.innerHTML = data.categoryList[1].name;
+                        new_a.setAttribute("id", data.categoryList[1].id);
+                        new_a.setAttribute("name", data.categoryList[1].name);
+                        new_a.setAttribute("href", "#");
+                        $("#li_"+data.categoryList[1].id).append(new_a);
+
+                        var li_div = document.createElement('li');
+                        li_div.setAttribute("class", "divider");
+                        $("#dropdown_ul").append(li_div);
+
+                        for (var i = data.categoryList.length/2 + 1  ; i < data.categoryList.length ; i++)
+                        {
+                            var new_li = document.createElement('li');
+                            new_li.setAttribute("id", "li_"+ data.categoryList[i].id);
+                            new_li.setAttribute("class", "li_cat");
+                            $("#dropdown_ul").append(new_li);
+                            var new_a = document.createElement ('a');
+                            new_a.innerHTML = data.categoryList[i].name;
+                            new_a.setAttribute("id", data.categoryList[i].id);
+                            new_a.setAttribute("name", data.categoryList[i].name);
+                            new_a.setAttribute("href", "#");
+                            $("#li_"+data.categoryList[i].id).append(new_a);
+
+                        }
+
+
+
+                        console.log($("li_cat"));
+
+                        $('.li_cat').click( function(event){
+                            prim_str = event.target.id;
+                            console.log("hello world again!");
+                            console.log(event.target);
+                            console.log(prim_str);
+                            category__ = parseInt(prim_str);
+                            id_str= prim_str.substring(3);
+                            console.log(id_str);
+                            document.getElementById("select-button").childNodes[2].nodeValue = event.target.name;
+                            document.getElementById("cat").value = event.target.id;
+                            categry=event.target.id;
+
+
+                        });
+                        data.result = 0;
+                    }
+                }
+
+
+            });
+
+            document.getElementById("select-button").childNodes[2].nodeValue = '{{ pr.category.name }}';
+            document.getElementById("cat").value = '{{ pr.category.pk }}'
             $('#img-select').imgAreaSelect({ aspectRatio: '1:1', handles: true , onSelectChange: preview,
                 onSelectEnd: function (img, selection) {
                     $('input[name="x1"]').val(selection.x1);
@@ -224,8 +359,37 @@
 
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
     function product_edit(){
-       alert("تغییرات ایجاد شده در سیستم به ثبت رسیدند!")
-        window.location.href = "editProducts";
+        var namepr = document.getElementById("name-pr").value;
+        var pricepr = document.getElementById("price-pr").value;
+        var infopr = document.getElementById("info-pr").value;
+        var x = document.getElementById("x1").value;//$('input[name="x1"]').value;
+        var y = document.getElementById("y1").value;//$('input[name="y1"]').value;
+        var w = document.getElementById("w").value;//$('input[name="w"]').value;
+        var h = document.getElementById("h").value;//$('input[name="h"]').value;
+        var img = document.getElementById("hidden-image").value;//$('input[name="image"]').value;
+        var picId;
+        $("#my-edit-form").ajaxSubmit({
+
+            url : "../submitEditProduct",
+            type: "POST",
+{#            data : postData,#}
+            success:function(data, textStatus, jqXHR)
+            {
+                if (data.result == 0){
+                    alert("result 0");
+                }else{
+                    alert("تغییرات ایجاد شده در سیستم به ثبت رسیدند!")
+                    window.location.replace("../../editProducts");
+                }
+                //data: return data from server
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+                alert("error!");
+                //if fails		alert
+            }
+        });
+
     }
     </script>
 

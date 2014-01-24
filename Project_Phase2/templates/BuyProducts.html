@@ -116,8 +116,9 @@
         function remove2(id){
             var temp = "tr_"+id;
             var tr = document.getElementById(temp);
-            tr.parentNode.removeChild(tr);
-
+            if (tr.parentNode.childNodes.length==3){
+                tr.parentNode.parentNode.parentNode.parentNode.innerHTML = '<div class="pr-info-header"> خرید محصولات سبد  </div><div style="margin-top: 50px; margin-right: 100px; font-size: 20px; font-weight: bold;"> سبد خرید خالیست!</div>';
+            }
             var url = "../removeCartProduct";
             var categry;
             $.ajax({

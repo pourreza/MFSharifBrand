@@ -50,6 +50,110 @@ def index(request):
 
     context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms, 'URL': ''}
     return render(request, 'base.html', context)
+def cartProducts(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    print(marketbasket)
+    if marketbasket:
+        prs = marketbasket[0].productList.all()
+    else:
+        mfuser = MFUser.objects.get(user = usr)
+        MarketBasket.createForCustomer(mfuser)
+        marketbasket = MarketBasket.objects.filter(customer=mfuser,paid='not_paid')
+        prs = []
+
+    product_ids = []
+    product_names = []
+    product_count = []
+    product_unit = []
+    for pr in prs:
+        mr = marketbasket[0]
+        product_ids.append(pr.pk)
+        product_names.append(pr.name)
+        product_unit.append(pr.unit)
+        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+        product_count.append(num)
+
+    if marketbasket:
+        sum = marketbasket[0].totalPrice
+    else:
+        sum = 0
+    response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+
+def removeCartProduct(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    id = request.GET.get('id')
+
+    pr = Product.objects.get(pk = id)
+    marketbasket[0].remove_item(pr)
+    sum = marketbasket[0].totalPrice
+
+    response_data = {'result':1, 'sum':sum}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+
+def addCartProduct(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    id = request.GET.get('id')
+    pr = Product.objects.get(pk=id)
+    mr = marketbasket[0]
+    num = MarketBasket_Product.objects.filter(basket=mr,product=pr)
+    if len(num)>0:
+        n = num[0].number
+        num[0].number = n+1
+        num[0].save()
+
+    marketbasket[0].add_item(pr)
+    marketbasket[0].updateItems()
+
+    prs = marketbasket[0].productList.all()
+    product_ids = []
+    product_names = []
+    product_count = []
+    product_unit = []
+
+    for pr in prs:
+        product_ids.append(pr.pk)
+        product_names.append(pr.name)
+        product_unit.append(pr.unit)
+        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+        print(num)
+        product_count.append(num)
+
+    sum = marketbasket[0].totalPrice
+    response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+
+def buyProducts(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    if len(marketbasket)>0:
+        products = []
+        prs = marketbasket[0].productList.all()
+        if len(prs)>0:
+            mr = marketbasket[0]
+            for pr in prs:
+                num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+                products.append((pr,num))
+            total = marketbasket[0].totalPrice
+            products = sorted(products, key= lambda x: (x[0].name))
+            context = {'products':products, 'sum':total}
+        else:
+            context = {'error':'سبد خرید خالیست!'}
+    else:
+        context = {'error':'سبد خرید خالیست!'}
+    return render(request, "BuyProducts.html", context)
+
+def confirmBuy(request):
+    usr = request.user
+    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+    if len(marketbasket)>0:
+        marketbasket[0].paid = 'paid'
+        marketbasket[0].save()
+    response_data = {'result':1, }
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 def product_info(request, pro_id):
     global image_uploaded
@@ -74,8 +178,14 @@ def product_info(request, pro_id):
             print('url:', proches[i].image.url)
             dic_el = {'category': proches[i].category, 'price': proches[i].price, 'id': proches[i].pk, 'name': proches[i].name, 'picUrl': proches[i].image.url }
             similars.append(dic_el)
-
-    context={'product':pro, 'comments':comments, 'dates':dates, 'similars': similars, 'recoms': recoms, 'URL':'ProductDetail'}
+    if len(User.objects.filter(username = request.user.username))>0:
+        if (User.objects.get(username= request.user.username).has_perm('MFSharif.is_customer')):
+            usr = False
+        else:
+            usr = True
+    else:
+        usr = True
+    context={'product':pro, 'comments':comments, 'dates':dates, 'similars': similars, 'recoms': recoms, 'URL':'ProductDetail', 'usr':usr}
     return render(request,'ProductDetail.html', context)
 
 def addComment(request):
@@ -83,10 +193,12 @@ def addComment(request):
     image_uploaded = False
     msg = request.GET.get('message')
     pro_id = request.GET.get('pro_id')
-    nm = request.GET.get('name')
-
+    print("message")
     prd = Product.objects.get(pk=pro_id)
-    cm = Comment.objects.get_or_create(comment=msg, name=nm, product=prd)
+    usr = request.user
+    mfuser = MFUser.objects.get(user = usr)
+    cm = Comment.objects.get_or_create(comment=msg, customer=mfuser, product=prd)
+    print("injaaaaa")
 
     comments = Comment.objects.filter(product=prd).order_by('-date')
     #print(comments[0].comment)
@@ -96,7 +208,7 @@ def addComment(request):
     tm =[]
     for comment in comments:
         cm.append(comment.comment)
-        nms.append(comment.name)
+        nms.append(comment.customer.user.first_name)
         dt.append(comment.date.date())
         # tm.append(comment.date.time())
 
@@ -108,7 +220,15 @@ def addComment(request):
 def loadsearch(request):
     global image_uploaded
     image_uploaded = False
-    context = {'URL':'search'}
+    if len(User.objects.filter(username = request.user.username))>0:
+        if (User.objects.get(username= request.user.username).has_perm('MFSharif.is_customer')):
+            usr = False
+        else:
+            usr = True
+    else:
+        usr = True
+
+    context = {'URL':'search','usr':usr}
     return render(request, 'search.html', context)
 
 
@@ -188,10 +308,16 @@ def items_wanted(request):
     #for i in responselist:
     #    if i not in responselist_ult:
     #        responselist.append(i)
-
+    if len(User.objects.filter(username = request.user.username))>0:
+        if (User.objects.get(username= request.user.username).has_perm('MFSharif.is_customer')):
+            usr = False
+        else:
+            usr = True
+    else:
+        usr = True
     response_data = {"page": whichpage, 'pageSize': len(items), 'totalResults': totalresults, 'productList': responselist}
     recoms = Product.objects.filter(recommended = True)
-    context = { 'recoms':recoms, 'URL': 'search.html'}
+    context = { 'recoms':recoms, 'URL': 'search.html', 'usr':usr}
     render(request,'search.html', context)
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -201,7 +327,15 @@ def into_search(request, category, search_str):
     global image_uploaded
     image_uploaded = False
     recoms = Product.objects.filter(recommended = True)
-    context = {'p_category_': category, 'p_search_str_': search_str, 'recoms': recoms, 'URL': 'search'};
+
+    if len(User.objects.filter(username = request.user.username))>0:
+        if (User.objects.get(username= request.user.username).has_perm('MFSharif.is_customer')):
+            usr = False
+        else:
+            usr = True
+    else:
+        usr = True
+    context = {'p_category_': category, 'p_search_str_': search_str, 'recoms': recoms, 'URL': 'search', 'usr':usr};
     return render(request, 'search.html', context)
 
 
@@ -250,8 +384,9 @@ def addProduct(request):
     context={'URL':'ManageProducts'}
     return render(request,'ManageProducts.html', context)
 
-def edit_pro(request):
-    context={'ProductEdit'}
+def edit_pro(request, pro_id):
+    pr = Product.objects.get(pk = pro_id)
+    context={'pr':pr}
     return render(request,'ProductEdit.html', context)
 
 def handle_uploaded_file(f):
@@ -339,7 +474,7 @@ def submit_product(request):
         print(num)
 
     try:
-        m = str(len(Product.objects.all()))
+        m = str(len(Product.objects.all())+1)
         strnm = "images/products/"+m+".JPEG"
         print("strnm")
         print(strnm)
@@ -351,7 +486,7 @@ def submit_product(request):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         script_dir2 = os.path.dirname(script_dir)
 
-        m = str(len(Product.objects.all()))
+        m = str(len(Product.objects.all())+1)
         st2 = "media\images\products\\"+ m + ".JPEG"
         tr = os.path.join(script_dir2, st2)
         temp_file = open(tr,"w")
@@ -367,7 +502,9 @@ def submit_product(request):
 
     try:
         print("new Product")
-        pr = Product.objects.get_or_create(name=nm, category=cat, price=prc, description=des, image= strnm)
+        usr = request.user
+        mfuser = MFUser.objects.get(user = usr)
+        pr = Product.objects.get_or_create(name=nm, category=cat, price=prc, description=des, image= strnm, salesman = mfuser)
     except Exception as num:
         print("tu save prodcut ")
         print(num)
@@ -380,14 +517,162 @@ def submit_product(request):
     response_data = {'result':1}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
+def submit_edit_product(request):
+    global number_crop
+    print("injaaaaaaaaaaaaaaaaaaaaaaaaaaaa hastaaaaaaaaaaaaaam")
+    nm = request.POST["name"]
+    print("name")
+    ctid = request.POST["category"]
+    cat = Category.objects.get(pk=ctid)
+    pr = request.POST["price"]
+    product_id = request.POST["id"]
+    print("pr")
+    prc = int(pr)
+
+    des = request.POST["description"]
+    product = Product.objects.get(pk=product_id)
+    #
+
+    try:
+        handle_uploaded_file(request.FILES["files"])
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        script_dir2 = os.path.dirname(script_dir)
+        m = str(len(Product.objects.all()))
+        st2 = "media\images\\test\\"+ m + ".JPEG"
+        im = Image.open(st2)
+
+        # script_dir = os.path.dirname(os.path.abspath(__file__))
+        # script_dir2 = os.path.dirname(script_dir)
+        # print(script_dir2)
+        # tr = os.path.join(script_dir2, 'media\images\products')
+        # print(tr)
+        # print(strr[16:])
+        # ttr = os.path.join(tr,strr[16:])
+        # print(ttr)
+        # script_dir = os.path.dirname(os.path.abspath(__file__))
+        # script_dir2 = os.path.dirname(script_dir)
+        # m = str(len(Product.objects.all()))
+            # st2 = "media\images\\test\\"+ m + ".JPEG"
+
+        # im = Image.open(st2)
+
+    except Exception as inst:
+        im = Image.open(product.image)
+        print(inst)
+
+    try:
+        x = request.POST["x1"]
+        xx = int(x)
+        y = request.POST["y1"]
+        yy = int(y)
+        w = request.POST["w"]
+        ww = int(w)
+        h = request.POST["h"]
+        hh = int(h)
+        width, height = im.size
+        print(width)
+        print(height)
+        xx = (xx*width)/300
+        ww = (ww*width)/300
+        hh = (hh*height)/300
+        yy = (yy*height)/300
+        xx = int(xx)
+        yy = int(yy)
+        ww = int(ww)
+        hh = int(hh)
+        immm = im.crop((xx ,yy,ww,hh))
+    except Exception as num:
+        print("in cropping")
+        print(num)
+
+    try:
+        m = str(product_id)
+        strnm = "images/products/"+m+".JPEG"
+        print("strnm")
+        print(strnm)
+    except Exception as num:
+        print("exe dige injaaa ??!!!")
+        print(num)
+
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        script_dir2 = os.path.dirname(script_dir)
+
+        m = str(product_id)
+        st2 = "media\images\products\\"+ m + ".JPEG"
+        tr = os.path.join(script_dir2, st2)
+        temp_file = open(tr,"w")
+    except Exception as num:
+        print("tu open temp file ")
+        print(num)
+
+    try:
+        immm.save(temp_file,format("JPEG"))
+    except Exception as num:
+        print("in save crop")
+        print(num)
+
+    try:
+        print("Editttttttttttttttttttttttttttt Product")
+        pr = Product.objects.get(pk=product_id)
+        print(pr)
+        pr.name = nm
+        pr.image = strnm
+        pr.price = prc
+        pr.description = des
+        pr.category = cat
+        pr.save()
+        # pr = Product.objects.get_or_create(name=nm, category=cat, price=prc, description=des, image= strnm)
+    except Exception as num:
+        print("tu save prodcut ")
+        print(num)
+
+    prsss = Product.objects.all().last()
+    print(prsss.name)
+    print(prsss.pk)
+    print(prsss.image.url)
+
+    response_data = {'result':1}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+
+
 def transactions(request):
-    context={'URL':'transactions'}
+    usr = request.user
+    mfuser = MFUser.objects.get(user = usr)
+    my_pros = Product.objects.filter(salesman = mfuser)
+    market_products = []
+    sum = 0
+    for pr in my_pros:
+        mrb = MarketBasket_Product.objects.filter(product=pr)
+        for m in mrb:
+            if m.basket.paid=='paid':
+                market_products.append((m.basket, m.product, m.number))
+                print(m.product.name)
+                print(m.product.price)
+                sum +=(m.number * m.product.price)
+                print("summmmmm")
+                print(sum)
+    print("market product")
+    market_products = sorted(market_products, key= lambda x: (x[0].lastModified, x[1].name ))
+    print(market_products)
+    context={'URL':'transactions', 'market_products':market_products , 'sum':sum}
     return render(request,"transactions.html",context)
 
 def edit_products(request):
-    context={'URL':'EditProducts'}
+    usr = request.user
+    mfuser = MFUser.objects.get(user = usr)
+    my_pros = Product.objects.filter(salesman = mfuser)
+    context={'URL':'EditProducts', 'products':my_pros}
     return render(request,"EditProducts.html",context)
 
+def removeProduct(request):
+    usr = request.user
+    id = request.GET.get('id')
+    mfuser = MFUser.objects.get(user = usr)
+    Product.objects.get(pk=id).delete()
+
+    response_data = {'result':1}
+    return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 def UserEnter(request):
     user_n = request.POST["username"]
