@@ -393,7 +393,7 @@ def UserEnter(request):
     user_n = request.POST["username"]
     pass_w = request.POST['password']
 
-    print ('user_n: ',user_n)
+    #print ('user_n: ',user_n)
 
     if user_n is '' or pass_w is '':
         custom_message= 'لطفاً تمامی فیلدها را پر کنید'
