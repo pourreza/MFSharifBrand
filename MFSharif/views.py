@@ -10,12 +10,10 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
-from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-
+from django.contrib.auth.decorators import permission_required, user_passes_test
 from MFSharif.forms import DocumentForm
-from MFSharif.forms import RegisterUser
 # from StringIO import StringIO
 # from django.http import HttpResponse
 # import cairo
@@ -23,12 +21,8 @@ from MFSharif.forms import RegisterUser
 from MFSharif.models import *
 from PIL import Image
 import os
-import tempfile
-import re
 # from chartit import DataPool, Chart
-from chartit import PivotDataPool, PivotChart
 import PyICU
-import types
 
 image_uploaded = False
 number_crop = 0
@@ -339,6 +333,7 @@ def buyProducts(request):
                 context = {'error':'سبد خرید خالیست!'}
     return render(request, "BuyProducts.html", context)
 
+@permission_required('MFSharif.is_customer', login_url = 'index')
 def confirmBuy(request):
     usr = request.user
     marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
@@ -381,6 +376,7 @@ def product_info(request, pro_id):
     context={'product':pro, 'comments':comments, 'dates':dates, 'similars': similars, 'recoms': recoms, 'URL':'ProductDetail', 'usr':usr}
     return render(request,'ProductDetail.html', context)
 
+@permission_required('MFSharif.is_customer', login_url = 'index')
 def addComment(request):
     global image_uploaded
     image_uploaded = False
@@ -553,7 +549,7 @@ def upload_image(request):
     # response_data = {'result':1, 'comments':comments}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def addProduct2(request):
     global image_uploaded
     global number_crop
@@ -572,11 +568,11 @@ def addProduct2(request):
     if image_uploaded == False:
         img = ''
     return render_to_response('AddProduct.html', {'images':img , 'form': form},context_instance=RequestContext(request))
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def addProduct(request):
     context={'URL':'ManageProducts'}
     return render(request,'ManageProducts.html', context)
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def edit_pro(request, pro_id):
     pr = Product.objects.get(pk = pro_id)
     context={'pr':pr}
@@ -599,7 +595,7 @@ def handle_uploaded_file(f):
         print("chunks")
         print(num)
 
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def submit_product(request):
     print("i'm hereeeeeeee")
     global number_crop
@@ -709,7 +705,7 @@ def submit_product(request):
 
     response_data = {'result':1}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def submit_edit_product(request):
     global number_crop
     print("injaaaaaaaaaaaaaaaaaaaaaaaaaaaa hastaaaaaaaaaaaaaam")
@@ -827,7 +823,7 @@ def submit_edit_product(request):
 
     response_data = {'result':1}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def transactions(request):
     usr = request.user
     mfuser = MFUser.objects.get(user = usr)
@@ -933,7 +929,7 @@ def transactions(request):
 #           }}])
 #
 #     return render(request,'ChartReport.html', {'chart':pivcht})
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def edit_products(request):
     usr = request.user
     mfuser = MFUser.objects.get(user = usr)
@@ -952,7 +948,7 @@ def edit_products(request):
 
     context={'URL':'EditProducts', 'products':final_products}
     return render(request,"EditProducts.html",context)
-
+@permission_required('MFSharif.is_salesman', login_url = 'index')
 def removeProduct(request):
     usr = request.user
     id = request.GET.get('id')
@@ -999,7 +995,7 @@ def UserEnter(request):
 def UserExit(request):
     logout(request)
     return HttpResponse(json.dumps({}), content_type="application/json")
-
+@permission_required('MFSharif.is_customer', login_url = 'index')
 def ShowProfile(request):
     return render(request, 'Profile.html', {})
 
