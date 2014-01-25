@@ -64,12 +64,20 @@
                                ورود کاربر
                                    </a>
                                </div>
+                            <div class="dropdown" style="margin-left: 17px; margin-right: 0px;">
+                                <img src="{{STATIC_URL}}images/ShoppingCart.png" title="مشاهده سبد خرید" data-toggle="dropdown"
+                                     style="width: 50px; height: 48px;  margin-left: -120px; margin-right: 95px;margin-top: -35px; opacity: 0.6">
+                                <ul class="dropdown-menu my-dropdown" role="menu" aria-labelledby="dropdownMenu1" style="z-index: 10px;"
+                                    id="cart-detail" dir="rtl">
+                                </ul>
+                            </div>
                          {% else %}
-                    {% if perms.MFSharif.is_customer %}
+                    {% if perms.MFSharif.is_customer or perms.MFSharif.is_salesman%}
 <div id="show_name">
                         {{user.first_name}}
 
     </div>
+                        {% endif %}
 
                             <div class="dropdown" style="margin-left: 17px; margin-right: -57px;">
                                 <img src="{{STATIC_URL}}images/ShoppingCart.png" title="مشاهده سبد خرید" data-toggle="dropdown"
@@ -79,13 +87,13 @@
                                 </ul>
                             </div>
                         <button style="width: 60px; height: 33px;  border-radius:8px; margin-left: -117px; margin-right: 90px;font-family:entezar;font-weight:bold;font-size:16px;margin-top: -77px;" onclick="logOut()"> خروج</button>
-                        {% elif perms.MFSharif.is_salesman %}
-                        <span style="margin-top: -20px;margin-right: 10px;margin-left: -500px; ">
-                        {{user.first_name}}
-                        </span>
-
-                            <button style="width: 60px; height: 33px;  border-radius:8px; margin-left: -110px; margin-right: 100px;font-family:entezar;font-weight:bold;font-size:16px;margin-top: -5px;" onclick="logOut()"> خروج</button>
-                        {% endif %}
+{#                        {% elif perms.MFSharif.is_salesman %}#}
+{#                        <span style="margin-top: -20px;margin-right: 10px;margin-left: -500px; ">#}
+{#                        {{user.first_name}}#}
+{#                        </span>#}
+{##}
+{#                            <button style="width: 60px; height: 33px;  border-radius:8px; margin-left: -110px; margin-right: 100px;font-family:entezar;font-weight:bold;font-size:16px;margin-top: -5px;" onclick="logOut()"> خروج</button>#}
+{#                        {% endif %}#}
                     {% endif %}
                 </span>
          </div>
@@ -121,6 +129,12 @@
     {% else %}
             <div id="manage" style="margin-left:730px; ">
             .به فروشگاه مجازی ام اف شریف برند خوش آمدید
+            </div>
+            <div id="add">
+                <a href="{% url 'buyProducts' %}" style="color: ghostwhite; margin-right: 700px; margin-left: -150px; text-decoration: none;">
+                    خرید محصولات سبد
+                </a>
+
             </div>
     {% endif %}
     </div>

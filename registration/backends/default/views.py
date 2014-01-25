@@ -88,7 +88,21 @@ class RegistrationView(BaseRegistrationView):
         new_user.user_permissions.add(perm1)
         #new_user.last_name = last_name
         #new_user.first_name = first_name
-        MFUser.objects.create(phone= phone,postal_code = postal_code,address =  address,city = city, user = new_user)
+        mfuser = MFUser.objects.create(phone= phone,postal_code = postal_code,address =  address,city = city, user = new_user)
+
+        MarketBasket.createForCustomer(mfuser)
+        marketbasket = MarketBasket.objects.filter(customer=mfuser,paid='not_paid')
+        prs = request.session['products']
+        nums = request.session['numbers']
+        counter = 0
+        for p in prs:
+            product = Product.objects.get(pk=p)
+            marketbasket[0].add_item(product)
+            marketbasket[0].updateItems()
+            num = MarketBasket_Product.objects.filter(basket=marketbasket,product=product)
+            num[0].number = nums[counter]
+            num[0].save()
+            counter += 1
 
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,

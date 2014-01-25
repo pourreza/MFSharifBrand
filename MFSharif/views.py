@@ -22,8 +22,10 @@ from PIL import Image
 import os
 import tempfile
 import re
-# from chartit import DataPool, Chart
+from chartit import DataPool, Chart
+from chartit import PivotDataPool, PivotChart
 import PyICU
+import types
 
 image_uploaded = False
 number_crop = 0
@@ -52,79 +54,201 @@ def index(request):
 
     context = {'men_items':men_items, 'women_items':women_items, 'products':pro, 'recoms': recoms, 'URL': ''}
     return render(request, 'base.html', context)
+
 def cartProducts(request):
     usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    print(marketbasket)
-    if marketbasket:
-        prs = marketbasket[0].productList.all()
-    else:
-        mfuser = MFUser.objects.get(user = usr)
-        MarketBasket.createForCustomer(mfuser)
-        marketbasket = MarketBasket.objects.filter(customer=mfuser,paid='not_paid')
-        prs = []
+    # print("useeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer")
+    if len(User.objects.filter(username = request.user.username))>0:
+        marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+        print(marketbasket)
+        if marketbasket:
+            prs = marketbasket[0].productList.all()
+        else:
+            mfuser = MFUser.objects.get(user = usr)
+            MarketBasket.createForCustomer(mfuser)
+            marketbasket = MarketBasket.objects.filter(customer=mfuser,paid='not_paid')
+            prs = []
 
-    product_ids = []
-    product_names = []
-    product_count = []
-    product_unit = []
-    for pr in prs:
-        mr = marketbasket[0]
-        product_ids.append(pr.pk)
-        product_names.append(pr.name)
-        product_unit.append(pr.unit)
-        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
-        product_count.append(num)
+        product_ids = []
+        product_names = []
+        product_count = []
+        product_unit = []
+        for pr in prs:
+            mr = marketbasket[0]
+            product_ids.append(pr.pk)
+            product_names.append(pr.name)
+            product_unit.append(pr.unit)
+            num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+            product_count.append(num)
 
-    if marketbasket:
-        sum = marketbasket[0].totalPrice
+        if marketbasket:
+            sum = marketbasket[0].totalPrice
+        else:
+            sum = 0
     else:
-        sum = 0
+        if not 'products' in request.session :
+            print("vaa here injaaaaaaaaaaaa")
+            request.session['products']=[]
+            request.session['numbers']=[]
+            product_ids = []
+            product_names = []
+            product_count = []
+            product_unit =[]
+            sum = 0
+        else:
+            pro = request.session['products']
+            print (pro)
+            product_ids = []
+            product_names = []
+            product_count = request.session['numbers']
+            product_unit =[]
+            sum = 0
+            i = 0
+            for pr in pro:
+                product_ids.append(pr)
+                print ("ta injaaa umadam")
+                p = Product.objects.get(pk=pr)
+                print("badesh")
+                print(p)
+                product_names.append(p.name)
+                product_unit.append(p.unit)
+                sum += product_count[i]*p.price
+                i +=1
     response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 def removeCartProduct(request):
     usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    id = request.GET.get('id')
+    if len(User.objects.filter(username = request.user.username))>0:
+        marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+        id = request.GET.get('id')
 
-    pr = Product.objects.get(pk = id)
-    marketbasket[0].remove_item(pr)
-    sum = marketbasket[0].totalPrice
+        pr = Product.objects.get(pk = id)
+        marketbasket[0].remove_item(pr)
+        sum = marketbasket[0].totalPrice
+    else:
+        id = request.GET.get('id')
+        temp = request.session['products']
+        temp2 = request.session['numbers']
+        counter = 0
+        index = 0
+        for t in temp:
+            if id==t:
+                index = counter
+            counter +=1
+        if temp2[index]>1:
+            temp2[index] -= 1
+            request.session['numbers'] = temp2
+        else:
+            del temp[index]
+            del temp2[index]
+            request.session['products'] = temp
+            request.session['numbers'] = temp2
 
+        sum = 0
+        counter = 0
+        for t in temp:
+            p = Product.objects.get(pk = t)
+            sum += temp2[counter]*p.price
+            counter += 1
     response_data = {'result':1, 'sum':sum}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
 def addCartProduct(request):
     usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    id = request.GET.get('id')
-    pr = Product.objects.get(pk=id)
-    mr = marketbasket[0]
-    num = MarketBasket_Product.objects.filter(basket=mr,product=pr)
-    if len(num)>0:
-        n = num[0].number
-        num[0].number = n+1
-        num[0].save()
+    if len(User.objects.filter(username = request.user.username))>0:
+        marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+        id = request.GET.get('id')
+        pr = Product.objects.get(pk=id)
+        mr = marketbasket[0]
+        num = MarketBasket_Product.objects.filter(basket=mr,product=pr)
+        if len(num)>0:
+            n = num[0].number
+            num[0].number = n+1
+            num[0].save()
 
-    marketbasket[0].add_item(pr)
-    marketbasket[0].updateItems()
+        marketbasket[0].add_item(pr)
+        marketbasket[0].updateItems()
 
-    prs = marketbasket[0].productList.all()
-    product_ids = []
-    product_names = []
-    product_count = []
-    product_unit = []
+        prs = marketbasket[0].productList.all()
+        product_ids = []
+        product_names = []
+        product_count = []
+        product_unit = []
 
-    for pr in prs:
-        product_ids.append(pr.pk)
-        product_names.append(pr.name)
-        product_unit.append(pr.unit)
-        num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
-        print(num)
-        product_count.append(num)
+        for pr in prs:
+            product_ids.append(pr.pk)
+            product_names.append(pr.name)
+            product_unit.append(pr.unit)
+            num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
+            print(num)
+            product_count.append(num)
 
-    sum = marketbasket[0].totalPrice
+        sum = marketbasket[0].totalPrice
+    else:
+        if not 'products' in request.session :
+            print("vaa here injaaaaaaaaaaaa")
+            request.session['products']=[]
+            temp = request.session['products']
+            temp.append(request.GET.get('id'))
+            request.session['products'] = temp
+            request.session['numbers']=[]
+            temp2 = request.session['numbers']
+            temp2.append(1)
+            request.session['numbers']=temp2
+            product_ids = [request.GET.get('id')]
+            id = request.GET.get('id')
+            product_names = [Product.objects.get(pk=id).name]
+            product_count = [1]
+            product_unit =[Product.objects.get(pk=id).unit]
+            sum = Product.objects.get(pk=id).price
+        else:
+            id = request.GET.get('id')
+            ids = request.session['products']
+            exist = False
+            index = -1
+            counter = 0
+            for i in ids:
+                if id==i:
+                    exist = True
+                    index= counter
+                counter +=1
+            if exist:
+                temp = request.session['numbers']
+                temp[index] += 1
+                request.session['numbers']  = temp
+                product_ids = request.session['products']
+                product_count = request.session['numbers']
+                product_names = []
+                product_unit = []
+                sum = 0
+                counter = 0
+                for x in product_ids:
+                    p = Product.objects.get(pk=x)
+                    product_names.append(p.name)
+                    product_unit.append(p.unit)
+                    sum += product_count[counter]*p.price
+                    counter +=1
+            else:
+                temp = request.session['numbers']
+                temp.append(1)
+                request.session['numbers'] = temp
+                temp2 = request.session['products']
+                temp2.append(id)
+                request.session['products'] = temp2
+                product_ids = request.session['products']
+                product_count = request.session['numbers']
+                product_names = []
+                product_unit = []
+                sum = 0
+                counter = 0
+                for x in product_ids:
+                    p = Product.objects.get(pk=x)
+                    product_names.append(p.name)
+                    product_unit.append(p.unit)
+                    sum += product_count[counter]*p.price
+                    counter +=1
+
     response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 def cmp_to_key(mycmp):
@@ -149,30 +273,67 @@ def cmp_to_key(mycmp):
 
 def buyProducts(request):
     usr = request.user
-    marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
-    if len(marketbasket)>0:
-        products = []
-        prs = marketbasket[0].productList.all()
-        if len(prs)>0:
-            mr = marketbasket[0]
-            product_names = []
-            for pr in prs:
-                product_names.append(pr.name)
-            collator = PyICU.Collator.createInstance(PyICU.Locale('fa_IR.UTF-8'))
-            print(product_names)
-            product_names = sorted (product_names, key = cmp_to_key(collator.compare))
-            print("badesh")
-            print(product_names)
+    if len(User.objects.filter(username = request.user.username))>0:
+        marketbasket = MarketBasket.objects.filter(customer__user = usr,paid='not_paid')
+        if len(marketbasket)>0:
+            products = []
+            prs = marketbasket[0].productList.all()
+            if len(prs)>0:
+                mr = marketbasket[0]
+                product_names = []
+                for pr in prs:
+                    product_names.append(pr.name)
+                collator = PyICU.Collator.createInstance(PyICU.Locale('fa_IR.UTF-8'))
+                print(product_names)
+                product_names = sorted (product_names, key = cmp_to_key(collator.compare))
+                print("badesh")
+                print(product_names)
 
-            for pn in product_names:
-                mkp = MarketBasket_Product.objects.get(basket = mr, product__name=pn)
-                products.append((mkp.product,mkp.number))
-            total = marketbasket[0].totalPrice
-            context = {'products':products, 'sum':total}
+                for pn in product_names:
+                    mkp = MarketBasket_Product.objects.get(basket = mr, product__name=pn)
+                    products.append((mkp.product,mkp.number))
+                total = marketbasket[0].totalPrice
+                context = {'products':products, 'sum':total, 'usr':True}
+            else:
+                context = {'error':'سبد خرید خالیست!'}
         else:
             context = {'error':'سبد خرید خالیست!'}
     else:
-        context = {'error':'سبد خرید خالیست!'}
+        if not 'products' in request.session :
+            request.session['products']=[]
+            request.session['numbers']=[]
+            product_ids = []
+            product_names = []
+            product_count = []
+            product_unit =[]
+            sum = 0
+            context = {'error':'سبد خرید خالیست!'}
+        else:
+            pro = request.session['products']
+            print (pro)
+            product_ids = []
+            product_names = []
+            product_count = request.session['numbers']
+            product_unit =[]
+            prods = []
+            sum = 0
+            i = 0
+            for pr in pro:
+                product_ids.append(pr)
+                p = Product.objects.get(pk=pr)
+                print(p)
+                print("sabaad")
+
+                print(p)
+                product_names.append(p.name)
+                product_unit.append(p.unit)
+                sum += product_count[i]*p.price
+                prods.append((p,product_count[i]))
+                i +=1
+            print (prods)
+            context = {'products':prods, 'sum':sum , 'usr':False}
+            if len(prods)==0:
+                context = {'error':'سبد خرید خالیست!'}
     return render(request, "BuyProducts.html", context)
 
 def confirmBuy(request):
@@ -720,6 +881,55 @@ def transactions(request):
 
     context={'URL':'transactions', 'market_products':final_product , 'sum':sum}
     return render(request,"transactions.html",context)
+
+def chart_report(request):
+    usr = request.user
+    mfuser = MFUser.objects.get(user = usr)
+    pros = Product.objects.filter(salesman=mfuser).order_by('name')
+    counter = 1
+    for pr in pros:
+        num = 0
+        mkb = MarketBasket_Product.objects.filter(product=pr , basket__paid='paid')
+        for mm in mkb:
+            num += mm.number
+        namee = pr.name
+        ChartData.objects.get_or_create(status=namee,quantity=num)
+        counter += 1
+    # try:
+    #     unicode = unicode
+    # except NameError:
+    #     # 'unicode' is undefined, must be Python 3
+    #     str = str
+    #     unicode = str
+    #     bytes = bytes
+    #     basestring = (str,bytes)
+    # else:
+    #     str = str
+    #     # 'unicode' exists, must be Python 2
+    #     unicode = unicode
+    #     bytes = str
+    #     basestring = basestring
+    ds = DataPool(
+        series=
+        [{'options': {
+            'source': ChartData.objects.all()},
+          'terms': [
+              'status',
+              'quantity']}
+        ])
+
+    cht = Chart(
+        datasource = ds,
+        series_options =
+        [{'options':{
+            'type': 'column',
+            'stacking': False},
+          'terms':{
+              'status': [
+                  'quantity']
+          }}])
+
+    return render(request,'ChartReport.html', {'chart':pivcht})
 
 def edit_products(request):
     usr = request.user

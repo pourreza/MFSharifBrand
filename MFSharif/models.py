@@ -58,6 +58,13 @@ class Product(models.Model):
        verbose_name = 'مجصول'
        verbose_name_plural = 'مجصولات'
 
+class ChartData(models.Model):
+    code = models.PositiveIntegerField(null=True, blank=True)
+    status = models.CharField(max_length=60)
+    quantity = models.PositiveIntegerField()
+    def __unicode__(self):
+        return str(self.status)
+
 class PopularProducts(models.Model):
     product = models.ForeignKey(Product,verbose_name='کالا')
     image = models.ImageField('عکس تبلیغاتی', upload_to='images/products')

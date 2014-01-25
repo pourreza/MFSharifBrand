@@ -113,12 +113,22 @@
         <div style="margin-right: 400px;margin-top: 20px; ">
             مجموع فروش: {{ sum }} تومان
         </div>
-        <button class="add-cart" style="margin-right: 435px; margin-top: 10px;"type="button" onclick="buy()">مشاهده نمودار فروش</button>
+        <button class="add-cart" style=" text-decoration:none; margin-right: 435px; margin-top: 20px;"type="button" onclick="chart()" >مشاهده نمودار فروش  </button>
     {% else %}
         <div style="margin-top: 50px; margin-right: 100px; font-size: 20px; font-weight: bold;">
             هیچ تراکنشی به ثبت نرسیده است.
         </div>
     {% endif %}
+    </div>
 {% endblock %}
 {% block crop-image %}
+{% endblock %}
+{% block js_very_end %}
+    <script type="text/javascript" src="static/javascript/base.js"></script>
+    <script type="text/javascript" src="static/javascript/add_product.js"></script>
+    <script type="text/javascript">
+        function chart(){
+            window.location.replace('{% url 'ChartReport' %}');
+        }
+    </script>
 {% endblock %}

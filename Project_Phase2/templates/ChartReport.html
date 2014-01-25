@@ -1,0 +1,60 @@
+{% extends 'AddProduct.html' %}
+{% block title %}
+    مشاهده تراکنش ها
+{% endblock %}
+{% block menu %}
+    <div class="my_menu" xmlns="http://www.w3.org/1999/html">
+        <ul>
+            <li class="li-header">
+                بخش مدیریت اجناس
+            </li>
+            <li>
+                <a href="{% url 'addProduct2' %}" style="color:ghostwhite; text-decoration: none">
+                    اضافه کردن محصول
+                </a>
+            </li>
+            <li style="background-color: rosybrown">
+                مشاهده تراکنش ها
+                <i class="fa fa-arrow-left" style="margin-top: 3px; margin-right: 35px;"></i>
+            </li>
+            <li>
+                <a href="{% url 'edit-products' %}" style="color:ghostwhite; text-decoration: none">
+                    ویرایش محصولات
+                </a>
+            </li>
+            <li>
+                تعیین موجودی
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block breadcrum %}
+    <li>
+        <span class="divider">/</span>
+        <a href="{% url 'addProduct' %}">
+            بخش مدیریت
+        </a>
+    </li>
+    <li >
+        <span class="divider">/</span>
+        <a href="{% url 'transactions' %} ">
+        مشاهده تراکنش ها
+        </a>
+    </li>
+    <li class="active">
+        <span class="divider">/</span>
+        نمودار فروش
+    </li>
+{% endblock %}
+{% block  producer_main %}
+<div class="pr-add-form" style="height: 430px;">
+    <div class="pr-info-header">
+        نمودار فروش:
+    </div>
+    <div id="chart_container" style="border: 2px solid red; width: 800px; height: 350px; margin-top: 30px; margin-right: 100px">
+
+    </div>
+</div>
+{% endblock %}
+{% block crop-image %}
+{% endblock %}

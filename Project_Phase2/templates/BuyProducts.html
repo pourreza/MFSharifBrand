@@ -103,7 +103,7 @@
         <div style="margin-right: 520px;margin-top: 20px; ">
      مجموع: {{ sum }} تومان
         </div>
-        <button class="add-cart" style="margin-right: 560px; margin-top: 10px;"type="button" onclick="buy()">خرید محصولات</button>
+        <button class="add-cart" style="margin-right: 560px; margin-top: 10px;"type="button" onclick="buy('{{ usr }}')">خرید محصولات</button>
         {% endif %}
     {% endblock %}
     </div>
@@ -147,24 +147,30 @@
             });
         }
 
-        function buy(){
-            var url = "../confirmBuy";
-            $.ajax({
-                url: url,
-                type: 'get',
-                dataType: 'json',
-                success: function(data, status, xhr){
-                    if (data.result == 0){
-                        // Request error
-                    }else
-                    {
-                        alert("با تشکر از خرید شما. محصولات خریداری شده به آدرس شما ارسال می گردند.")
-                        window.location.replace('../');
+        function buy(p){
+            if (p=='True'){
+
+                var url = "../confirmBuy";
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(data, status, xhr){
+                        if (data.result == 0){
+                            // Request error
+                        }else
+                        {
+                            alert("با تشکر از خرید شما. محصولات خریداری شده به آدرس شما ارسال می گردند.")
+                            window.location.replace('../');
+                        }
                     }
-                }
 
 
-            });
+                });
+            }else{
+                alert("برای خرید باید جزء مشتریان سایت باشید. لطفا در سایت ثبت نام کنید!")
+                window.location.href ="../accounts/register"
+            }
         }
     </script>
 
