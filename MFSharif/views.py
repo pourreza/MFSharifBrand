@@ -22,10 +22,12 @@ from PIL import Image
 import os
 import tempfile
 import re
-
+# from chartit import DataPool, Chart
+import PyICU
 
 image_uploaded = False
 number_crop = 0
+
 
 # Create your views here.
 def index(request):
@@ -125,6 +127,25 @@ def addCartProduct(request):
     sum = marketbasket[0].totalPrice
     response_data = {'result':1, 'product_ids':product_ids, 'product_names':product_names, 'product_count':product_count,'product_unit':product_unit, 'sum':sum}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
+def cmp_to_key(mycmp):
+    'Convert a cmp= function into a key= function'
+    class K(object):
+        def __init__(self, obj, *args):
+            self.obj = obj
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+    return K
+
 
 def buyProducts(request):
     usr = request.user
@@ -134,11 +155,19 @@ def buyProducts(request):
         prs = marketbasket[0].productList.all()
         if len(prs)>0:
             mr = marketbasket[0]
+            product_names = []
             for pr in prs:
-                num = MarketBasket_Product.objects.get(basket = mr, product=pr).number
-                products.append((pr,num))
+                product_names.append(pr.name)
+            collator = PyICU.Collator.createInstance(PyICU.Locale('fa_IR.UTF-8'))
+            print(product_names)
+            product_names = sorted (product_names, key = cmp_to_key(collator.compare))
+            print("badesh")
+            print(product_names)
+
+            for pn in product_names:
+                mkp = MarketBasket_Product.objects.get(basket = mr, product__name=pn)
+                products.append((mkp.product,mkp.number))
             total = marketbasket[0].totalPrice
-            products = sorted(products, key= lambda x: (x[0].name))
             context = {'products':products, 'sum':total}
         else:
             context = {'error':'سبد خرید خالیست!'}
@@ -635,7 +664,6 @@ def submit_edit_product(request):
     response_data = {'result':1}
     return HttpResponse(json.dumps(response_data, cls=DjangoJSONEncoder), content_type="application/json")
 
-
 def transactions(request):
     usr = request.user
     mfuser = MFUser.objects.get(user = usr)
@@ -653,16 +681,63 @@ def transactions(request):
                 print("summmmmm")
                 print(sum)
     print("market product")
-    market_products = sorted(market_products, key= lambda x: (x[0].lastModified, x[1].name ))
-    print(market_products)
-    context={'URL':'transactions', 'market_products':market_products , 'sum':sum}
+    market_products = sorted(market_products, key = (lambda x: x[0].lastModified))
+
+    final_product = []
+    i = 1
+    while i<len(market_products):
+        prss_name = []
+        prss_name.append(market_products[i-1][1].name)
+        time = market_products[i-1][0].lastModified
+        print("last i")
+        while i<len(market_products) and market_products[i-1][0].lastModified == market_products[i][0].lastModified:
+            print(market_products[i][1])
+            prss_name.append(market_products[i][1].name)
+            i += 1
+        print("i")
+        print(i)
+        collator = PyICU.Collator.createInstance(PyICU.Locale('fa_IR.UTF-8'))
+        l = [z for z in sorted(["نیم بوت","کفش آل"], key=cmp_to_key(collator.compare))]
+        print(l)
+        print (l[0])
+        collator = PyICU.Collator.createInstance(PyICU.Locale('fa_IR.UTF-8'))
+        print("ghablesh")
+        print(prss_name)
+        prss_name = sorted(prss_name, key=cmp_to_key(collator.compare))
+        print(prss_name[0])
+        print("pas kushiii ")
+        print(prss_name[0])
+        prss = []
+        for m in prss_name:
+            bs = MarketBasket.objects.get(lastModified=time)
+            x = MarketBasket_Product.objects.get(basket=bs , product__name=m)
+            print ("x got")
+            print(x.product)
+            prss.append((x.basket,x.product,x.number))
+        i +=1
+        print(prss)
+        final_product.extend(prss)
+
+    context={'URL':'transactions', 'market_products':final_product , 'sum':sum}
     return render(request,"transactions.html",context)
 
 def edit_products(request):
     usr = request.user
     mfuser = MFUser.objects.get(user = usr)
     my_pros = Product.objects.filter(salesman = mfuser)
-    context={'URL':'EditProducts', 'products':my_pros}
+    names = []
+    for p in my_pros:
+        names.append(p.name)
+
+    collator = PyICU.Collator.createInstance(PyICU.Locale('fa_IR.UTF-8'))
+    names = sorted(names, key = cmp_to_key(collator.compare))
+
+    final_products = []
+    for n in names:
+        p = Product.objects.get(salesman = mfuser, name=n)
+        final_products.append(p)
+
+    context={'URL':'EditProducts', 'products':final_products}
     return render(request,"EditProducts.html",context)
 
 def removeProduct(request):
