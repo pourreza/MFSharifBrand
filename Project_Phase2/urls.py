@@ -34,7 +34,7 @@ urlpatterns = patterns('',
     url(r'^doLogOut/$', 'MFSharif.views.UserExit', name='UserExit'),
     url(r'Profile$', 'MFSharif.views.ShowProfile', name='ShowProfile'),
     url(r'changeinfo/$', 'MFSharif.views.ChangeInfo', name='ChangeInfo'),
-    url(r'ChartReport$', 'MFSharif.views.chart_report', name='ChartReport'),
+    # url(r'ChartReport$', 'MFSharif.views.chart_report', name='ChartReport'),
 
 
 

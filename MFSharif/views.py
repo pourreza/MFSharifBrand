@@ -16,13 +16,16 @@ from django.contrib.auth.models import User
 
 from MFSharif.forms import DocumentForm
 from MFSharif.forms import RegisterUser
+# from StringIO import StringIO
+# from django.http import HttpResponse
+# import cairo
 
 from MFSharif.models import *
 from PIL import Image
 import os
 import tempfile
 import re
-from chartit import DataPool, Chart
+# from chartit import DataPool, Chart
 from chartit import PivotDataPool, PivotChart
 import PyICU
 import types
@@ -882,54 +885,54 @@ def transactions(request):
     context={'URL':'transactions', 'market_products':final_product , 'sum':sum}
     return render(request,"transactions.html",context)
 
-def chart_report(request):
-    usr = request.user
-    mfuser = MFUser.objects.get(user = usr)
-    pros = Product.objects.filter(salesman=mfuser).order_by('name')
-    counter = 1
-    for pr in pros:
-        num = 0
-        mkb = MarketBasket_Product.objects.filter(product=pr , basket__paid='paid')
-        for mm in mkb:
-            num += mm.number
-        namee = pr.name
-        ChartData.objects.get_or_create(status=namee,quantity=num)
-        counter += 1
-    # try:
-    #     unicode = unicode
-    # except NameError:
-    #     # 'unicode' is undefined, must be Python 3
-    #     str = str
-    #     unicode = str
-    #     bytes = bytes
-    #     basestring = (str,bytes)
-    # else:
-    #     str = str
-    #     # 'unicode' exists, must be Python 2
-    #     unicode = unicode
-    #     bytes = str
-    #     basestring = basestring
-    ds = DataPool(
-        series=
-        [{'options': {
-            'source': ChartData.objects.all()},
-          'terms': [
-              'status',
-              'quantity']}
-        ])
-
-    cht = Chart(
-        datasource = ds,
-        series_options =
-        [{'options':{
-            'type': 'column',
-            'stacking': False},
-          'terms':{
-              'status': [
-                  'quantity']
-          }}])
-
-    return render(request,'ChartReport.html', {'chart':pivcht})
+# def chart_report(request):
+#     usr = request.user
+#     mfuser = MFUser.objects.get(user = usr)
+#     pros = Product.objects.filter(salesman=mfuser).order_by('name')
+#     counter = 1
+#     for pr in pros:
+#         num = 0
+#         mkb = MarketBasket_Product.objects.filter(product=pr , basket__paid='paid')
+#         for mm in mkb:
+#             num += mm.number
+#         namee = pr.name
+#         ChartData.objects.get_or_create(status=namee,quantity=num)
+#         counter += 1
+#     # try:
+#     #     unicode = unicode
+#     # except NameError:
+#     #     # 'unicode' is undefined, must be Python 3
+#     #     str = str
+#     #     unicode = str
+#     #     bytes = bytes
+#     #     basestring = (str,bytes)
+#     # else:
+#     #     str = str
+#     #     # 'unicode' exists, must be Python 2
+#     #     unicode = unicode
+#     #     bytes = str
+#     #     basestring = basestring
+#     ds = DataPool(
+#         series=
+#         [{'options': {
+#             'source': ChartData.objects.all()},
+#           'terms': [
+#               'status',
+#               'quantity']}
+#         ])
+#
+#     cht = Chart(
+#         datasource = ds,
+#         series_options =
+#         [{'options':{
+#             'type': 'column',
+#             'stacking': False},
+#           'terms':{
+#               'status': [
+#                   'quantity']
+#           }}])
+#
+#     return render(request,'ChartReport.html', {'chart':pivcht})
 
 def edit_products(request):
     usr = request.user
