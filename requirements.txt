@@ -1,0 +1,4 @@
+Django==1.6.1
+Pillow==2.2.2
+PyICU==1.5
+django-registration==1.0

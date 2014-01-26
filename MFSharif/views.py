@@ -281,10 +281,10 @@ def buyProducts(request):
                 for pr in prs:
                     product_names.append(pr.name)
                 collator = PyICU.Collator.createInstance(PyICU.Locale('fa_IR.UTF-8'))
-                print(product_names)
+                #print(product_names)
                 product_names = sorted (product_names, key = cmp_to_key(collator.compare))
                 print("badesh")
-                print(product_names)
+                #print(product_names)
 
                 for pn in product_names:
                     mkp = MarketBasket_Product.objects.get(basket = mr, product__name=pn)
