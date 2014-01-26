@@ -1,1 +1,1 @@
-web: python runserver $PORT
+web: python manage.py runserver $PORT
